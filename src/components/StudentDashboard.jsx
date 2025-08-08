@@ -13,7 +13,7 @@ const StudentDashboard = ({ user, issues, onSubmitIssue, onDetail }) => {
               <p className="issue-info">分类：{issue.category}</p>
               <p className="issue-info">状态：{issue.status}</p>
               <p className="issue-info issue-date">更新时间：{issue.updated_at}</p>
-              <button className="btn-link"  onClick={() => onDetail(issue)}>查看详情</button>
+              <button className="btn-link"  onClick={() => onDetail(issue.id)}>查看详情</button>
             </div>
           ))}
         </div>

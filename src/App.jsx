@@ -1,15 +1,16 @@
+// App.jsx（使用 React Router）
 import React, { useState } from "react";
+import { Routes, Route, useNavigate } from "react-router-dom";
 import LoginPage from "./components/LoginPage";
-import StudentDashboard from "./components/StudentDashboard.jsx";
+import StudentDashboard from "./components/StudentDashboard";
 import SubmitIssuePage from "./components/SubmitIssuePage";
 import AdminDashboard from "./components/AdminDashboard";
 import IssueDetailPage from "./pages/IssueDetailPage";
 
 const App = () => {
+  const navigate = useNavigate();
+
   const [user, setUser] = useState(null);
-  const [page, setPage] = useState("login");
-  const [selectedIssue, setSelectedIssue] = useState(null);
-  // Sample issues and categories
   const [issues, setIssues] = useState([
     {
       id: 1,
@@ -38,28 +39,17 @@ const App = () => {
       comments: [],
     },
   ]);
+
   const [categories] = useState(["生活", "学业", "管理"]);
   const [users] = useState([
     { id: 1, username: "student1", role: "学生" },
     { id: 2, username: "admin1", role: "管理员" },
   ]);
 
-  // Added state for comments for the selected issue
-  const [commentMessages, setCommentMessages] = useState(
-    issues[0].comments.map(comment => ({
-      id: comment.id,
-      message: comment.message,
-      sender: comment.sender,
-      timestamp: comment.timestamp,
-    }))
-  );
-
   const handleLogin = (credentials) => {
-    setUser({
-      username: credentials.username,
-      role: credentials.username === "admin" ? "管理员" : "学生",
-    });
-    setPage(credentials.username === "admin" ? "admin" : "dashboard");
+    const role = credentials.username === "admin" ? "管理员" : "学生";
+    setUser({ username: credentials.username, role });
+    navigate(role === "管理员" ? "/admin" : "/dashboard");
   };
 
   const handleSubmitIssue = (issue) => {
@@ -71,41 +61,42 @@ const App = () => {
       created_at: new Date().toISOString().split("T")[0],
       updates: [],
       comments: [],
-      reporter: issue.isAnonymous ? "匿名用户" : user?.username || "未知用户"
     };
     setIssues([...issues, newIssue]);
     navigate("/dashboard");
   };
-  const handleDetail = (issue) => {
-    setSelectedIssue(issue);
-    setCommentMessages(issue.comments); // 加载对应的评论
-    setPage("detail");
-  };
-  
 
   return (
-    <div className="app-container">
-      {page === "login" && <LoginPage onLogin={handleLogin} />}
-      {page === "dashboard" && (
-        <StudentDashboard
-          user={user}
-          issues={issues}
-          onSubmitIssue={() => setPage("submit")}
-          onDetail={handleDetail}
-        />
-      )}
-      {page === "submit" && <SubmitIssuePage onSubmit={handleSubmitIssue} />}
-      {page === "detail" && (
-        <IssueDetailPage
-          issue={selectedIssue} //pass the selected issue
-          commentMessages={commentMessages}
-          setCommentMessages={setCommentMessages}
-        />
-      )}
-      {page === "admin" && (
-        <AdminDashboard issues={issues} categories={categories} users={users} />
-      )}
-    </div>
+    <Routes>
+      <Route path="/" element={<LoginPage onLogin={handleLogin} />} />
+
+      <Route
+        path="/dashboard"
+        element={
+          <StudentDashboard
+            user={user}
+            issues={issues}
+            onSubmitIssue={() => navigate("/submit")}
+            onDetail={(id) => navigate(`/detail/${id}`)}
+          />
+        }
+      />
+
+      <Route
+        path="/submit"
+        element={<SubmitIssuePage onSubmit={handleSubmitIssue} />}
+      />
+
+      <Route
+        path="/detail/:id"
+        element={<IssueDetailPage issues={issues} />}
+      />
+
+      <Route
+        path="/admin"
+        element={<AdminDashboard issues={issues} categories={categories} users={users} />}
+      />
+    </Routes>
   );
 };
 
