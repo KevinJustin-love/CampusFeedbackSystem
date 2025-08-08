@@ -63,19 +63,18 @@ const App = () => {
   };
 
   const handleSubmitIssue = (issue) => {
-    setIssues([
-      ...issues,
-      {
-        id: issues.length + 1,
-        ...issue,
-        status: "已提交",
-        updated_at: new Date().toISOString().split("T")[0],
-        created_at: new Date().toISOString().split("T")[0],
-        updates: [],
-        comments: [],
-      },
-    ]);
-    setPage("dashboard");
+    const newIssue = {
+      id: issues.length + 1,
+      ...issue,
+      status: "已提交",
+      updated_at: new Date().toISOString().split("T")[0],
+      created_at: new Date().toISOString().split("T")[0],
+      updates: [],
+      comments: [],
+      reporter: issue.isAnonymous ? "匿名用户" : user?.username || "未知用户"
+    };
+    setIssues([...issues, newIssue]);
+    navigate("/dashboard");
   };
   const handleDetail = (issue) => {
     setSelectedIssue(issue);

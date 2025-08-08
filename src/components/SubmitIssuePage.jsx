@@ -5,10 +5,11 @@ const SubmitIssuePage = ({ onSubmit }) => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [file, setFile] = useState(null);
+  const [isAnonymous,setIsAnonymous] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSubmit({ category, title, description, file });
+    onSubmit({ category, title, description, file, isAnonymous });
   };
 
   return (
@@ -32,7 +33,11 @@ const SubmitIssuePage = ({ onSubmit }) => {
             </select>
           </div>
           <div className="form-group">
-            <label htmlFor="title" className="form-label">标题</label>
+            <label 
+              htmlFor="title" 
+              className="form-label">
+                标题
+              </label>
             <input
               type="text"
               id="title"
@@ -43,7 +48,11 @@ const SubmitIssuePage = ({ onSubmit }) => {
             />
           </div>
           <div className="form-group">
-            <label htmlFor="description" className="form-label">描述</label>
+            <label 
+              htmlFor="description" 
+              className="form-label">
+                描述
+              </label>
             <textarea
               id="description"
               value={description}
@@ -54,7 +63,11 @@ const SubmitIssuePage = ({ onSubmit }) => {
             ></textarea>
           </div>
           <div className="form-group">
-            <label htmlFor="file" className="form-label">附件</label>
+            <label
+              htmlFor="file" 
+              className="form-label">
+                附件
+              </label>
             <input
               type="file"
               id="file"
@@ -62,7 +75,38 @@ const SubmitIssuePage = ({ onSubmit }) => {
               className="form-input"
             />
           </div>
-          <button type="submit" className="btn-primary">提交</button>
+          <div className="form-group">
+            <label className="form-label">
+              提交方式
+            </label>
+            <div>
+              <label>
+                <input
+                  type="radio"
+                  name="identity"
+                  value="anonymous"
+                  checked={isAnonymous}
+                  onChange={() => setIsAnonymous(true)}
+                />
+                匿名
+              </label>
+              <label style={{ marginLeft: "1rem" }}>
+                <input
+                  type="radio"
+                  name="identity"
+                  value="real"
+                  checked={!isAnonymous}
+                  onChange={() => setIsAnonymous(false)}
+                />
+                署名
+              </label>
+            </div>
+
+          </div>
+          <button 
+            type="submit" 
+            className="btn-primary">
+              提交</button>
         </form>
       </div>
     </div>
