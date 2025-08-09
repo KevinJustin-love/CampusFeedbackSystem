@@ -20,10 +20,13 @@ jobs:
           node-version: '20'
 
       - name: Install dependencies
-        run: npm install
+        # 使用 npm ci 更安全、更快，因为它会根据 package-lock.json 安装
+        run: npm ci
 
       - name: Run build
+        # 这一步通常不会有问题，但如果问题依然存在，可以尝试修改权限
         run: npm run build
-
+        
       - name: Run tests
-        run: npm test || echo "No tests found"
+        # 使用 `npm test` 来运行测试
+        run: npm test
