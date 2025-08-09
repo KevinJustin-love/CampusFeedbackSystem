@@ -1,13 +1,16 @@
+// App.jsx（使用 React Router）
 import React, { useState } from "react";
+import { Routes, Route, useNavigate } from "react-router-dom";
 import LoginPage from "./components/LoginPage";
-import StudentDashboard from "./components/StudentDashboard.jsx";
+import StudentDashboard from "./components/StudentDashboard";
 import SubmitIssuePage from "./components/SubmitIssuePage";
-import IssueDetailPage from "./components/IssueDetailPage";
 import AdminDashboard from "./components/AdminDashboard";
+import IssueDetailPage from "./pages/IssueDetailPage";
 
 const App = () => {
+  const navigate = useNavigate();
+
   const [user, setUser] = useState(null);
-  const [page, setPage] = useState("login");
   const [issues, setIssues] = useState([
     {
       id: 1,
@@ -17,9 +20,10 @@ const App = () => {
       updated_at: "2025-08-01",
       created_at: "2025-08-01",
       description: "宿舍401水管漏水，需要维修。",
-      updates: [{ text: "已分配给维修部门", timestamp: "2025-08-01 10:00" }],
+      file: null,
+      updates: [{ text: "已分配给维修部门", timestamp: "2025-08-01 10:00", file: null }],
       comments: [
-        { text: "请尽快处理", user: "学生A", timestamp: "2025-08-01 10:05" },
+        { id: 1, message: "请尽快处理", sender: "学生A", timestamp: "2025-08-01 10:05" },
       ],
     },
     {
@@ -30,10 +34,12 @@ const App = () => {
       updated_at: "2025-08-01",
       created_at: "2025-08-01",
       description: "两门课程时间冲突。",
+      file: null,
       updates: [],
       comments: [],
     },
   ]);
+
   const [categories] = useState(["生活", "学业", "管理"]);
   const [users] = useState([
     { id: 1, username: "student1", role: "学生" },
@@ -41,45 +47,56 @@ const App = () => {
   ]);
 
   const handleLogin = (credentials) => {
-    setUser({
-      username: credentials.username,
-      role: credentials.username === "admin" ? "管理员" : "学生",
-    });
-    setPage(credentials.username === "admin" ? "admin" : "dashboard");
+    const role = credentials.username === "admin" ? "管理员" : "学生";
+    setUser({ username: credentials.username, role });
+    navigate(role === "管理员" ? "/admin" : "/dashboard");
   };
 
   const handleSubmitIssue = (issue) => {
-    setIssues([
-      ...issues,
-      {
-        id: issues.length + 1,
-        ...issue,
-        status: "已提交",
-        updated_at: new Date().toISOString().split("T")[0],
-        created_at: new Date().toISOString().split("T")[0],
-        updates: [],
-        comments: [],
-      },
-    ]);
-    setPage("dashboard");
+    const newIssue = {
+      id: issues.length + 1,
+      ...issue,
+      status: "已提交",
+      updated_at: new Date().toISOString().split("T")[0],
+      created_at: new Date().toISOString().split("T")[0],
+      updates: [],
+      comments: [],
+    };
+    setIssues([...issues, newIssue]);
+    navigate("/dashboard");
   };
 
   return (
-    <div className="app-container">
-      {page === "login" && <LoginPage onLogin={handleLogin} />}
-      {page === "dashboard" && (
-        <StudentDashboard
-          user={user}
-          issues={issues}
-          onSubmitIssue={() => setPage("submit")}
-        />
-      )}
-      {page === "submit" && <SubmitIssuePage onSubmit={handleSubmitIssue} />}
-      {page === "detail" && <IssueDetailPage issue={issues[0]} />}
-      {page === "admin" && (
-        <AdminDashboard issues={issues} categories={categories} users={users} />
-      )}
-    </div>
+    <Routes>
+      <Route path="/" element={<LoginPage onLogin={handleLogin} />} />
+
+      <Route
+        path="/dashboard"
+        element={
+          <StudentDashboard
+            user={user}
+            issues={issues}
+            onSubmitIssue={() => navigate("/submit")}
+            onDetail={(id) => navigate(`/detail/${id}`)}
+          />
+        }
+      />
+
+      <Route
+        path="/submit"
+        element={<SubmitIssuePage onSubmit={handleSubmitIssue} />}
+      />
+
+      <Route
+        path="/detail/:id"
+        element={<IssueDetailPage issues={issues} />}
+      />
+
+      <Route
+        path="/admin"
+        element={<AdminDashboard issues={issues} categories={categories} users={users} />}
+      />
+    </Routes>
   );
 };
 

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const StudentDashboard = ({ user, issues, onSubmitIssue }) => {
+const StudentDashboard = ({ user, issues, onSubmitIssue, onDetail }) => {
   return (
     <div className="dashboard-container">
       <div className="content-wrapper">
@@ -13,7 +13,7 @@ const StudentDashboard = ({ user, issues, onSubmitIssue }) => {
               <p className="issue-info">分类：{issue.category}</p>
               <p className="issue-info">状态：{issue.status}</p>
               <p className="issue-info issue-date">更新时间：{issue.updated_at}</p>
-              <button className="btn-link">查看详情</button>
+              <button className="btn-link"  onClick={() => onDetail(issue.id)}>查看详情</button>
             </div>
           ))}
         </div>
