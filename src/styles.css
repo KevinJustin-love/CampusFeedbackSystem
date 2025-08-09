@@ -140,6 +140,23 @@ body {
   color: #1E40AF;
 }
 
+/* btn-switch, profile 在 AdminDashboard 中，btn-back 在 ProfilePage 中 */
+.btn-switch, .btn-profile, .btn-back {
+  width: 100px;
+  height: 40px;
+  margin-left: 10px;
+  padding: 5px 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.btn-switch:hover, .btn-profile:hover, .btn-back:hover {
+  background-color: #0056b3;
+}
+
 /* Dashboard */
 .dashboard-container {
   min-height: 100vh;
@@ -372,6 +389,12 @@ body {
 .chart-canvas {
   width: 100%;
   height: auto;
+}
+
+.header-actions {
+  position: absolute; 
+  top: 30px; 
+  right: 100px; 
 }
 
 /* Responsive Design */

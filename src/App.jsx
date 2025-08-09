@@ -43,9 +43,9 @@ const App = () => {
   const handleLogin = (credentials) => {
     setUser({
       username: credentials.username,
-      role: credentials.username === "admin" ? "管理员" : "学生",
+      role: credentials.role,
     });
-    setPage(credentials.username === "admin" ? "admin" : "dashboard");
+    setPage(credentials.role.includes("管理员") ? "admin" : "dashboard");
   };
 
   const handleSubmitIssue = (issue) => {
@@ -64,6 +64,19 @@ const App = () => {
     setPage("dashboard");
   };
 
+  // 过滤 issues 和 users 根据管理员范围
+  const filteredIssues = user
+    ? issues.filter((issue) => {
+        if (user.role === "生活管理员") return issue.category === "生活";
+        if (user.role === "学业管理员") return issue.category === "学业";
+        if (user.role === "管理管理员") return issue.category === "管理";
+        return true;
+      })
+    : issues;
+  const filteredUsers = user
+    ? users.filter((u) => u.role === user.role)
+    : users;
+
   return (
     <div className="app-container">
       {page === "login" && <LoginPage onLogin={handleLogin} />}
@@ -72,13 +85,22 @@ const App = () => {
           user={user}
           issues={issues}
           onSubmitIssue={() => setPage("submit")}
+          setPage={setPage}
         />
       )}
       {page === "submit" && <SubmitIssuePage onSubmit={handleSubmitIssue} />}
       {page === "detail" && <IssueDetailPage issue={issues[0]} />}
       {page === "admin" && (
-        <AdminDashboard issues={issues} categories={categories} users={users} />
+        <AdminDashboard
+          user={user}
+          issues={filteredIssues}
+          categories={categories}
+          users={filteredUsers}
+          setPage={setPage}
+        />
       )}
+      {page === "profile" && <ProfilePage user={user} />}
+      {/* 这里是个人主页的一个简单展示 */}
     </div>
   );
 };
