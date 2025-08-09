@@ -1,11 +1,22 @@
 import React, { useState } from "react";
 
-const StudentDashboard = ({ user, issues, onSubmitIssue }) => {
+const StudentDashboard = ({ user, issues, onSubmitIssue, setPage }) => {
+  const handleSwitchToAdmin = () => {
+    setPage("admin");
+  };
+
   return (
     <div className="dashboard-container">
       <div className="content-wrapper">
         <h1 className="dashboard-title">欢迎，{user.username}</h1>
         <button onClick={onSubmitIssue} className="btn-primary">提交新问题</button>
+        <div className="header-actions">
+          {user.role.includes("管理员") && (
+            <button className="btn-switch" onClick={handleSwitchToAdmin}>
+              切换
+            </button>
+          )}
+        </div>
         <div className="issues-grid">
           {issues.map((issue) => (
             <div key={issue.id} className="issue-card">
