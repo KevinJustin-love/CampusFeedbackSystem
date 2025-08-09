@@ -116,7 +116,7 @@ const App = () => {
         element={<SubmitIssuePage onSubmit={handleSubmitIssue} />}
       />
 
-      <Route path="/detail/:id" element={<IssueDetailPage issues={issues} />} />
+      <Route path="/detail/:id" element={<IssueDetailPage issues={issues} setIssues={setIssues} />} />
 
       <Route
         path="/admin"

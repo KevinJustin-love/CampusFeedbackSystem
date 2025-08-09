@@ -6,20 +6,29 @@ function CommentInput({ onAddComment }) {
   const [inputValue, setInputValue] = useState("");
 
   const handleSend = () => {
-    if (inputValue.trim() === "") return;
+    const trimmedValue = inputValue.trim();
+    if (trimmedValue === "") return;
 
     const newMessage = {
       id: Date.now(),
-      message: inputValue,
+      message: trimmedValue,
       sender: "user", // 可替换为登录用户
       timestamp: new Date().toISOString(),
     };
 
-    if (typeof onAddComment === 'function') {
+    if (typeof onAddComment === "function") {
       onAddComment(newMessage);
+      console.log(newMessage);
+      setInputValue("");
     }
-
     setInputValue("");
+  };
+
+  const handleKeyPress = (e) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      handleSend();
+    }
   };
 
   return (
@@ -29,9 +38,12 @@ function CommentInput({ onAddComment }) {
         type="text"
         value={inputValue}
         onChange={(e) => setInputValue(e.target.value)}
+        onKeyDown={handleKeyPress}
         placeholder="留下你想说的话..."
       />
-      <button className="comment-button" onClick={handleSend}>发送</button>
+      <button className="comment-button" onClick={handleSend}>
+        发送
+      </button>
     </div>
   );
 }
