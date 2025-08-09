@@ -62,7 +62,7 @@ const SubmitIssuePage = ({ onSubmit }) => {
               className="form-input"
             />
           </div>
-          <button type="submit" className="btn-primary">提交</button>
+          <button type="submit" className="btn-primary1">提交</button>
         </form>
       </div>
     </div>
