@@ -5,8 +5,22 @@ const LoginPage = ({ onLogin }) => {
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
 
+  // 这里只是前端硬编码判断，仅当用户名处输入 ...Admin 才进入管理员界面
+  // 后续要通过调用后端 API 检验
   const handleSubmit = (e) => {
     e.preventDefault();
+    let role = "";
+    if (username === "lifeAdmin") role = "生活管理员";
+    else if (username === "studyAdmin") role = "学业管理员";
+    else if (username === "manageAdmin") role = "管理管理员";
+    else role = "学生";
+
+    if (role) {
+      onLogin({ username, password, rememberMe, role });
+    } else {
+      alert("用户名或密码错误");
+    }
+
     onLogin({ username, password, rememberMe });
   };
 
