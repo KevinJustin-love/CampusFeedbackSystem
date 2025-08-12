@@ -162,6 +162,7 @@ body {
   min-height: 100vh;
   background-color: #f1f1f1;
   padding: 0px;
+  overflow-x: hidden;
   background-color: #f7f7f7;
 }
 
@@ -571,19 +572,17 @@ body {
   width: 250px;
   height: 30px;
   border: 2px solid #e6e6e6;
-  border-radius: 25px; /* 圆角关键属性 */
+  border-radius: 25px; 
   padding: 8px 15px;
   transition: border-color 0.3s ease;
   background-color: #ffffff;
 }
 
-/* 悬停/聚焦时边框变色 */
 .search-container:hover,
 .search-container:focus-within {
   border-color: rgb(151, 151, 151); 
 }
 
-/* 输入框样式 */
 .search-input {
   flex: 1;
   border: none;
@@ -594,7 +593,6 @@ body {
   
 }
 
-/* 搜索按钮 */
 .search-button {
   background: none;
   border: none;
@@ -607,7 +605,6 @@ body {
   left:4px;
 }
 
-/* 搜索图标 */
 .search-icon {
   width: 20px;
   height: 20px;
@@ -615,7 +612,6 @@ body {
   color: #000000;
 }
 
-/* 导航栏样式 */
 .issues-navbar {
   display: flex;
   gap: 10px;
@@ -637,7 +633,6 @@ body {
   color: white;
 }
 
-/* 筛选栏样式 */
 .filter-bar {
   display: flex;
   gap: 20px;
@@ -665,7 +660,6 @@ body {
   cursor: pointer;
 }
 
-/* 响应式调整 */
 @media (max-width: 600px) {
   .filter-bar {
     flex-direction: column;
@@ -673,7 +667,6 @@ body {
   }
 }
 
-/* 新增的热度显示样式 */
 .issue-popularity {
   color: #ff6b6b;
   font-weight: bold;
@@ -683,7 +676,6 @@ body {
   bottom: 20px;
 }
 
-/* 分页组件样式 */
 .pagination {
   display: flex;
   justify-content: center;
