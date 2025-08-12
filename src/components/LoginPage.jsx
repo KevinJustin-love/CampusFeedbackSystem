@@ -74,7 +74,7 @@ const LoginPage = ({ onLogin }) => {
               记住我
             </label>
           </div>
-          <button type="submit" className="btn-primary">
+          <button type="submit" className="btn-primary1">
             登录
           </button>
         </form>

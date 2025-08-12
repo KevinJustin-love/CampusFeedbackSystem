@@ -75,38 +75,7 @@ const SubmitIssuePage = ({ onSubmit }) => {
               className="form-input"
             />
           </div>
-          <div className="form-group">
-            <label className="form-label">
-              提交方式
-            </label>
-            <div>
-              <label>
-                <input
-                  type="radio"
-                  name="identity"
-                  value="anonymous"
-                  checked={isAnonymous}
-                  onChange={() => setIsAnonymous(true)}
-                />
-                匿名
-              </label>
-              <label style={{ marginLeft: "1rem" }}>
-                <input
-                  type="radio"
-                  name="identity"
-                  value="real"
-                  checked={!isAnonymous}
-                  onChange={() => setIsAnonymous(false)}
-                />
-                署名
-              </label>
-            </div>
-
-          </div>
-          <button 
-            type="submit" 
-            className="btn-primary">
-              提交</button>
+          <button type="submit" className="btn-primary1">提交</button>
         </form>
       </div>
     </div>
