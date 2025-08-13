@@ -249,8 +249,9 @@ function Pagination({
   );
 }
 
+// 移除外部的handleClick函数，将其移至组件内部
 
-const StudentDashboard = ({ user, issues, onSubmitIssue,onDetail }) => {
+const StudentDashboard = ({ user, issues, onSubmitIssue, onDetail, id }) => {
 
   const navigate = useNavigate();
 
@@ -318,6 +319,9 @@ const StudentDashboard = ({ user, issues, onSubmitIssue,onDetail }) => {
           <SearchBar/>
         </div>
       <div className="content-wrapper">
+        {user.role.includes('管理员') && (
+          <button onClick={handleSwitchToAdmin} className="btn-primary" style={{ marginRight: '10px' }}>切换</button>
+        )}
         <button onClick={onSubmitIssue} className="btn-primary">提交新问题</button>
 
          {/* 导航栏 */}
@@ -342,7 +346,7 @@ const StudentDashboard = ({ user, issues, onSubmitIssue,onDetail }) => {
               <p className="issue-info">状态：{issue.status}</p>
               <p className="issue-info issue-date">更新时间：{issue.updated_at}</p>
               <p className="issue-popularity">热度：{issue.popularity || 0}</p>
-              <button className="btn-link">查看详情</button>
+              <button className="btn-link" onClick={() => navigate(`/detail/${issue.id}`)}>查看详情</button>
               <hr/>
             </div>
           ))}
