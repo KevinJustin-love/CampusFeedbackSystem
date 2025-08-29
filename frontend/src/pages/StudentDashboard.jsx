@@ -319,7 +319,7 @@ const StudentDashboard = ({ user, issues, onSubmitIssue, onDetail, id }) => {
           <SearchBar/>
         </div>
       <div className="content-wrapper">
-        {user.role.includes('管理员') && (
+        {user && user.role.includes('admin') && (
           <button onClick={handleSwitchToAdmin} className="btn-primary" style={{ marginRight: '10px' }}>切换</button>
         )}
         <button onClick={onSubmitIssue} className="btn-primary">提交新问题</button>

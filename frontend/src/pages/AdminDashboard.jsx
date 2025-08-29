@@ -19,7 +19,7 @@ const AdminDashboard = ({ issues, categories, category, users, user }) => {
 
   // 根据角色确定显示的内容
   const renderContent = () => {
-    if (user.role === "生活管理员") {
+    if (user.role === "life_admin") {
       const lifeIssues = issues.filter((issue) => issue.category === "生活");
       return (
         <div>
@@ -58,7 +58,7 @@ const AdminDashboard = ({ issues, categories, category, users, user }) => {
           </div>
         </div>
       );
-    } else if (user.role === "学业管理员") {
+    } else if (user.role === "study_admin") {
       const studyIssues = issues.filter((issue) => issue.category === "学业");
       return (
         <div>
@@ -97,10 +97,8 @@ const AdminDashboard = ({ issues, categories, category, users, user }) => {
           </div>
         </div>
       );
-    } else if (user.role === "管理管理员") {
-      const managementIssues = issues.filter(
-        (issue) => issue.category === "管理"
-      );
+    } else if (user.role === "manage_admin") {
+      const managementIssues = issues.filter((issue) => issue.category === "管理");
       return (
         <div>
           <h2>管理管理</h2>

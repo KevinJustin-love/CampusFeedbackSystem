@@ -1,24 +1,55 @@
 import React, { useState } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { jwtDecode } from "jwt-decode"; // 导入 jwt-decode
 
-const LoginPage = ({ onLogin }) => {
+const LoginPage = ({}) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
+  const [message, setMessage] = useState("");
 
-  // 这里只是前端硬编码判断，仅当用户名处输入 ...Admin 才进入管理员界面
-  // 后续要通过调用后端 API 检验
-  const handleSubmit = (e) => {
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    let role = "";
-    if (username === "lifeAdmin") role = "生活管理员";
-    else if (username === "studyAdmin") role = "学业管理员";
-    else if (username === "manageAdmin") role = "管理管理员";
-    else role = "学生";
+    try {
+      // 1. 向JWT的认证接口发送POST请求，获取令牌
+      const response = await axios.post("http://localhost:8000/api/token/", {
+        username,
+        password,
+      });
 
-    if (role) {
-      onLogin({ username, password, rememberMe, role });
-    } else {
-      alert("用户名或密码错误");
+      // 2. 登录成功，将获取到的令牌（token）存储到localStorage
+      // JWT认证的核心在于此步骤
+      const accessToken = response.data.access;
+      localStorage.setItem("access_token", accessToken);
+
+      // 3. 设置axios的默认请求头，以便后续请求自动携带令牌
+      axios.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
+
+      // 解码 JWT 令牌以获取用户角色
+      const decodedToken = jwtDecode(accessToken);
+      const userRole = decodedToken.role; // <-- 从令牌中提取角色
+
+      setMessage("登录成功！");
+      console.log("登录成功，角色为:", userRole);
+
+      // 根据角色进行页面跳转
+      if (userRole === "student") {
+        navigate("/dashboard");
+      } else {
+        navigate("/admin");
+      }
+      
+    } catch (error) {
+      // 登录失败，显示错误信息
+      if (error.response) {
+        setMessage(error.response.data.detail || "用户名或密码错误");
+      } else {
+        setMessage("网络错误，请稍后重试");
+      }
+      console.error("登录失败：", error.response);
     }
   };
 
@@ -76,6 +107,7 @@ const LoginPage = ({ onLogin }) => {
             登录
           </button>
         </form>
+        {message && <p className="login-message">{message}</p>}
       </div>
     </div>
   );

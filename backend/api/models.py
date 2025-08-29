@@ -1,12 +1,15 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth.models import AbstractUser
+    
+class CustomUser(AbstractUser):
+    # 定义角色选项
+    ROLE_CHOICES = (
+        ('student', '学生'),
+        ('life_admin', '生活管理员'),
+        ('study_admin', '学业管理员'),
+        ('manage_admin', '管理管理员'),
+    )
+    # 为用户添加角色字段，默认角色为'学生'
+    role = models.CharField(max_length=20, choices=ROLE_CHOICES)
 
-# Create your models here.
-class Note(models.Model):
-    title = models.CharField(max_length=100)
-    content = models.TextField()
-    created_at = models.DateTimeField(auto_now_add=True)
-    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name="notes")
-
-    def __str__(self):
-        return self.title
+    REQUIRED_FIELDS = ['role']
