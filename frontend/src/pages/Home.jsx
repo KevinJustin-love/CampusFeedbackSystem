@@ -251,7 +251,8 @@ function Pagination({
 
 // 移除外部的handleClick函数，将其移至组件内部
 
-const StudentDashboard = ({ user, issues, onSubmitIssue, onDetail, id }) => {
+const Home = ({ user, issues, onSubmitIssue, onDetail, id }) => {
+
   const navigate = useNavigate();
 
   const handleSwitchToAdmin = () => {
@@ -318,7 +319,7 @@ const StudentDashboard = ({ user, issues, onSubmitIssue, onDetail, id }) => {
           <SearchBar/>
         </div>
       <div className="content-wrapper">
-        {user && user.role && user.role.includes('admin') && (
+        {user && user.role.includes('admin') && (
           <button onClick={handleSwitchToAdmin} className="btn-primary" style={{ marginRight: '10px' }}>切换</button>
         )}
         <button onClick={onSubmitIssue} className="btn-primary">提交新问题</button>
@@ -365,4 +366,4 @@ const StudentDashboard = ({ user, issues, onSubmitIssue, onDetail, id }) => {
   );
 };
 
-export default StudentDashboard;
+export default Home;
