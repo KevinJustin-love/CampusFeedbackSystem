@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
@@ -24,13 +24,50 @@ function IssuesNavbar({ activeTab, onTabChange }) {
 
 //个人信息栏
 function UserProfileModal({ user, onClose, onUpdate }) {
-  const [email, setEmail] = useState(user.email || "");
-  const [phone, setPhone] = useState(user.phone || "");
-  const [bio, setBio] = useState(user.bio || "");
+  const [currentUserData, setCurrentUserData] = useState(null);
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [bio, setBio] = useState("");
   const [avatarFile, setAvatarFile] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
   const [avatarPreview, setAvatarPreview] = useState(
     user.avatar || "../../pictures/OIP-C.jpg"
   );
+
+  // 确保在组件挂载时从后端获取最新的用户信息
+  useEffect(() => {
+    const fetchUserData = async () => {
+      const token = localStorage.getItem("access");
+      if (!token) {
+        alert("请先登录！");
+        onClose();
+        return;
+      }
+      try {
+        const response = await axios.get(
+          "http://127.0.0.1:8000/api/auth/profile/",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        const fetchedUser = response.data;
+        setCurrentUserData(fetchedUser);
+        setEmail(fetchedUser.email || "");
+        setPhone(fetchedUser.phone || "");
+        setBio(fetchedUser.bio || "");
+        setAvatarPreview(fetchedUser.avatar || "../../pictures/OIP-C.jpg");
+      } catch (error) {
+        console.error("无法获取用户信息:", error);
+        alert("无法加载用户信息，请稍后重试。");
+        onClose();
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchUserData();
+  }, [onClose]); // 当 onClose 变化时重新运行此 effect
 
   // 处理头像上传
   const handleAvatarChange = (e) => {
@@ -77,6 +114,16 @@ function UserProfileModal({ user, onClose, onUpdate }) {
     }
   };
 
+  if (isLoading) {
+    return (
+      <div className="modal-overlay">
+        <div className="modal-content">
+          <p>加载中...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="modal-overlay">
       <div className="modal-content">
@@ -85,7 +132,7 @@ function UserProfileModal({ user, onClose, onUpdate }) {
         </button>
         <div className="profile-header">
           <img src={avatarPreview} alt="用户头像" className="profile-avatar" />
-          <h2 className="modalUserName">{user.username}</h2>
+          <h2 className="modalUserName">{currentUserData?.username}</h2>
         </div>
         <div className="profile-details">
           <p>
