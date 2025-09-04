@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 //状态导航栏
 function IssuesNavbar({ activeTab, onTabChange }) {
@@ -21,21 +22,95 @@ function IssuesNavbar({ activeTab, onTabChange }) {
   );
 }
 
-
 //个人信息栏
-function UserProfileModal({ user, onClose }) {
+function UserProfileModal({ user, onClose, onUpdate }) {
+  const [email, setEmail] = useState(user.email || "");
+  const [phone, setPhone] = useState(user.phone || "");
+  const [bio, setBio] = useState(user.bio || "");
+  const [avatarFile, setAvatarFile] = useState(null);
+  const [avatarPreview, setAvatarPreview] = useState(
+    user.avatar || "../../pictures/OIP-C.jpg"
+  );
+
+  // 处理头像上传
+  const handleAvatarChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setAvatarFile(file);
+      setAvatarPreview(URL.createObjectURL(file));
+    }
+  };
+
+  const handleSave = async () => {
+    const formData = new FormData();
+    formData.append("email", email);
+    formData.append("phone", phone);
+    formData.append("bio", bio);
+    if (avatarFile) {
+      formData.append("avatar", avatarFile);
+    }
+
+    const token = localStorage.getItem("access");
+
+    try {
+      const response = await axios.patch(
+        "http://127.0.0.1:8000/api/auth/profile/", // 这里暂时硬编码
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      if (typeof onUpdate === "function") {
+        onUpdate(response.data);
+      }
+
+      alert("用户信息已成功更新！");
+      onClose();
+    } catch (error) {
+      console.error("更新用户信息失败:", error);
+      console.error("后端返回错误信息:", error.response.data);
+      alert("更新失败，请重试。");
+    }
+  };
+
   return (
     <div className="modal-overlay">
       <div className="modal-content">
-        <button className="close-button" onClick={onClose}>×</button>
+        <button className="close-button" onClick={onClose}>
+          ×
+        </button>
         <div className="profile-header">
-          <img src="../../pictures/OIP-C.jpg"  alt="用户头像" className="profile-avatar" />
+          <img src={avatarPreview} alt="用户头像" className="profile-avatar" />
           <h2 className="modalUserName">{user.username}</h2>
         </div>
         <div className="profile-details">
-          <p><strong>邮箱:manba out</strong> {user.email}</p>
-          <p><strong>电话:manba out</strong> {user.phone}</p>
-          <p><strong>简介:manba out</strong> {user.bio}</p>
+          <p>
+            <strong>邮箱:</strong>
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </p>
+          <p>
+            <strong>电话:</strong>
+            <input
+              type="text"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+            />
+          </p>
+          <p>
+            <strong>简介:</strong>
+            <textarea value={bio} onChange={(e) => setBio(e.target.value)} />
+          </p>
+        </div>
+        <div className="modal-actions">
+          <button onClick={handleSave}>保存更改</button>
         </div>
       </div>
     </div>
@@ -73,7 +148,7 @@ function ClockIcon({ size = 24, stroke = "currentColor", className = "" }) {
       fill="none"
       stroke={stroke}
       strokeWidth="2"
-      className={`clock-icon ${className}`}  // 合并类名
+      className={`clock-icon ${className}`} // 合并类名
     >
       <circle cx="12" cy="12" r="10" />
       <polyline points="12 6 12 12 16 14" />
@@ -104,11 +179,7 @@ function StarIcon({ filled = false, color = "gold", size = 24 }) {
 function SearchBar() {
   return (
     <div className="search-container">
-      <input
-        type="text"
-        placeholder="输入关键词..."
-        className="search-input"
-      />
+      <input type="text" placeholder="输入关键词..." className="search-input" />
       <button className="search-button">
         <svg
           className="search-icon"
@@ -123,20 +194,14 @@ function SearchBar() {
   );
 }
 
-
 //筛选栏组件
-function FilterBar({ 
-  sortBy, 
-  onSortChange, 
-  category, 
-  onCategoryChange 
-}) {
+function FilterBar({ sortBy, onSortChange, category, onCategoryChange }) {
   return (
     <div className="filter-bar">
       <div className="filter-group">
         <span className="filter-label">排序：</span>
-        <select 
-          value={sortBy} 
+        <select
+          value={sortBy}
           onChange={(e) => onSortChange(e.target.value)}
           className="filter-select"
         >
@@ -144,7 +209,7 @@ function FilterBar({
           <option value="popularity">按热度</option>
         </select>
       </div>
-      
+
       <div className="filter-group">
         <span className="filter-label">分类：</span>
         <select
@@ -162,15 +227,10 @@ function FilterBar({
   );
 }
 
-
 // 分页组件
-function Pagination({ 
-  currentPage, 
-  totalPages, 
-  onPageChange 
-}) {
+function Pagination({ currentPage, totalPages, onPageChange }) {
   const maxVisiblePages = 5; // 最多显示5个页码
-  
+
   // 生成页码按钮
   const renderPageNumbers = () => {
     const pages = [];
@@ -190,7 +250,11 @@ function Pagination({
         </button>
       );
       if (startPage > 2) {
-        pages.push(<span key="left-ellipsis" className="ellipsis">...</span>);
+        pages.push(
+          <span key="left-ellipsis" className="ellipsis">
+            ...
+          </span>
+        );
       }
     }
 
@@ -210,7 +274,11 @@ function Pagination({
     // 添加最后一页和省略号（如果需要）
     if (endPage < totalPages) {
       if (endPage < totalPages - 1) {
-        pages.push(<span key="right-ellipsis" className="ellipsis">...</span>);
+        pages.push(
+          <span key="right-ellipsis" className="ellipsis">
+            ...
+          </span>
+        );
       }
       pages.push(
         <button
@@ -228,16 +296,16 @@ function Pagination({
 
   return (
     <div className="pagination">
-      <button 
+      <button
         className="page-nav"
         disabled={currentPage === 1}
         onClick={() => onPageChange(currentPage - 1)}
       >
         上一页
       </button>
-      
+
       {renderPageNumbers()}
-      
+
       <button
         className="page-nav"
         disabled={currentPage === totalPages}
@@ -253,12 +321,16 @@ function Pagination({
 
 const StudentDashboard = ({ user, issues, onSubmitIssue, onDetail, id }) => {
   const navigate = useNavigate();
+  const [currentUser, setCurrentUser] = useState(user);
+  const handleUserUpdate = (updatedUserData) => {
+    setCurrentUser(updatedUserData);
+  };
 
   const handleSwitchToAdmin = () => {
     navigate("/admin");
   };
 
-  const [showModal,setShowModal] = useState(false);
+  const [showModal, setShowModal] = useState(false);
   const [activeTab, setActiveTab] = useState("all"); // 状态管理
   const [sortBy, setSortBy] = useState("time"); // 排序状态
   const [category, setCategory] = useState("all"); // 分类状态
@@ -267,15 +339,8 @@ const StudentDashboard = ({ user, issues, onSubmitIssue, onDetail, id }) => {
 
   // 综合过滤和排序逻辑
   const filteredIssues = issues
-    // 第一步：按"全部/我的"筛选
-    .filter(issue => 
-      activeTab === "all" || issue.author === user.username
-    )
-    // 第二步：按分类筛选
-    .filter(issue =>
-      category === "all" || issue.category === category
-    )
-    // 第三步：排序
+    .filter((issue) => activeTab === "all" || issue.author === user.username)
+    .filter((issue) => category === "all" || issue.category === category)
     .sort((a, b) => {
       if (sortBy === "time") {
         return new Date(b.updated_at) - new Date(a.updated_at);
@@ -285,7 +350,7 @@ const StudentDashboard = ({ user, issues, onSubmitIssue, onDetail, id }) => {
       }
     });
 
-    // 计算分页数据
+  // 计算分页数据
   const totalPages = Math.ceil(filteredIssues.length / itemsPerPage);
   const currentItems = filteredIssues.slice(
     (currentPage - 1) * itemsPerPage,
@@ -300,34 +365,40 @@ const StudentDashboard = ({ user, issues, onSubmitIssue, onDetail, id }) => {
   return (
     <div className="dashboard-container">
       <div className="dashboard-title">
-          <img 
-            src="../../pictures/OIP-C.jpg" 
-            className="userimg"
-             onClick={() => setShowModal(true)}
-          />
-          {showModal && (
-            <UserProfileModal 
-              user={user} 
-              onClose={() => setShowModal(false)} 
-            />
-          )}
-          欢迎，{user.username}
-          <ClockIcon/>
-          <MessageBar/>
-          <StarIcon/>
-          <SearchBar/>
-        </div>
-      <div className="content-wrapper">
-        {user && user.role && user.role.includes('admin') && (
-          <button onClick={handleSwitchToAdmin} className="btn-primary" style={{ marginRight: '10px' }}>切换</button>
-        )}
-        <button onClick={onSubmitIssue} className="btn-primary">提交新问题</button>
-
-         {/* 导航栏 */}
-        <IssuesNavbar 
-          activeTab={activeTab} 
-          onTabChange={setActiveTab} 
+        <img
+          src={currentUser.avatar || "../../pictures/OIP-C.jpg"}
+          className="userimg"
+          onClick={() => setShowModal(true)}
         />
+        {showModal && (
+          <UserProfileModal
+            user={currentUser}
+            onClose={() => setShowModal(false)}
+            onUpdate={handleUserUpdate}
+          />
+        )}
+        欢迎，{user.username}
+        <ClockIcon />
+        <MessageBar />
+        <StarIcon />
+        <SearchBar />
+      </div>
+      <div className="content-wrapper">
+        {user && user.role && user.role.includes("admin") && (
+          <button
+            onClick={handleSwitchToAdmin}
+            className="btn-primary"
+            style={{ marginRight: "10px" }}
+          >
+            切换
+          </button>
+        )}
+        <button onClick={onSubmitIssue} className="btn-primary">
+          提交新问题
+        </button>
+
+        {/* 导航栏 */}
+        <IssuesNavbar activeTab={activeTab} onTabChange={setActiveTab} />
 
         {/* 筛选栏 */}
         <FilterBar
@@ -343,10 +414,17 @@ const StudentDashboard = ({ user, issues, onSubmitIssue, onDetail, id }) => {
               <h3 className="issue-title">{issue.title}</h3>
               <p className="issue-info">分类：{issue.category}</p>
               <p className="issue-info">状态：{issue.status}</p>
-              <p className="issue-info issue-date">更新时间：{issue.updated_at}</p>
+              <p className="issue-info issue-date">
+                更新时间：{issue.updated_at}
+              </p>
               <p className="issue-popularity">热度：{issue.popularity || 0}</p>
-              <button className="btn-link" onClick={() => navigate(`/detail/${issue.id}`)}>查看详情</button>
-              <hr/>
+              <button
+                className="btn-link"
+                onClick={() => navigate(`/detail/${issue.id}`)}
+              >
+                查看详情
+              </button>
+              <hr />
             </div>
           ))}
         </div>
@@ -359,7 +437,6 @@ const StudentDashboard = ({ user, issues, onSubmitIssue, onDetail, id }) => {
             onPageChange={setCurrentPage}
           />
         )}
-
       </div>
     </div>
   );

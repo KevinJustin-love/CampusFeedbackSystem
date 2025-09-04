@@ -21,10 +21,11 @@
 其次，在虚拟环境中运行 `python manage.py createsuperuser`，并对应创建一位用户。输入 `username、role、password`。
 其中，`role` 必须为 student、life_admin、study_admin、manage_admin，`username` 对应 student、lifeAdmin、studyAdmin、manageAdmin。
 
-> 还有 bug 没修好。当登录了admin后，再登录student，在 /dashboard 会出现admin才有的切换按钮
-
 登录界面（用户信息）头像？
 
 反馈：问题详情、添加处理结果
 
 消息
+
+> 后端代码时间问题
+
