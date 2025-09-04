@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
@@ -29,8 +29,9 @@ function UserProfileModal({ user, onClose, onUpdate }) {
   const [phone, setPhone] = useState("");
   const [bio, setBio] = useState("");
   const [avatarFile, setAvatarFile] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [avatarPreview, setAvatarPreview] = useState(
+  const [isLoading, setIsLoading] = useState(true); // 处理加载状态
+  const fileInputRef = useRef(null); // 创建一个引用来控制文件输入框
+  const [avatarPreview, setAvatarPreview] = useState( 
     user.avatar || "../../pictures/OIP-C.jpg"
   );
 
@@ -78,6 +79,7 @@ function UserProfileModal({ user, onClose, onUpdate }) {
     }
   };
 
+  // 处理信息保存
   const handleSave = async () => {
     const formData = new FormData();
     formData.append("email", email);
@@ -131,10 +133,23 @@ function UserProfileModal({ user, onClose, onUpdate }) {
           ×
         </button>
         <div className="profile-header">
-          <img src={avatarPreview} alt="用户头像" className="profile-avatar" />
+          <img
+            src={avatarPreview}
+            alt="用户头像"
+            className="profile-avatar"
+            onClick={() => fileInputRef.current.click()}
+          />
           <h2 className="modalUserName">{currentUserData?.username}</h2>
         </div>
         <div className="profile-details">
+          {/* 隐藏的文件输入框 */}
+          <input
+            type="file"
+            accept="image/*"
+            ref={fileInputRef}
+            onChange={handleAvatarChange}
+            style={{ display: "none" }}
+          />
           <p>
             <strong>邮箱:</strong>
             <input
@@ -424,7 +439,8 @@ const StudentDashboard = ({ user, issues, onSubmitIssue, onDetail, id }) => {
             onUpdate={handleUserUpdate}
           />
         )}
-        欢迎，{user.username}
+        欢迎，{user.username} 
+        {/* 这里用 user 也没问题，因为更改信息时不会影响username */}
         <ClockIcon />
         <MessageBar />
         <StarIcon />
