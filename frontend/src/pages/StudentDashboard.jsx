@@ -29,11 +29,7 @@ function UserProfileModal({ user, onClose, onUpdate }) {
   const [phone, setPhone] = useState("");
   const [bio, setBio] = useState("");
   const [avatarFile, setAvatarFile] = useState(null);
-  const [isLoading, setIsLoading] = useState(true); // 处理加载状态
   const fileInputRef = useRef(null); // 创建一个引用来控制文件输入框
-  const [avatarPreview, setAvatarPreview] = useState( 
-    user.avatar || "../../pictures/OIP-C.jpg"
-  );
 
   // 确保在组件挂载时从后端获取最新的用户信息
   useEffect(() => {
@@ -75,7 +71,14 @@ function UserProfileModal({ user, onClose, onUpdate }) {
     const file = e.target.files[0];
     if (file) {
       setAvatarFile(file);
-      setAvatarPreview(URL.createObjectURL(file));
+      // 不再 setAvatarPreview
+      // 改成预览直接显示 URL.createObjectURL(file)
+      if (typeof onUpdate === "function") {
+        onUpdate({
+          ...user,
+          avatar: URL.createObjectURL(file), // 临时预览
+        });
+      }
     }
   };
 
@@ -115,16 +118,6 @@ function UserProfileModal({ user, onClose, onUpdate }) {
       alert("更新失败，请重试。");
     }
   };
-
-  if (isLoading) {
-    return (
-      <div className="modal-overlay">
-        <div className="modal-content">
-          <p>加载中...</p>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="modal-overlay">
@@ -379,8 +372,6 @@ function Pagination({ currentPage, totalPages, onPageChange }) {
   );
 }
 
-// 移除外部的handleClick函数，将其移至组件内部
-
 const StudentDashboard = ({ user, issues, onSubmitIssue, onDetail, id }) => {
   const navigate = useNavigate();
   const [currentUser, setCurrentUser] = useState(user);
@@ -429,6 +420,7 @@ const StudentDashboard = ({ user, issues, onSubmitIssue, onDetail, id }) => {
       <div className="dashboard-title">
         <img
           src={currentUser.avatar || "../../pictures/OIP-C.jpg"}
+          alt="用户头像"
           className="userimg"
           onClick={() => setShowModal(true)}
         />
@@ -439,7 +431,7 @@ const StudentDashboard = ({ user, issues, onSubmitIssue, onDetail, id }) => {
             onUpdate={handleUserUpdate}
           />
         )}
-        欢迎，{user.username} 
+        欢迎，{user.username}
         {/* 这里用 user 也没问题，因为更改信息时不会影响username */}
         <ClockIcon />
         <MessageBar />
