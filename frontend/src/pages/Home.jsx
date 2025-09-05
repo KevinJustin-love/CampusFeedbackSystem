@@ -1,41 +1,153 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
-//状态导航栏
-function IssuesNavbar({ activeTab, onTabChange }) {
-  return (
-    <div className="issues-navbar">
-      <button
-        className={`nav-button ${activeTab === "all" ? "active" : ""}`}
-        onClick={() => onTabChange("all")}
-      >
-        全部
-      </button>
-      <button
-        className={`nav-button ${activeTab === "mine" ? "active" : ""}`}
-        onClick={() => onTabChange("mine")}
-      >
-        我的
-      </button>
-    </div>
+function UserProfileModal({ user, onClose, onUpdate }) {
+  const [currentUserData, setCurrentUserData] = useState(null);
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [bio, setBio] = useState("");
+  const [avatarFile, setAvatarFile] = useState(null);
+  const [avatarPreview, setAvatarPreview] = useState(
+    user.avatar || "../../pictures/OIP-C.jpg"
   );
-}
+  const fileInputRef = useRef(null);
 
+  // 确保在组件挂载时从后端获取最新的用户信息
+  useEffect(() => {
+    const fetchUserData = async () => {
+      const token = localStorage.getItem("access");
+      if (!token) {
+        alert("请先登录！");
+        onClose();
+        return;
+      }
+      try {
+        const response = await axios.get(
+          "http://127.0.0.1:8000/api/auth/profile/",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        const fetchedUser = response.data;
+        setCurrentUserData(fetchedUser);
+        setEmail(fetchedUser.email || "");
+        setPhone(fetchedUser.phone || "");
+        setBio(fetchedUser.bio || "");
+        setAvatarPreview(fetchedUser.avatar || "../../pictures/OIP-C.jpg");
+      } catch (error) {
+        console.error("无法获取用户信息:", error);
+        alert("无法加载用户信息，请稍后重试。");
+        onClose();
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchUserData();
+  }, [onClose]); // 当 onClose 变化时重新运行此 effect
 
-//个人信息栏
-function UserProfileModal({ user, onClose }) {
+  // 处理头像上传和实时预览
+  const handleAvatarChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setAvatarFile(file);
+      const previewUrl = URL.createObjectURL(file);
+      setAvatarPreview(previewUrl); // 更新模态框内的预览
+      if (typeof onUpdate === "function") {
+        onUpdate({
+          ...user,
+          avatar: previewUrl, // 传递临时预览URL给父组件
+        });
+      }
+    }
+  };
+
+  // 处理信息保存
+  const handleSave = async () => {
+    const formData = new FormData();
+    formData.append("email", email);
+    formData.append("phone", phone);
+    formData.append("bio", bio);
+    if (avatarFile) {
+      formData.append("avatar", avatarFile);
+    }
+
+    const token = localStorage.getItem("access");
+
+    try {
+      const response = await axios.patch(
+        "http://127.0.0.1:8000/api/auth/profile/", // 这里暂时硬编码
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      if (typeof onUpdate === "function") {
+        onUpdate(response.data);
+      }
+
+      alert("用户信息已成功更新！");
+      onClose();
+    } catch (error) {
+      console.error("更新用户信息失败:", error);
+      console.error("后端返回错误信息:", error.response.data);
+      alert("更新失败，请重试。");
+    }
+  };
+
   return (
     <div className="modal-overlay">
       <div className="modal-content">
-        <button className="close-button" onClick={onClose}>×</button>
+        <button className="close-button" onClick={onClose}>
+          ×
+        </button>
         <div className="profile-header">
-          <img src="../../pictures/OIP-C.jpg"  alt="用户头像" className="profile-avatar" />
-          <h2 className="modalUserName">{user.username}</h2>
+          <img
+            src={avatarPreview}
+            alt="用户头像"
+            className="profile-avatar"
+            onClick={() => fileInputRef.current.click()}
+          />
+          <h2 className="modalUserName">{currentUserData?.username}</h2>
         </div>
         <div className="profile-details">
-          <p><strong>邮箱:manba out</strong> {user.email}</p>
-          <p><strong>电话:manba out</strong> {user.phone}</p>
-          <p><strong>简介:manba out</strong> {user.bio}</p>
+          {/* 隐藏的文件输入框 */}
+          <input
+            type="file"
+            accept="image/*"
+            ref={fileInputRef}
+            onChange={handleAvatarChange}
+            style={{ display: "none" }}
+          />
+          <p>
+            <strong>邮箱:</strong>
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </p>
+          <p>
+            <strong>电话:</strong>
+            <input
+              type="text"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+            />
+          </p>
+          <p>
+            <strong>简介:</strong>
+            <textarea value={bio} onChange={(e) => setBio(e.target.value)} />
+          </p>
+        </div>
+        <div className="modal-actions">
+          <button onClick={handleSave}>保存更改</button>
         </div>
       </div>
     </div>
@@ -73,7 +185,7 @@ function ClockIcon({ size = 24, stroke = "currentColor", className = "" }) {
       fill="none"
       stroke={stroke}
       strokeWidth="2"
-      className={`clock-icon ${className}`}  // 合并类名
+      className={`clock-icon ${className}`} // 合并类名
     >
       <circle cx="12" cy="12" r="10" />
       <polyline points="12 6 12 12 16 14" />
@@ -104,11 +216,7 @@ function StarIcon({ filled = false, color = "gold", size = 24 }) {
 function SearchBar() {
   return (
     <div className="search-container">
-      <input
-        type="text"
-        placeholder="输入关键词..."
-        className="search-input"
-      />
+      <input type="text" placeholder="输入关键词..." className="search-input" />
       <button className="search-button">
         <svg
           className="search-icon"
@@ -123,244 +231,87 @@ function SearchBar() {
   );
 }
 
-
-//筛选栏组件
-function FilterBar({ 
-  sortBy, 
-  onSortChange, 
-  category, 
-  onCategoryChange 
-}) {
-  return (
-    <div className="filter-bar">
-      <div className="filter-group">
-        <span className="filter-label">排序：</span>
-        <select 
-          value={sortBy} 
-          onChange={(e) => onSortChange(e.target.value)}
-          className="filter-select"
-        >
-          <option value="time">按时间</option>
-          <option value="popularity">按热度</option>
-        </select>
-      </div>
-      
-      <div className="filter-group">
-        <span className="filter-label">分类：</span>
-        <select
-          value={category}
-          onChange={(e) => onCategoryChange(e.target.value)}
-          className="filter-select"
-        >
-          <option value="all">全部</option>
-          <option value="life">生活</option>
-          <option value="study">学业</option>
-          <option value="management">管理</option>
-        </select>
-      </div>
-    </div>
-  );
-}
-
-
-// 分页组件
-function Pagination({ 
-  currentPage, 
-  totalPages, 
-  onPageChange 
-}) {
-  const maxVisiblePages = 5; // 最多显示5个页码
-  
-  // 生成页码按钮
-  const renderPageNumbers = () => {
-    const pages = [];
-    let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
-    let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
-
-    // 调整起始页码以确保显示完整的分页范围
-    if (endPage - startPage + 1 < maxVisiblePages) {
-      startPage = Math.max(1, endPage - maxVisiblePages + 1);
-    }
-
-    // 添加第一页和省略号（如果需要）
-    if (startPage > 1) {
-      pages.push(
-        <button key={1} onClick={() => onPageChange(1)} className="page-number">
-          1
-        </button>
-      );
-      if (startPage > 2) {
-        pages.push(<span key="left-ellipsis" className="ellipsis">...</span>);
-      }
-    }
-
-    // 添加中间页码
-    for (let i = startPage; i <= endPage; i++) {
-      pages.push(
-        <button
-          key={i}
-          onClick={() => onPageChange(i)}
-          className={`page-number ${i === currentPage ? "active" : ""}`}
-        >
-          {i}
-        </button>
-      );
-    }
-
-    // 添加最后一页和省略号（如果需要）
-    if (endPage < totalPages) {
-      if (endPage < totalPages - 1) {
-        pages.push(<span key="right-ellipsis" className="ellipsis">...</span>);
-      }
-      pages.push(
-        <button
-          key={totalPages}
-          onClick={() => onPageChange(totalPages)}
-          className="page-number"
-        >
-          {totalPages}
-        </button>
-      );
-    }
-
-    return pages;
-  };
-
-  return (
-    <div className="pagination">
-      <button 
-        className="page-nav"
-        disabled={currentPage === 1}
-        onClick={() => onPageChange(currentPage - 1)}
-      >
-        上一页
-      </button>
-      
-      {renderPageNumbers()}
-      
-      <button
-        className="page-nav"
-        disabled={currentPage === totalPages}
-        onClick={() => onPageChange(currentPage + 1)}
-      >
-        下一页
-      </button>
-    </div>
-  );
-}
-
 // 移除外部的handleClick函数，将其移至组件内部
 
-const Home = ({ user, issues, onSubmitIssue, onDetail, id }) => {
-
+const Home = ({ user }) => {
   const navigate = useNavigate();
+  const [currentUser, setCurrentUser] = useState(user);
+
+  // 在组件挂载时获取用户信息
+  useEffect(() => {
+    const fetchCurrentUser = async () => {
+      const token = localStorage.getItem("access");
+      if (!token) {
+        alert("请先登录！");
+        navigate("/login"); // 或者其他登录页面
+        return;
+      }
+
+      try {
+        const response = await axios.get(
+          "http://127.0.0.1:8000/api/auth/profile/",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        setCurrentUser(response.data);
+      } catch (error) {
+        console.error("无法获取用户信息:", error);
+        alert("无法加载用户信息，请稍后重试。");
+        // 可以选择在这里处理错误，比如退出登录
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchCurrentUser();
+  }, [navigate]);
+
+  const handleUserUpdate = (updatedUserData) => {
+    setCurrentUser(updatedUserData);
+  };
 
   const handleSwitchToAdmin = () => {
     navigate("/admin");
   };
 
-  const [showModal,setShowModal] = useState(false);
-  const [activeTab, setActiveTab] = useState("all"); // 状态管理
-  const [sortBy, setSortBy] = useState("time"); // 排序状态
-  const [category, setCategory] = useState("all"); // 分类状态
-  const [currentPage, setCurrentPage] = useState(1); // 当前页码状态
-  const [itemsPerPage] = useState(5); // 每页显示5条数据
-
-  // 综合过滤和排序逻辑
-  const filteredIssues = issues
-    // 第一步：按"全部/我的"筛选
-    .filter(issue => 
-      activeTab === "all" || issue.author === user.username
-    )
-    // 第二步：按分类筛选
-    .filter(issue =>
-      category === "all" || issue.category === category
-    )
-    // 第三步：排序
-    .sort((a, b) => {
-      if (sortBy === "time") {
-        return new Date(b.updated_at) - new Date(a.updated_at);
-      } else {
-        // 假设有popularity字段，没有则用评论数等代替
-        return (b.popularity || 0) - (a.popularity || 0);
-      }
-    });
-
-    // 计算分页数据
-  const totalPages = Math.ceil(filteredIssues.length / itemsPerPage);
-  const currentItems = filteredIssues.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
-  );
-
-  // 重置页码当过滤条件变化时
-  React.useEffect(() => {
-    setCurrentPage(1);
-  }, [activeTab, category, sortBy]);
+  const [showModal, setShowModal] = useState(false);
 
   return (
     <div className="dashboard-container">
       <div className="dashboard-title">
-          <img 
-            src="../../pictures/OIP-C.jpg" 
-            className="userimg"
-             onClick={() => setShowModal(true)}
+        <img
+          src={currentUser.avatar || "../../pictures/OIP-C.jpg"}
+          alt="用户头像"
+          className="userimg"
+          onClick={() => setShowModal(true)}
+        />
+        {showModal && (
+          <UserProfileModal
+            user={currentUser}
+            onClose={() => setShowModal(false)}
+            onUpdate={handleUserUpdate}
           />
-          {showModal && (
-            <UserProfileModal 
-              user={user} 
-              onClose={() => setShowModal(false)} 
-            />
-          )}
-          欢迎，{user.username}
-          <ClockIcon/>
-          <MessageBar/>
-          <StarIcon/>
-          <SearchBar/>
-        </div>
+        )}
+        欢迎，{user.username}
+        {/* 这里用 user 也没问题，因为更改信息时不会影响username */}
+        <ClockIcon />
+        <MessageBar />
+        <StarIcon />
+        <SearchBar />
+      </div>
       <div className="content-wrapper">
-        {user && user.role.includes('admin') && (
-          <button onClick={handleSwitchToAdmin} className="btn-primary" style={{ marginRight: '10px' }}>切换</button>
+        {user && user.role.includes("admin") && (
+          <button
+            onClick={handleSwitchToAdmin}
+            className="btn-primary"
+            style={{ marginRight: "10px" }}
+          >
+            切换
+          </button>
         )}
-        <button onClick={onSubmitIssue} className="btn-primary">提交新问题</button>
-
-         {/* 导航栏 */}
-        <IssuesNavbar 
-          activeTab={activeTab} 
-          onTabChange={setActiveTab} 
-        />
-
-        {/* 筛选栏 */}
-        <FilterBar
-          sortBy={sortBy}
-          onSortChange={setSortBy}
-          category={category}
-          onCategoryChange={setCategory}
-        />
-
-        <div className="issues-grid">
-          {currentItems.map((issue) => (
-            <div key={issue.id} className="issue-card">
-              <h3 className="issue-title">{issue.title}</h3>
-              <p className="issue-info">分类：{issue.category}</p>
-              <p className="issue-info">状态：{issue.status}</p>
-              <p className="issue-info issue-date">更新时间：{issue.updated_at}</p>
-              <p className="issue-popularity">热度：{issue.popularity || 0}</p>
-              <button className="btn-link" onClick={() => navigate(`/detail/${issue.id}`)}>查看详情</button>
-              <hr/>
-            </div>
-          ))}
-        </div>
-
-        {/* 分页组件 */}
-        {totalPages > 1 && (
-          <Pagination
-            currentPage={currentPage}
-            totalPages={totalPages}
-            onPageChange={setCurrentPage}
-          />
-        )}
-
       </div>
     </div>
   );

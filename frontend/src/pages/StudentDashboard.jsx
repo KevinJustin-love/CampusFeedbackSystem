@@ -375,10 +375,9 @@ function Pagination({ currentPage, totalPages, onPageChange }) {
   );
 }
 
-const StudentDashboard = ({ user, issues, onSubmitIssue, onDetail, id }) => {
+const StudentDashboard = ({ user, issues, onSubmitIssue }) => {
   const navigate = useNavigate();
   const [currentUser, setCurrentUser] = useState(user);
-  const [isLoading, setIsLoading] = useState(true);
 
   // 在组件挂载时获取用户信息
   useEffect(() => {
