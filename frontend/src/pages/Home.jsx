@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
+// /dashboard 与 /admin 都是基于此页面的
+
 function UserProfileModal({ user, onClose, onUpdate }) {
   const [currentUserData, setCurrentUserData] = useState(null);
   const [email, setEmail] = useState("");
@@ -236,6 +238,7 @@ function SearchBar() {
 const Home = ({ user }) => {
   const navigate = useNavigate();
   const [currentUser, setCurrentUser] = useState(user);
+  const [isLoading, setIsLoading] = useState(null);
 
   // 在组件挂载时获取用户信息
   useEffect(() => {
@@ -273,14 +276,10 @@ const Home = ({ user }) => {
     setCurrentUser(updatedUserData);
   };
 
-  const handleSwitchToAdmin = () => {
-    navigate("/admin");
-  };
-
   const [showModal, setShowModal] = useState(false);
 
   return (
-    <div className="dashboard-container">
+    <div>
       <div className="dashboard-title">
         <img
           src={currentUser.avatar || "../../pictures/OIP-C.jpg"}
@@ -301,17 +300,6 @@ const Home = ({ user }) => {
         <MessageBar />
         <StarIcon />
         <SearchBar />
-      </div>
-      <div className="content-wrapper">
-        {user && user.role.includes("admin") && (
-          <button
-            onClick={handleSwitchToAdmin}
-            className="btn-primary"
-            style={{ marginRight: "10px" }}
-          >
-            切换
-          </button>
-        )}
       </div>
     </div>
   );

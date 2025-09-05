@@ -139,14 +139,6 @@ const App = () => {
   return (
     <Routes>
       <Route
-        path="/"
-        element={
-          <ProtectedRoute>
-            <Home issues={issues} user={user} />
-          </ProtectedRoute>
-        }
-      />
-      <Route
         path="/dashboard"
         element={
           <ProtectedRoute>
