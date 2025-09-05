@@ -16,18 +16,9 @@
 
 ## 具体使用
 
-首先，切换到后端文件夹。
-
-其次，在虚拟环境中运行 `python manage.py createsuperuser`，并对应创建一位用户。输入 `username、role、password`。
-其中，`role` 必须为 student、life_admin、study_admin、manage_admin，`username` 对应 student、lifeAdmin、studyAdmin、manageAdmin。
-
-登录界面（用户信息）头像？
-
-反馈：问题详情、添加处理结果
-
-消息
-
+访问 http://localhost:5173/login, 注册后登录。
+如果使用管理员，username 必须设置为 lifeAdmin、studyAdmin、manageAdmin。
 
 ## 亟待解决
 
-> 后端时间使用的是 UTC，是否使用北京时间？？
+> 后端时间使用的是 UTC，是否使用北京时间？？ 前端 Home.jsx 取信息网址要改？
