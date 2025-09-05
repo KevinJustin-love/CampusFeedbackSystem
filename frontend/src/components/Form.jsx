@@ -94,7 +94,7 @@ const Form = ({ route, method }) => {
             {method === "login" && (
               <button
                 type="button"
-                className="btn-primary1"
+                className="btn-primary1"  
                 onClick={handleRegisterClick}
                 style={{ marginRight: "10px" }}
               >
