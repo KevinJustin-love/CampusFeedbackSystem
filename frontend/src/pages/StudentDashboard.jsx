@@ -69,15 +69,17 @@ function UserProfileModal({ user, onClose, onUpdate }) {
     fetchUserData();
   }, [onClose]); // 当 onClose 变化时重新运行此 effect
 
-  // 处理头像上传
+  // 处理头像上传和实时预览
   const handleAvatarChange = (e) => {
     const file = e.target.files[0];
     if (file) {
       setAvatarFile(file);
+      const previewUrl = URL.createObjectURL(file);
+      setAvatarPreview(previewUrl); // 更新模态框内的预览
       if (typeof onUpdate === "function") {
         onUpdate({
           ...user,
-          avatar: URL.createObjectURL(file), // 临时预览
+          avatar: previewUrl, // 传递临时预览URL给父组件
         });
       }
     }
@@ -376,6 +378,40 @@ function Pagination({ currentPage, totalPages, onPageChange }) {
 const StudentDashboard = ({ user, issues, onSubmitIssue, onDetail, id }) => {
   const navigate = useNavigate();
   const [currentUser, setCurrentUser] = useState(user);
+  const [isLoading, setIsLoading] = useState(true);
+
+  // 在组件挂载时获取用户信息
+  useEffect(() => {
+    const fetchCurrentUser = async () => {
+      const token = localStorage.getItem("access");
+      if (!token) {
+        alert("请先登录！");
+        navigate("/login"); // 或者其他登录页面
+        return;
+      }
+
+      try {
+        const response = await axios.get(
+          "http://127.0.0.1:8000/api/auth/profile/",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        setCurrentUser(response.data);
+      } catch (error) {
+        console.error("无法获取用户信息:", error);
+        alert("无法加载用户信息，请稍后重试。");
+        // 可以选择在这里处理错误，比如退出登录
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchCurrentUser();
+  }, [navigate]); 
+
   const handleUserUpdate = (updatedUserData) => {
     setCurrentUser(updatedUserData);
   };
