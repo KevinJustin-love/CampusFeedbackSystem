@@ -32,6 +32,6 @@
 
 > 后端代码时间问题(差了八个小时)
 
-> admin 和 dashboard 中导航栏 css 不一样
+> admin 的 renderContent 函数较为冗杂
 
-> 用户信息还没统一..
+> register & login 要添加按钮
