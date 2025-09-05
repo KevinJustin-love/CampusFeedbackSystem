@@ -238,7 +238,7 @@ function SearchBar() {
 const Home = ({ user }) => {
   const navigate = useNavigate();
   const [currentUser, setCurrentUser] = useState(user);
-  const [isLoading, setIsLoading] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   // 在组件挂载时获取用户信息
   useEffect(() => {
