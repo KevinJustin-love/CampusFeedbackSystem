@@ -29,7 +29,10 @@ function UserProfileModal({ user, onClose, onUpdate }) {
   const [phone, setPhone] = useState("");
   const [bio, setBio] = useState("");
   const [avatarFile, setAvatarFile] = useState(null);
-  const fileInputRef = useRef(null); // 创建一个引用来控制文件输入框
+  const [avatarPreview, setAvatarPreview] = useState(
+    user.avatar || "../../pictures/OIP-C.jpg"
+  );
+  const fileInputRef = useRef(null);
 
   // 确保在组件挂载时从后端获取最新的用户信息
   useEffect(() => {
@@ -71,8 +74,6 @@ function UserProfileModal({ user, onClose, onUpdate }) {
     const file = e.target.files[0];
     if (file) {
       setAvatarFile(file);
-      // 不再 setAvatarPreview
-      // 改成预览直接显示 URL.createObjectURL(file)
       if (typeof onUpdate === "function") {
         onUpdate({
           ...user,
