@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import Home from "./Home"; // 导入 Home 组件
+import Home from "../components/Home"; // 导入 Home 组件
 
 //状态导航栏
 function IssuesNavbar({ activeTab, onTabChange }) {

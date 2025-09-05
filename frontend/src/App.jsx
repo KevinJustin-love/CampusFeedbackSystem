@@ -12,7 +12,6 @@ import StudentDashboard from "./pages/StudentDashboard";
 import SubmitIssuePage from "./pages/SubmitIssuePage";
 import AdminDashboard from "./pages/AdminDashboard";
 import IssueDetailPage from "./pages/IssueDetailPage";
-import Home from "./pages/Home";
 import RegisterPage from "./pages/RegisterPage";
 import NotFound from "./pages/NotFound";
 import ProtectedRoute from "./components/ProtectedRoute";

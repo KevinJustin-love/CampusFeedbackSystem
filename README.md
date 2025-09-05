@@ -30,8 +30,4 @@
 
 ## 亟待解决
 
-> 后端代码时间问题(差了八个小时)
-
-> admin 的 renderContent 函数较为冗杂
-
-> register & login 要添加按钮
+> 后端时间使用的是 UTC，是否使用北京时间？？

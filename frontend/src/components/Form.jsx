@@ -3,7 +3,7 @@ import api from "../api";
 import { useNavigate } from "react-router-dom";
 import { ACCESS_TOKEN, REFRESH_TOKEN } from "../constants";
 import { jwtDecode } from "jwt-decode";
-import "../styles/Form.css"
+import "../styles/Form.css";
 
 const Form = ({ route, method }) => {
   const [username, setUsername] = useState("");
@@ -23,13 +23,13 @@ const Form = ({ route, method }) => {
       if (method === "login") {
         localStorage.setItem(ACCESS_TOKEN, res.data.access);
         localStorage.setItem(REFRESH_TOKEN, res.data.refresh);
-        
+
         // 解码JWT Token获取用户角色
         const decodedToken = jwtDecode(res.data.access);
         const role = decodedToken.role || "student";
-        
+
         // 根据角色决定导航路径
-        if (role.includes('admin')) {
+        if (role.includes("admin")) {
           navigate("/admin");
         } else {
           navigate("/dashboard");
@@ -42,6 +42,11 @@ const Form = ({ route, method }) => {
     } finally {
       setLoading(false);
     }
+  };
+
+  // 处理注册按钮点击
+  const handleRegisterClick = () => {
+    navigate("/register");
   };
 
   return (
@@ -85,7 +90,22 @@ const Form = ({ route, method }) => {
             </div>
           </div>
           <div className="button-container">
-            <button type="submit" className="btn-primary1" disabled={loading}>
+            {/* 只在登录页面显示Register按钮 */}
+            {method === "login" && (
+              <button
+                type="button"
+                className="btn-primary1"
+                onClick={handleRegisterClick}
+                style={{ marginRight: "10px" }}
+              >
+                Register
+              </button>
+            )}
+            <button
+              type="submit"
+              className="btn-primary1"
+              disabled={loading}
+            >
               {loading ? "处理中..." : name}
             </button>
           </div>
