@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from "react-router-dom";
 
-function IssueCard({ issue }) {
+function IssueCard({ key,issue }) {
     const navigate = useNavigate();
 
     return (

@@ -24,6 +24,8 @@ export const feedbackAPI = {
   getIssueDetail: (id) => api.get(`/feedback/issues/${id}/`),
   updateIssue: (id, data) => api.put(`/feedback/issues/${id}/`, data),
   deleteIssue: (id) => api.delete(`/feedback/issues/${id}/`),
+
+  getTopicList: () => api.get("/feedback/topics/"),
 };
 
 export const authAPI = {

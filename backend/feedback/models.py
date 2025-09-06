@@ -22,8 +22,12 @@ class Issue(models.Model):
     date = models.DateField(help_text="问题发生时间")
     description = models.CharField(max_length=1000,help_text="问题描述")
     status = models.ForeignKey(Process, on_delete=models.SET_NULL, null=True)
-    attachment = models.FileField(upload_to='attachments/', help_text="附件”")
+    attachment = models.FileField(upload_to='attachments/', help_text="附件", null=True, blank=True)
     is_public = models.BooleanField(default=True)
+
+    views = models.IntegerField(default=0, help_text="浏览量")
+    likes = models.IntegerField(default=0, help_text="点赞量")
+
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 

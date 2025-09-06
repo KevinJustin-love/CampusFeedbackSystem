@@ -1,6 +1,11 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
-from .models import Issue, Reply, Message
+from .models import Issue, Reply, Message, Topic
+
+class TopicSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Topic
+        fields = ['id', 'name']
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -36,11 +41,13 @@ class ReplySerializer(serializers.ModelSerializer):
 class IssueSerializer(serializers.ModelSerializer):
     messages = MessageSerializer(many=True, read_only=True) # 添加嵌套字段
     reply = ReplySerializer(read_only=True)
+    topic = serializers.StringRelatedField(read_only=True)
+
 
     class Meta:
         model = Issue
         fields = [
-            'host_name', 
+            'host', 
             'title', 
             'topic', 
             'date',
@@ -50,5 +57,7 @@ class IssueSerializer(serializers.ModelSerializer):
             'is_public',
             'messages',
             'reply',
+            'views',
+            'likes'
             ]
         read_only_fields = ['host_name']

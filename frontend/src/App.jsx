@@ -33,42 +33,6 @@ const App = () => {
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true); // 新增一个加载状态
 
-  const [issues, setIssues] = useState([
-    {
-      id: 1,
-      title: "宿舍水管漏水",
-      category: "生活",
-      status: "处理中",
-      updated_at: "2025-08-01",
-      created_at: "2025-08-01",
-      description: "宿舍401水管漏水，需要维修。",
-      file: null,
-      updates: [
-        { text: "已分配给维修部门", timestamp: "2025-08-01 10:00", file: null },
-      ],
-      comments: [
-        {
-          id: 1,
-          message: "请尽快处理",
-          sender: "学生A",
-          timestamp: "2025-08-01 10:05",
-        },
-      ],
-    },
-    {
-      id: 2,
-      title: "课程安排冲突",
-      category: "学业",
-      status: "已提交",
-      updated_at: "2025-08-01",
-      created_at: "2025-08-01",
-      description: "两门课程时间冲突。",
-      file: null,
-      updates: [],
-      comments: [],
-    },
-  ]);
-
   // 检查用户登录状态的函数
   const checkUserAuth = () => {
     console.log("检查登录状态开始");
@@ -105,31 +69,22 @@ const App = () => {
     checkUserAuth();
   }, [location.pathname]); // 监听路由变化
 
-  // 过滤 issues 根据管理员范围
-  const filteredIssues = user
-    ? issues.filter((issue) => {
-        if (user.role === "life_admin") return issue.category === "生活";
-        if (user.role === "study_admin") return issue.category === "学业";
-        if (user.role === "manage_admin") return issue.category === "管理";
-        return true;
-      })
-    : issues;
   
     const filteredUsers = [];
 
-  const handleSubmitIssue = (issue) => {
-    const newIssue = {
-      id: issues.length + 1,
-      ...issue,
-      status: "已提交",
-      updated_at: new Date().toISOString().split("T")[0],
-      created_at: new Date().toISOString().split("T")[0],
-      updates: [],
-      comments: [],
-    };
-    setIssues([...issues, newIssue]);
-    navigate("/dashboard");
-  };
+  // const handleSubmitIssue = (issue) => {
+  //   const newIssue = {
+  //     id: issues.length + 1,
+  //     ...issue,
+  //     status: "已提交",
+  //     updated_at: new Date().toISOString().split("T")[0],
+  //     created_at: new Date().toISOString().split("T")[0],
+  //     updates: [],
+  //     comments: [],
+  //   };
+  //   setIssues([...issues, newIssue]);
+  //   navigate("/dashboard");
+  // };
 
   if (isLoading) {
     return <div>加载中...</div>;
@@ -140,44 +95,33 @@ const App = () => {
       <Route
         path="/dashboard"
         element={
-
-          (
-               <StudentDashboard
-                 user={user}
-                 issues={issues}
-                 onSubmitIssue={() => navigate("/submit")}
-                 onDetail={(id) => navigate(`/detail/${id}`)}
-               />
-             ) 
-
-          // <ProtectedRoute>
-            // {user ? (
-            //   <StudentDashboard
-            //     user={user}
-            //     issues={issues}
-            //     onSubmitIssue={() => navigate("/submit")}
-            //     onDetail={(id) => navigate(`/detail/${id}`)}
-            //   />
-            // ) : (
-            //   <div>加载用户信息中...</div>
-            // )}
-          // </ProtectedRoute>
+          <ProtectedRoute>
+            {user ? (
+              <StudentDashboard
+                user={user}
+                onSubmitIssue={() => navigate("/submit")}
+                onDetail={(id) => navigate(`/detail/${id}`)}
+              />
+            ) : (
+              <div>加载用户信息中...</div>
+            )}
+          </ProtectedRoute>
         }
       />
       <Route
         path="/submit"
         element={
           <ProtectedRoute>
-            <SubmitIssuePage onSubmit={handleSubmitIssue} />
+            {/* <SubmitIssuePage onSubmit={handleSubmitIssue} /> */}
           </ProtectedRoute>
         }
       />
       <Route
         path="/detail/:id"
         element={
-          // <ProtectedRoute>
-            <IssueDetailPage issues={issues} setIssues={setIssues} />
-          // </ProtectedRoute>
+          <ProtectedRoute>
+            <IssueDetailPage />
+           </ProtectedRoute>
         }
       />
       <Route

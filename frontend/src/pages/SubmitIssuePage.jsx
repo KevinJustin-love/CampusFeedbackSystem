@@ -1,28 +1,90 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { feedbackAPI } from "../api";
 
-const SubmitIssuePage = ({ onSubmit }) => {
-  const [category, setCategory] = useState('');
+const SubmitIssuePage = ({ onIssueSubmitted, onCancel }) => {
+  const [topic, setTopic] = useState('');
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
-  const [file, setFile] = useState(null);
-  const [isAnonymous,setIsAnonymous] = useState(false);
+  const [attachment, setAttachment] = useState(null);
+  const [isPublic,setIsPublic] = useState(true);
+  const [topics, setTopics] = useState([]);
+  const [date, setDate] = useState(''); // 新增日期状态
 
-  const handleSubmit = (e) => {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(false);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    onSubmit({ category, title, description, file, isAnonymous });
+    setLoading(true);
+    setError(null);
+    setSuccess(false);
+
+    try {
+      // 使用 FormData 处理文件上传
+      const formData = new FormData();
+      formData.append('title', title);
+      formData.append('topic', topic); // 确保字段名与后端模型匹配
+      formData.append('description', description);
+      formData.append('is_public', isPublic); 
+      formData.append('date', date)
+
+      if (attachment) {
+        formData.append('attachment', attachment);
+      }
+
+      // 调用 API 提交数据
+      const res = await feedbackAPI.createIssue(formData);
+      
+      // 提交成功后，调用父组件传递的函数，并传递新创建的问题数据
+      onIssueSubmitted(res.data); 
+      setSuccess(true);
+
+      //清空表单
+      setTopic('');
+      setTitle('');
+      setDescription('');
+      setFile(null);
+      setIsAnonymous(false);
+
+    } catch (err) {
+      console.error("提交问题失败：", err);
+      setError("问题提交失败，请稍后重试。");
+    } finally {
+      setLoading(false);
+    }
   };
+
+  useEffect(() => {
+    const fetchTopics = async () => {
+      const res = await feedbackAPI.getTopicList();
+      setTopics(res.data);
+    };
+    fetchTopics();
+  }, []);
+
+  if (success) {
+      return (
+          <div className="submit-card">
+              <h2 className="submit-title">提交成功！</h2>
+              <p>您的问题已成功提交，感谢您的反馈。</p>
+              <button onClick={onCancel} className="btn-primary1">返回</button>
+          </div>
+      );
+  }
 
   return (
     <div className="submit-container">
       <div className="submit-card">
         <h2 className="submit-title">提交问题</h2>
+        {error && <div className="error-message">{error}</div>}
         <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <label htmlFor="category" className="form-label">问题分类</label>
+            <label htmlFor="topic" className="form-label">问题分类</label>
             <select
-              id="category"
-              value={category}
-              onChange={(e) => setCategory(e.target.value)}
+              id="topic"
+              value={topic}
+              onChange={(e) => setTopic(e.target.value)}
               className="form-input"
               required
             >
@@ -32,6 +94,8 @@ const SubmitIssuePage = ({ onSubmit }) => {
               <option value="管理">管理</option>
             </select>
           </div>
+
+
           <div className="form-group">
             <label 
               htmlFor="title" 
@@ -47,6 +111,25 @@ const SubmitIssuePage = ({ onSubmit }) => {
               required
             />
           </div>
+
+
+          <div className="form-group">
+            <label 
+              htmlFor="date" 
+              className="form-label">
+                问题发生时间
+            </label>
+            <input
+              type="date"
+              id="date"
+              value={date}
+              onChange={(e) => setDate(e.target.value)}
+              className="form-input"
+              required // 保持必填状态，以确保数据完整性
+            />
+          </div>
+
+
           <div className="form-group">
             <label 
               htmlFor="description" 
@@ -64,18 +147,36 @@ const SubmitIssuePage = ({ onSubmit }) => {
           </div>
           <div className="form-group">
             <label
-              htmlFor="file" 
+              htmlFor="attachment" 
               className="form-label">
                 附件
               </label>
             <input
               type="file"
               id="file"
-              onChange={(e) => setFile(e.target.files[0])}
+              onChange={(e) => setAttachment(e.target.files[0])}
               className="form-input"
             />
           </div>
-          <button type="submit" className="btn-primary1">提交</button>
+
+
+          <div className="form-group form-checkbox">
+            <input
+              type="checkbox"
+              id="isPublic"
+              checked={isPublic}
+              onChange={(e) => setIsPublic(e.target.checked)}
+            />
+            <label htmlFor="isPublic">公开问题</label>
+          </div>
+
+
+          <button type="submit" className="btn-primary1" disabled={loading}>
+            {loading ? '提交中...' : '提交'}
+          </button>
+          <button type="button" onClick={onCancel} className="btn-secondary" style={{marginLeft: '10px'}}>
+            取消
+          </button>
         </form>
       </div>
     </div>
