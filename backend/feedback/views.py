@@ -32,7 +32,7 @@ class ReplyListCreate(generics.ListCreateAPIView):
             issue_id = self.kwargs.get('pk')
             issue = get_object_or_404(Issue, pk=issue_id)
             serializer.save(
-                administrator=self.request.user
+                administrator=self.request.user,
                 issue=issue
             )
         else:
@@ -50,7 +50,7 @@ class MessageListCreate(generics.ListCreateAPIView):
             issue_id = self.kwargs.get('pk')
             issue = get_object_or_404(Issue, pk=issue_id)
             serializer.save(
-                user=self.request.user
+                user=self.request.user,
                 issue=issue
             )
         else:

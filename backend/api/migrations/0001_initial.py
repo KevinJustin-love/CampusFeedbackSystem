@@ -126,7 +126,7 @@ class Migration(migrations.Migration):
                         to="auth.permission",
                         verbose_name="user permissions",
                     ),
-                )]
+                )],
             options={
                 "verbose_name": "user",
                 "verbose_name_plural": "users",

@@ -7,6 +7,32 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = ['id', 'username']
 
+class MessageSerializer(serializers.ModelSerializer):
+    user = UserSerializer(read_only=True) # 嵌套用户序列化器
+
+    class Meta:
+        model = Message
+        fields = [
+            "user_name",
+            "issue",
+            "body",
+            'created'
+        ]
+        read_only_fields = ["user_name", 'created']
+
+class ReplySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Reply
+        fields = [
+            "administrator_name",
+            "content",
+            "attachment",
+            "issue"
+            "created"
+        ]
+        read_only_fields = ["administrator_name"] 
+
+
 class IssueSerializer(serializers.ModelSerializer):
     messages = MessageSerializer(many=True, read_only=True) # 添加嵌套字段
     reply = ReplySerializer(read_only=True)
@@ -26,28 +52,3 @@ class IssueSerializer(serializers.ModelSerializer):
             'reply',
             ]
         read_only_fields = ['host_name']
-
-class ReplySerializer(serializer.ModelSerializer):
-    class Meta:
-        model = Reply
-        fields = [
-            "administrator_name",
-            "content",
-            "attachment",
-            "issue"
-            "created"
-        ]
-        read_only_fields = ["administrator_name"] 
-
-class MessageSerializer(serializer.ModelSerializer):
-    user = UserSerializer(read_only=True) # 嵌套用户序列化器
-
-    class Meta:
-        model = Message
-        fields = [
-            "user_name",
-            "issue",
-            "body",
-            'created'
-        ]
-        read_only_fields = ["user_name", 'created']

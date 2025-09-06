@@ -11,7 +11,7 @@ urlpatterns = [
     path("api/token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
     path("api/auth", include("api.urls")),
     path("api-auth/", include("rest_framework.urls")),
-    path("feedback/", include("feddback.urls"))
+    path("feedback/", include("feedback.urls"))
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 
