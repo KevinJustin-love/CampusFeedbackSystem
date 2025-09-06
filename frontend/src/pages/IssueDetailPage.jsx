@@ -33,37 +33,12 @@ function IssueDetailPage() {
     return <div style={{ padding: 20 }}>未找到对应的问题（ID: {id}）</div>;
   }
 
-<<<<<<< HEAD
-=======
-  const handleAddComment = (newComment) => {
-    const updatedComments = [...commentMessages, newComment];
-    setCommentMessages(updatedComments);
-
-    // 同步到 issues 中对应问题的 comments
-    const updatedIssues = [...issues];
-    updatedIssues[issueIndex] = {
-      ...issue,
-      comments: updatedComments,
-    };
-    setIssues(updatedIssues);
-  };
-
->>>>>>> feature/user-profile
   return (
     <div className="issue-detail-page">
 
       <IssueDetail issue={issue} />
-<<<<<<< HEAD
       <HandlingReply issueId={id} />
       <CommentSection issueId={id}/>
-=======
-      <HandlingProcess issue={issue} />
-      <CommentSection
-        commentMessages={commentMessages}
-        setCommentMessages={setCommentMessages}
-        onAddComment={handleAddComment}
-      />
->>>>>>> feature/user-profile
     </div>
   );
 };

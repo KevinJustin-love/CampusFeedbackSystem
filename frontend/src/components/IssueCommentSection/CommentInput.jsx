@@ -1,8 +1,3 @@
-<<<<<<< HEAD
-=======
-// CommentInput.jsx（更新：支持向上传递新评论）
-
->>>>>>> feature/user-profile
 import React, { useState } from "react";
 
 function CommentInput({ onAddComment }) {
@@ -12,21 +7,8 @@ function CommentInput({ onAddComment }) {
     const trimmedValue = inputValue.trim();
     if (trimmedValue === "") return;
 
-<<<<<<< HEAD
     if (typeof onAddComment === "function") {
       onAddComment(trimmedValue);
-=======
-    const newMessage = {
-      id: Date.now(),
-      message: trimmedValue,
-      sender: "user", // 可替换为登录用户
-      timestamp: new Date().toISOString(),
-    };
-
-    if (typeof onAddComment === "function") {
-      onAddComment(newMessage);
-      console.log(newMessage);
->>>>>>> feature/user-profile
       setInputValue("");
     }
     setInputValue("");

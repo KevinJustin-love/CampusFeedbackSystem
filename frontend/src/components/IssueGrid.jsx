@@ -1,3 +1,5 @@
+import React from 'react';
+
 export default function IssueGrid(){
     <div className="issues-grid">
         {currentItems.map((issue) => (

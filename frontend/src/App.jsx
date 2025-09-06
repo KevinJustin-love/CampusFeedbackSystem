@@ -140,18 +140,28 @@ const App = () => {
       <Route
         path="/dashboard"
         element={
-          <ProtectedRoute>
-            {user ? (
-              <StudentDashboard
-                user={user}
-                issues={issues}
-                onSubmitIssue={() => navigate("/submit")}
-                onDetail={(id) => navigate(`/detail/${id}`)}
-              />
-            ) : (
-              <div>加载用户信息中...</div>
-            )}
-          </ProtectedRoute>
+
+          (
+               <StudentDashboard
+                 user={user}
+                 issues={issues}
+                 onSubmitIssue={() => navigate("/submit")}
+                 onDetail={(id) => navigate(`/detail/${id}`)}
+               />
+             ) 
+
+          // <ProtectedRoute>
+            // {user ? (
+            //   <StudentDashboard
+            //     user={user}
+            //     issues={issues}
+            //     onSubmitIssue={() => navigate("/submit")}
+            //     onDetail={(id) => navigate(`/detail/${id}`)}
+            //   />
+            // ) : (
+            //   <div>加载用户信息中...</div>
+            // )}
+          // </ProtectedRoute>
         }
       />
       <Route
@@ -165,9 +175,9 @@ const App = () => {
       <Route
         path="/detail/:id"
         element={
-          <ProtectedRoute>
+          // <ProtectedRoute>
             <IssueDetailPage issues={issues} setIssues={setIssues} />
-          </ProtectedRoute>
+          // </ProtectedRoute>
         }
       />
       <Route

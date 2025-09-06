@@ -1,5 +1,7 @@
+import React from 'react';
+
 //状态导航栏
-export default function HomeIssuesNavbar({ activeTab, onTabChange }) {
+export default function IssuesNavbar({ activeTab, onTabChange }) {
   return (
     <div className="issues-navbar">
       <button

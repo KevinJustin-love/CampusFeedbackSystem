@@ -1,20 +1,18 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
-import Home from "../components/Home"; // 导入 Home 组件
-import HomeIssuesNavbar from "../components/HomeIssueNavbar.jsx"; 
+import Home from "../components/Home";
+import IssuesNavbar from "../components/IssuesNavbar";
 import FilterBar from "../components/FilterBar";
-import Pagination from "../components/Pagination"
-import IssueGrid from "../components/IssueGrid";
+import Pagination from "../components/Pagination";
+import IssueCard from "../components/IssueCard";
 
-
-const StudentDashboard = ({ user, issues, onSubmitIssue, onDetail, id }) => {
+const StudentDashboard = ({ user, issues, onSubmitIssue, id }) => {
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState("all"); // 状态管理
-  const [sortBy, setSortBy] = useState("time"); // 排序状态
-  const [category, setCategory] = useState("all"); // 分类状态
-  const [currentPage, setCurrentPage] = useState(1); // 当前页码状态
-  const [itemsPerPage] = useState(5); // 每页显示5条数据
+  const [activeTab, setActiveTab] = useState("all");
+  const [sortBy, setSortBy] = useState("time");
+  const [category, setCategory] = useState("all");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(5);
 
   const handleSwitchToAdmin = () => {
     navigate("/admin");
@@ -28,7 +26,6 @@ const StudentDashboard = ({ user, issues, onSubmitIssue, onDetail, id }) => {
       if (sortBy === "time") {
         return new Date(b.updated_at) - new Date(a.updated_at);
       } else {
-        // 假设有popularity字段，没有则用评论数等代替
         return (b.popularity || 0) - (a.popularity || 0);
       }
     });
@@ -41,13 +38,12 @@ const StudentDashboard = ({ user, issues, onSubmitIssue, onDetail, id }) => {
   );
 
   // 重置页码当过滤条件变化时
-  React.useEffect(() => {
+  useEffect(() => {
     setCurrentPage(1);
   }, [activeTab, category, sortBy]);
 
   return (
     <div className="dashboard-container">
-      {/* 使用 Home 组件替代原有的标题栏 */}
       <Home user={user} />
 
       <div className="content-wrapper">
@@ -68,10 +64,8 @@ const StudentDashboard = ({ user, issues, onSubmitIssue, onDetail, id }) => {
           </button>
         )}
 
-        {/* 导航栏 */}
-        <HomeIssuesNavbar activeTab={activeTab} onTabChange={setActiveTab} />
+        <IssuesNavbar activeTab={activeTab} onTabChange={setActiveTab} />
 
-        {/* 筛选栏 */}
         <FilterBar
           sortBy={sortBy}
           onSortChange={setSortBy}
@@ -79,10 +73,12 @@ const StudentDashboard = ({ user, issues, onSubmitIssue, onDetail, id }) => {
           onCategoryChange={setCategory}
         />
 
-        {/* 问题展示 */}
-        <IssueGrid />
+        <div className="issues-grid">
+          {currentItems.map((issue) => (
+            <IssueCard key={issue.id} issue={issue} />
+          ))}
+        </div>
 
-        {/* 分页组件 */}
         {totalPages > 1 && (
           <Pagination
             currentPage={currentPage}
