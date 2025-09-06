@@ -15,10 +15,9 @@
 最后，运行 `python manage.py runserver` 得到后端链接 
 
 ## 具体使用
+访问 http://localhost:5173/login, 注册后登录。
+如果使用管理员，username 必须设置为 lifeAdmin、studyAdmin、manageAdmin。
 
-首先，切换到后端文件夹。
+## 亟待解决
 
-其次，在虚拟环境中运行 `python manage.py createsuperuser`，并对应创建一位用户。输入 `username、role、password`。
-其中，`role` 必须为 student、life_admin、study_admin、manage_admin，`username` 对应 student、lifeAdmin、studyAdmin、manageAdmin。
-
-> 还有 bug 没修好。当登录了admin后，再登录student，在 /dashboard 会出现admin才有的切换按钮
+> 后端时间使用的是 UTC，是否使用北京时间？？ 前端 Home.jsx 取信息网址要改？

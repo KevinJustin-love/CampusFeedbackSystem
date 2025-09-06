@@ -1,0 +1,50 @@
+# -------------------------
+# Python bytecode / cache
+# -------------------------
+**/__pycache__/
+
+# -------------------------
+# Django local DB (开发环境 SQLite)
+# -------------------------
+db.sqlite3
+
+# -------------------------
+# Python packaging/build
+# -------------------------
+*.py[cod]
+*$py.class
+*.egg-info/
+.eggs/
+pip-wheel-metadata/
+
+# -------------------------
+# Virtual environments
+# -------------------------
+venv/
+env/
+.venv/
+ENV/
+.ENV/
+
+# -------------------------
+# IDEs / Editors
+# -------------------------
+.vscode/
+.idea/
+*.swp
+*~
+*.bak
+
+# -------------------------
+# Logs / Temp files
+# -------------------------
+*.log
+logs/
+tmp/
+temp/
+
+# -------------------------
+# OS-specific
+# -------------------------
+.DS_Store
+Thumbs.db
