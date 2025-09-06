@@ -47,6 +47,7 @@ class IssueSerializer(serializers.ModelSerializer):
     class Meta:
         model = Issue
         fields = [
+            'id',
             'host', 
             'title', 
             'topic', 

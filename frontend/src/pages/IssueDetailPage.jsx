@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"; 
+import React,{ useState, useEffect } from "react"; 
 import { useParams } from "react-router-dom";
 import IssueDetail from "../components/IssueDetail";
 import CommentSection from "../components/IssueCommentSection/CommentSection";
@@ -9,8 +9,23 @@ function IssueDetailPage() {
   const { id } = useParams();
   const [issue, setIssue] = useState(null)
   const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
 
   useEffect(() => {
+    
+    if (id === 'undefined' || id === undefined) {
+      setError("Invalid issue ID");
+      setLoading(false);
+      return;
+    }
+    if (!id) {
+      // 如果 ID 不存在，直接返回或处理错误
+      setLoading(false);
+      setError("问题 ID 不存在。");
+      return;
+    }
+
+
     async function fetchIssue() {
       try {
         const response = await feedbackAPI.getIssueDetail(id);
@@ -28,19 +43,22 @@ function IssueDetailPage() {
   if (loading) {
     return <div style={{ padding: 20 }}>正在加载...</div>;
   }
+  if (error) {
+    return <div style={{ padding: 20 }}>{error}</div>;
+  }
 
   if (!issue) {
     return <div style={{ padding: 20 }}>未找到对应的问题（ID: {id}）</div>;
   }
+ 
 
   return (
     <div className="issue-detail-page">
-
       <IssueDetail issue={issue} />
       <HandlingReply issueId={id} />
       <CommentSection issueId={id}/>
     </div>
   );
-};
+}
 
 export default IssueDetailPage;

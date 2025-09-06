@@ -15,9 +15,7 @@ class IssueListCreate(generics.ListCreateAPIView):
     serializer_class = IssueSerializer
 
     def get_queryset(self):
-        def get_queryset(self):
-            # 你的前端只展示公开问题，所以可以过滤 is_public=True 的问题
-            return Issue.objects.filter(is_public=True).order_by('-updated')
+        return Issue.objects.filter(is_public=True).order_by('-updated')
 
         def perform_create(self, serializer):
             # 从请求数据中获取 topic 的名称
@@ -32,6 +30,11 @@ class IssueListCreate(generics.ListCreateAPIView):
                 serializer.save(host=self.request.user, topic=topic_instance)
             else:
                 raise PermissionDenied("你必须登录才能发布。")
+
+class IssueDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Issue.objects.all()
+    serializer_class = IssueSerializer
+    permission_classes = [AllowAny] 
 
 
 class ReplyListCreate(generics.ListCreateAPIView):

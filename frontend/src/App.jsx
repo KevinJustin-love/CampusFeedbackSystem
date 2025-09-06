@@ -72,20 +72,6 @@ const App = () => {
   
     const filteredUsers = [];
 
-  // const handleSubmitIssue = (issue) => {
-  //   const newIssue = {
-  //     id: issues.length + 1,
-  //     ...issue,
-  //     status: "已提交",
-  //     updated_at: new Date().toISOString().split("T")[0],
-  //     created_at: new Date().toISOString().split("T")[0],
-  //     updates: [],
-  //     comments: [],
-  //   };
-  //   setIssues([...issues, newIssue]);
-  //   navigate("/dashboard");
-  // };
-
   if (isLoading) {
     return <div>加载中...</div>;
   }
@@ -108,14 +94,7 @@ const App = () => {
           </ProtectedRoute>
         }
       />
-      <Route
-        path="/submit"
-        element={
-          <ProtectedRoute>
-            {/* <SubmitIssuePage onSubmit={handleSubmitIssue} /> */}
-          </ProtectedRoute>
-        }
-      />
+
       <Route
         path="/detail/:id"
         element={

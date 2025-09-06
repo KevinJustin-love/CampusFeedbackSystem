@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef }  from "react";
+import React, { useState, useEffect, useRef }  from "react";
 import { feedbackAPI } from "../../api";
 import CommentInput from "./CommentInput";
 import CommentMessage from "./CommentMessage";

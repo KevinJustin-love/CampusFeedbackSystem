@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { feedbackAPI } from "../api";
 
 const SubmitIssuePage = ({ onIssueSubmitted, onCancel }) => {
@@ -9,6 +10,8 @@ const SubmitIssuePage = ({ onIssueSubmitted, onCancel }) => {
   const [isPublic,setIsPublic] = useState(true);
   const [topics, setTopics] = useState([]);
   const [date, setDate] = useState(''); // 新增日期状态
+
+  const navigate = useNavigate();
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -35,6 +38,11 @@ const SubmitIssuePage = ({ onIssueSubmitted, onCancel }) => {
 
       // 调用 API 提交数据
       const res = await feedbackAPI.createIssue(formData);
+      console.log("后端响应数据：", res.data);
+      // res.data 包含了新创建问题的完整信息，包括 id
+      const newIssueId = res.data.id; 
+      
+      navigate(`/detail/${newIssueId}`);
       
       // 提交成功后，调用父组件传递的函数，并传递新创建的问题数据
       onIssueSubmitted(res.data); 
@@ -44,9 +52,8 @@ const SubmitIssuePage = ({ onIssueSubmitted, onCancel }) => {
       setTopic('');
       setTitle('');
       setDescription('');
-      setFile(null);
-      setIsAnonymous(false);
-
+      setAttachment(null);
+      setIsPublic(true)
     } catch (err) {
       console.error("提交问题失败：", err);
       setError("问题提交失败，请稍后重试。");
@@ -153,7 +160,7 @@ const SubmitIssuePage = ({ onIssueSubmitted, onCancel }) => {
               </label>
             <input
               type="file"
-              id="file"
+              id="attachment"
               onChange={(e) => setAttachment(e.target.files[0])}
               className="form-input"
             />
