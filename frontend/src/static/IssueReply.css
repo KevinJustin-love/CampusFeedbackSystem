@@ -1,0 +1,81 @@
+/* Styling for the HandlingReply Component */
+
+/* 整体容器 */
+.reply-container {
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    padding: 20px;
+    margin-top: 30px;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    color: #333;
+  }
+  
+  /* 标题样式 */
+  .reply-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #007bff; /* 强调色 */
+    border-bottom: 2px solid #007bff;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+    text-align: left;
+  }
+  
+  /* 单个回复的容器 */
+  .reply {
+    line-height: 1.6;
+  }
+  
+  /* 回复内容 */
+  .reply-text {
+    font-size: 16px;
+    color: #555;
+    margin-bottom: 15px;
+    white-space: pre-wrap; /* 保留文本中的换行 */
+  }
+  
+  /* 日期和时间戳 */
+  .reply-date {
+    font-size: 14px;
+    color: #888;
+    text-align: right;
+    margin-top: 10px;
+  }
+  
+  /* 附件部分容器 */
+  .reply-file {
+    margin-top: 20px;
+    padding: 10px 15px;
+    background-color: #f1f1f1;
+    border: 1px dashed #ccc;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .reply-file h3 {
+    font-size: 16px;
+    margin: 0;
+    color: #444;
+  }
+  
+  .reply-file a {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.2s ease-in-out;
+  }
+  
+  .reply-file a:hover {
+    color: #0056b3;
+    text-decoration: underline;
+  }
+  
+  /* 可选：加载状态的样式 */
+  .reply-container p {
+      text-align: center;
+      color: #888;
+  }
