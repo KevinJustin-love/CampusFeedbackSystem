@@ -32,6 +32,7 @@ const App = () => {
   const location = useLocation();
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true); // 新增一个加载状态
+  const [issues, setIssues] = useState(null);
 
   // 检查用户登录状态的函数
   const checkUserAuth = () => {
@@ -69,8 +70,17 @@ const App = () => {
     checkUserAuth();
   }, [location.pathname]); // 监听路由变化
 
-  
-    const filteredUsers = [];
+  // 过滤 issues 根据管理员范围
+  const filteredIssues = issues
+    ? issues.filter((issue) => {
+        if (user?.role === "life_admin") return issue.category === "生活";
+        if (user?.role === "study_admin") return issue.category === "学业";
+        if (user?.role === "manage_admin") return issue.category === "管理";
+        return true;
+      })
+    : []; 
+
+  const filteredUsers = [];
 
   if (isLoading) {
     return <div>加载中...</div>;
@@ -100,7 +110,7 @@ const App = () => {
         element={
           <ProtectedRoute>
             <IssueDetailPage />
-           </ProtectedRoute>
+          </ProtectedRoute>
         }
       />
       <Route
@@ -117,7 +127,7 @@ const App = () => {
             )}
           </ProtectedRoute>
         }
-     />
+      />
       <Route path="/login" element={<LoginPage />} />
 
       <Route path="/logout" element={<Logout />} />
