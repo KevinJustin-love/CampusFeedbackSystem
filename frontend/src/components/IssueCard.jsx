@@ -1,6 +1,9 @@
 import React from 'react';
 import { useNavigate } from "react-router-dom";
 
+import "../styles/issueCard&admin.css";
+import "../styles/IssueCard.css";
+
 function IssueCard({ key,issue }) {
     const navigate = useNavigate();
 

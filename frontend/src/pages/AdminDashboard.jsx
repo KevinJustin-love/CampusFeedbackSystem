@@ -3,6 +3,10 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Home from "../components/Home";
 
+import "../styles/admin&dash.css";
+import "../styles/issueCard&admin.css";
+import "../styles/AdminDashboard.css";
+
 const AdminDashboard = ({ issues, categories, category, users, user }) => {
   const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);

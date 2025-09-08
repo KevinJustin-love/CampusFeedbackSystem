@@ -1,0 +1,30 @@
+.issue-card {
+  background-color: #ffffff;
+  padding: 16px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.issue-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 8px;
+  position: relative;
+  left: 30px;
+}
+
+.issue-info {
+  color: #6b7280;
+  font-size: 14px;
+  margin-bottom: 4px;
+  position: relative;
+  left: 30px;
+}
+
+.issue-date {
+  color: #9ca3af;
+  font-size: 12px;
+  position: relative;
+  left: 800px;
+  bottom: 80px;
+}

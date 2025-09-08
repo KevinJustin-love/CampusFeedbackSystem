@@ -6,6 +6,8 @@ import Navbar from "../components/Navbar"
 
 // /dashboard 与 /admin 都是基于此页面的
 
+import "../styles/Home.css";
+
 const Home = ({ user }) => {
   const navigate = useNavigate();
   const [currentUser, setCurrentUser] = useState(user);

@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import IssueCard from "./IssueCard"
-import {feedbackAPI} from "../api"
+import { feedbackAPI } from "../api"
+
+import "../styles/IssueGrid.css"
 
 export default function IssueGrid({ issues, loading, error }){
     if(loading) return <div>加载中...</div>;

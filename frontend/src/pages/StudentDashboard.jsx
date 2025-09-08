@@ -8,6 +8,9 @@ import IssueGrid from "../components/IssueGrid";
 import SubmitIssuePage from "../pages/SubmitIssuePage";
 import { feedbackAPI } from "../api";
 
+import "../styles/admin&dash.css";
+import "../styles/StudentDashboard.css";
+
 const StudentDashboard = ({ user, id }) => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("all");

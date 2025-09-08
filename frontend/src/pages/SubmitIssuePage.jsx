@@ -2,6 +2,9 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { feedbackAPI } from "../api";
 
+import "../styles/SubmitIssuePage.css";
+import "../styles/form&submitIssuePage.css";
+
 const SubmitIssuePage = ({ onIssueSubmitted, onCancel }) => {
   const [topic, setTopic] = useState('');
   const [title, setTitle] = useState('');

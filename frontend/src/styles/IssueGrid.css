@@ -1,0 +1,10 @@
+.issues-grid {
+  grid-template-columns: 1fr;
+  gap: 20px;
+}
+
+@media (max-width: 768px) {
+  .issues-grid {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,14 @@
+/* admin 和 dashboard 界面共有的 */
+
+.content-wrapper {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 16px;
+  margin-top: 0px;
+}
+
+@media (max-width: 768px) {
+  .content-wrapper {
+    padding: 8px;
+  }
+}

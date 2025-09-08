@@ -3,7 +3,9 @@ import api from "../api";
 import { useNavigate } from "react-router-dom";
 import { ACCESS_TOKEN, REFRESH_TOKEN } from "../constants";
 import { jwtDecode } from "jwt-decode";
+
 import "../styles/Form.css";
+import "../styles/form&submitIssuePage.css"
 
 const Form = ({ route, method }) => {
   const [username, setUsername] = useState("");

@@ -1,5 +1,7 @@
 import React from "react";
 
+import "../styles/IssueHandlingProcess.css";
+
 function HandlingProcess({ issue }) {
   return (
     <div className="process-container">

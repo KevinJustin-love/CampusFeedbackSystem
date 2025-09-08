@@ -1,5 +1,7 @@
 import React from "react";
 
+import "../styles/IssueDetail.css";
+
 function IssueDetail({ issue }) {
   return (
     <>

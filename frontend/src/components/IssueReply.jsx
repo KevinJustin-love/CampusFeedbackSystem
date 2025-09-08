@@ -1,5 +1,5 @@
-import React, {useState, useEffect} from "react";
-import "../static/IssueReply.css"
+import React, { useState, useEffect } from "react";
+import "../styles/IssueReply.css"
 import { feedbackAPI } from "../api";
 
 function HandlingReply({ issueId }) {

@@ -5,6 +5,8 @@ import CommentSection from "../components/IssueCommentSection/CommentSection";
 import HandlingReply from "../components/IssueReply";
 import { feedbackAPI } from "../api"
 
+import "../styles/IssueDetailPage.css";
+
 function IssueDetailPage() {
   const { id } = useParams();
   const [issue, setIssue] = useState(null)
