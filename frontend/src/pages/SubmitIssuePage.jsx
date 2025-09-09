@@ -184,7 +184,7 @@ const SubmitIssuePage = ({ onIssueSubmitted, onCancel }) => {
           <button type="submit" className="btn-primary1" disabled={loading}>
             {loading ? '提交中...' : '提交'}
           </button>
-          <button type="button" onClick={onCancel} className="btn-secondary" style={{marginLeft: '10px'}}>
+          <button type="button" onClick={onCancel} className="btn-primary1" style={{marginLeft: '10px'}}>
             取消
           </button>
         </form>
