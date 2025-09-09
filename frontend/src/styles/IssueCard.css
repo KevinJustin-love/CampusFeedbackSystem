@@ -28,3 +28,12 @@
   left: 800px;
   bottom: 80px;
 }
+
+.issue-popularity {
+  color: #ff6b6b;
+  font-weight: bold;
+  margin: 5px 0;
+  position: relative;
+  left: 30px;
+  bottom: 20px;
+}

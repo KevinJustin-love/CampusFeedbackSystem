@@ -1,0 +1,31 @@
+.comment-message-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.comment-message-text {
+  display: flex;
+  justify-content: start;
+  color: #2e3c51;
+  font-size: 16px;
+  margin-bottom: 8px;
+  padding: 8px;
+}
+
+.comment-sender {
+  color: #2946a9;
+  font-weight: 600;
+}
+
+.solid {
+  border-bottom: 1px solid rgb(191, 190, 190);
+}
+
+.comment-message-time {
+  display: flex;
+  justify-content: end;
+  white-space: nowrap;
+  font-size: 13px;
+  color: gray;
+}

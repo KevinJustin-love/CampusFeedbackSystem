@@ -1,0 +1,26 @@
+.comment-input-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  margin-top: 8px;
+}
+
+.comment-input {
+  flex: 1;
+  height: 30px;
+  min-width: 200px;
+  max-width: 100%;
+  margin-right: 8px;
+}
+
+.comment-button {
+  height: 30px;
+  width: 80px;
+  background-color: #2563eb;
+  color: #ffffff;
+  border-radius: 8px;
+  padding: auto;
+  border: none;
+}
+

@@ -16,3 +16,24 @@
   color: #2563eb;
   margin-bottom: 16px;
 }
+
+.updates-list {
+  margin-bottom: 24px;
+}
+
+.timeline-item {
+  border-left: 4px solid #2563eb;
+  padding-left: 16px;
+  margin-bottom: 16px;
+}
+
+.update-text {
+  color: #6b7280;
+  font-size: 14px;
+}
+
+.update-date {
+  color: #9ca3af;
+  font-size: 12px;
+}
+

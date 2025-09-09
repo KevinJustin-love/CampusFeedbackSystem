@@ -1,5 +1,7 @@
 import React from "react";
 
+import "../styles/Navbar.css";
+
 export default function Navbar(){
     //消息栏图标
   function MessageBar() {

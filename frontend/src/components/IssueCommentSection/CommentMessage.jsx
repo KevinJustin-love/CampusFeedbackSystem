@@ -1,5 +1,7 @@
 import React from "react";
 
+import "../../styles/CommentMessage.css";
+
 function CommentMessage({ message, sender,timestamp }) {
   const formattedTime = new Date(timestamp).toLocaleString('zh-CN', {
     year: 'numeric',

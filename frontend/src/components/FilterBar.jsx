@@ -1,5 +1,7 @@
 import React from 'react';
 
+import "../styles/FilterBar.css";
+
 function FilterBar({ sortBy, onSortChange, category, onCategoryChange }) {
   return (
     <div className="filter-bar">

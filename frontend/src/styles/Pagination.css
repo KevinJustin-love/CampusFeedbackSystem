@@ -1,0 +1,38 @@
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  margin-top: 30px;
+  padding: 20px 0;
+}
+
+.page-nav,
+.page-number {
+  padding: 6px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background: white;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.page-nav:hover:not(:disabled),
+.page-number:hover:not(.active) {
+  background: #f0f0f0;
+}
+
+.page-nav:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.page-number.active {
+  background: #4a90e2;
+  color: white;
+  border-color: #4a90e2;
+}
+
+.ellipsis {
+  padding: 0 8px;
+}

@@ -1,5 +1,7 @@
 import React from 'react';
 
+import "../styles/IssueNavbar.css";
+
 //状态导航栏
 export default function IssuesNavbar({ activeTab, onTabChange }) {
   return (

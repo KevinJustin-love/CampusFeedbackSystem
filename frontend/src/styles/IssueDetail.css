@@ -5,3 +5,27 @@
   margin-bottom: 16px;
 }
 
+.detail-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.detail-info {
+  display: flex;
+  color: #6b7280;
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+
+.detail-description {
+  color: #2e3c51;
+  font-size: 16px;
+  margin-bottom: 16px;
+}
+
+.label {
+  color: #1f2937;
+  font-weight: 600;
+}

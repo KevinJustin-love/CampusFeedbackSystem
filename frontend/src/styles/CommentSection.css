@@ -11,3 +11,20 @@
   margin: 10px auto;
 }
 
+.comment-title {
+  font-size: 24px;
+  font-weight: bold;
+  color: #2563eb;
+  margin-bottom: 16px;
+}
+
+.comment-section {
+  display: flex;
+  flex-direction: column;
+  overflow: scroll;
+  overflow-y: auto;
+  -ms-overflow-style: none; /* IE & Edge */
+  scrollbar-width: none; /* Firefox */
+  scrollbar-width: none; /* Firefox */
+  flex-grow: 1;
+}

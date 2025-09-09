@@ -1,0 +1,20 @@
+.issues-navbar {
+  display: flex;
+  gap: 10px;
+  padding: 10px 0;
+  margin-bottom: 0px;
+}
+
+.nav-button {
+  padding: 8px 16px;
+  border: none;
+  background: #f0f0f0;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.nav-button.active {
+  background: #4a90e2;
+  color: white;
+}

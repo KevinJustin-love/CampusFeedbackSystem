@@ -3,7 +3,7 @@ import { feedbackAPI } from "../../api";
 import CommentInput from "./CommentInput";
 import CommentMessage from "./CommentMessage";
 
-import "/frontend/src/styles/CommentSection.css";
+import "../../styles/CommentSection.css";
 
 function CommentSection({ issueId }) {
   const commentMessagesReff = useRef(null);

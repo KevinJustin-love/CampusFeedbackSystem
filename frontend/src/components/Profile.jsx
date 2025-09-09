@@ -1,6 +1,8 @@
 import React, { useRef,useState, useEffect } from "react"
 import axios from "axios"
 
+import "../styles/Profile.css";
+
 const API_BASE_URL = import.meta.env.VITE_API_URL
 
 export default function UserProfile({ user, onClose, onUpdate }) {

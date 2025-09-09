@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 
+import "../../styles/CommentInput.css";
+
 function CommentInput({ onAddComment }) {
   const [inputValue, setInputValue] = useState("");
 

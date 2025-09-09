@@ -9,7 +9,24 @@
   height: 65px;
   position: sticky;
   top: 0px;
-  background-image: url("frontend/pictures/background4.jpg"); 
+  background-image: url("../../pictures/background4.jpg");
   background-size: cover;
   z-index: 1000;
+}
+
+.userimg {
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+  position: relative;
+  top: 15px;
+  right: 8px;
+  transition: transform 0.3s ease;
+  cursor: pointer;
+  border: 2px solid #c2c2c2;
+}
+
+.userimg:hover {
+  transform: scale(1.2);
+  background-color: #000000;
 }
