@@ -7,6 +7,8 @@ import {
   CheckCircle,
 } from "lucide-react";
 
+import "../styles/MessagePage.css";
+
 const NotificationPanel = ({
   isOpen,
   onClose,

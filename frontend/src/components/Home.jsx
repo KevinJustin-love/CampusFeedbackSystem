@@ -47,7 +47,7 @@ const Home = ({ user }) => {
   ]);
 
   // 计算未读消息数量
-  const unreadCount = notifications.filter((n) => !n.isRead).length;
+  // const unreadCount = notifications.filter((n) => !n.isRead).length;
 
   // 标记单条消息为已读
   const markAsRead = (id) => {
@@ -74,6 +74,11 @@ const Home = ({ user }) => {
   const handleNotificationClick = (notification) => {
     markAsRead(notification.id);
     navigate(`/detail/${notification.problemId}`);
+  };
+
+  // 处理消息栏点击 - 新增函数
+  const handleMessageBarClick = () => {
+    setShowNotificationPanel(true);
   };
 
   // 在组件挂载时获取用户信息
@@ -138,7 +143,10 @@ const Home = ({ user }) => {
           onMarkAllAsRead={markAllAsRead}
         />
         欢迎，{currentUser?.username || user?.username || "访客"}
-        <Navbar />
+        <Navbar
+          onMessageBarClick={handleMessageBarClick}
+          // unreadCount={unreadCount}
+        />
       </div>
     </div>
   );

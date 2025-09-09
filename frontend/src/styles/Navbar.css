@@ -16,6 +16,26 @@
   color: #ffffff;
 }
 
+/* 通知徽章样式 - 新增 */
+/* .notification-badge {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background: #ff4757;
+  color: white;
+  border-radius: 10px;
+  padding: 2px 4px;
+  font-size: 12px;
+  font-weight: bold;
+  min-width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  z-index: 10; 
+} */
+
 .clock-icon {
   cursor: pointer;
   color: #d0d0d0;
@@ -29,7 +49,7 @@
 .clock-icon:hover {
   transform: scale(1.2);
   color: #ffffff;
-  text-overflow: "浏览历史";
+  /* 移除了 text-overflow，因为这个属性不能这样使用 */
 }
 
 .star-icon {
@@ -63,7 +83,7 @@
   background-color: #ffffff;
 }
 
-.search-container:hover,
+.search-container:hover, 
 .search-container:focus-within {
   border-color: rgb(151, 151, 151);
 }
