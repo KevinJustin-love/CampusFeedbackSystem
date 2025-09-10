@@ -6,10 +6,12 @@ import FilterBar from "../components/FilterBar";
 import Pagination from "../components/Pagination";
 import IssueGrid from "../components/IssueGrid";
 import SubmitIssuePage from "../pages/SubmitIssuePage";
-import { feedbackAPI } from "../api";
+
 
 import "../styles/admin&dash.css";
 import "../styles/StudentDashboard.css";
+
+import { fetchIssues } from "../components/functions/FetchIssues";
 
 const StudentDashboard = ({ user, id }) => {
   const navigate = useNavigate();
@@ -26,20 +28,8 @@ const StudentDashboard = ({ user, id }) => {
 
   // 在 useEffect 中从 API 获取问题列表
   useEffect(() => {
-    const fetchIssues = async () => {
-      try {
-        setLoading(true);
-        const res = await feedbackAPI.getIssueList();
-        setIssues(res.data);
-        setError(null);
-      } catch (err) {
-        console.error("获取问题列表失败：", err);
-        setError("加载问题列表失败。请稍后重试。");
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchIssues();
+    
+    fetchIssues(setLoading, setIssues, setError);
   }, []);
 
   const handleSwitchToAdmin = () => {
