@@ -28,7 +28,6 @@ const StudentDashboard = ({ user, id }) => {
 
   // 在 useEffect 中从 API 获取问题列表
   useEffect(() => {
-    
     fetchIssues(setLoading, setIssues, setError);
   }, []);
 
@@ -39,10 +38,10 @@ const StudentDashboard = ({ user, id }) => {
   //综合过滤和排序逻辑
   const filteredIssues = issues
     .filter((issue) => activeTab === "all" || issue.author === user.username)
-    .filter((issue) => category === "all" || issue.category === category)
+    .filter((issue) => category === "all" || issue.topic === category)
     .sort((a, b) => {
       if (sortBy === "time") {
-        return new Date(b.updated_at) - new Date(a.updated_at);
+        return new Date(b.updated) - new Date(a.updated);
       } else {
         // 定义权重，你可以根据实际需求调整这些值
         const LIKE_WEIGHT = 2; // 点赞的权重
