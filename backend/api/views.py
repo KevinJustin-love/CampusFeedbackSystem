@@ -1,10 +1,17 @@
+# myapp/views.py
 from django.shortcuts import render
-from rest_framework import generics, status
+from rest_framework import generics, status, viewsets
 from rest_framework.response import Response
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-from .serializers import RegisterSerializer, UserUpdateSerializer
+from .serializers import (
+    RegisterSerializer, 
+    UserUpdateSerializer, 
+    UserSerializer, 
+    UserAdminUpdateSerializer
+)
+from .permissions import IsSuperAdmin, IsAnyAdmin # 确保你已经创建了这些权限类
 from .models import CustomUser
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
@@ -15,19 +22,13 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         # 将用户信息添加到令牌的自定义载荷中
         token['username'] = user.username
         
-        # 根据用户名设置不同的角色
-        if user.username == 'lifeAdmin':
-            token['role'] = 'life_admin'
-        elif user.username == 'studyAdmin':
-            token['role'] = 'study_admin'
-        elif user.username == 'manageAdmin':
-            token['role'] = 'manage_admin'
-        else:
-            token['role'] = 'student'  # 默认角色为student
+        # 1. 从用户的多对多关系中动态获取角色
+        #    并将其作为列表添加到令牌载荷中
+        roles = [role.name for role in user.roles.all()]
+        token['roles'] = roles
         
         return token
 
-# 创建一个自定义视图，使用你的序列化器
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
 
@@ -42,4 +43,17 @@ class UserProfileUpdateView(generics.RetrieveUpdateAPIView):
     
     def get_object(self):
         return self.request.user
-    
+
+# 2. 新增的视图：用于获取当前登录用户的详细信息
+class UserDetailView(generics.RetrieveAPIView):
+    serializer_class = UserSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_object(self):
+        return self.request.user
+
+# 3. 新增的视图集：用于管理员管理用户
+class UserAdminViewSet(viewsets.ModelViewSet):
+    queryset = CustomUser.objects.all()
+    serializer_class = UserAdminUpdateSerializer
+    permission_classes = [IsAuthenticated, IsSuperAdmin]
