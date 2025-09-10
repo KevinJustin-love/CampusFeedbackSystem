@@ -33,7 +33,7 @@ const App = () => {
 
   // 在组件挂载时和路由变化时检查用户状态
   useEffect(() => {
-    checkUserAuth();
+    checkUserAuth(setIsLoading, setUser);
   }, [location.pathname]); // 监听路由变化
 
   if (isLoading) {
