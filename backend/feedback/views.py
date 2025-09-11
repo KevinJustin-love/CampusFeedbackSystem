@@ -17,19 +17,19 @@ class IssueListCreate(generics.ListCreateAPIView):
     def get_queryset(self):
         return Issue.objects.filter(is_public=True).order_by('-updated')
 
-        def perform_create(self, serializer):
-            # 从请求数据中获取 topic 的名称
-            topic_name = self.request.data.get('topic')
+    def perform_create(self, serializer):
+        # 从请求数据中获取 topic 的名称
+        topic_name = self.request.data.get('topic')
             
-            # 查找或创建一个 Topic 实例
-            # 这段代码实现了“自定义”分类，如果前端只提供固定选项，这个方法也适用
-            topic_instance, created = Topic.objects.get_or_create(name=topic_name)
+        # 查找或创建一个 Topic 实例
+        # 这段代码实现了“自定义”分类，如果前端只提供固定选项，这个方法也适用
+        topic_instance, created = Topic.objects.get_or_create(name=topic_name)
             
-            if self.request.user.is_authenticated:
-                # 将 host 和 topic 实例传递给序列化器的 save 方法
-                serializer.save(host=self.request.user, topic=topic_instance)
-            else:
-                raise PermissionDenied("你必须登录才能发布。")
+        if self.request.user.is_authenticated:
+            # 将 host 和 topic 实例传递给序列化器的 save 方法
+            serializer.save(host=self.request.user, topic=topic_instance)
+        else:
+            raise PermissionDenied("你必须登录才能发布。")
 
 class IssueDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Issue.objects.all()

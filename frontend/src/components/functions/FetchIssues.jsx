@@ -4,6 +4,7 @@ export const fetchIssues = async (setLoading, setIssues, setError) => {
     try {
       setLoading(true);
       const res = await feedbackAPI.getIssueList();
+      console.log("API 响应数据:", res.data);
       setIssues(res.data);
       setError(null);
     } catch (err) {

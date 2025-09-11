@@ -41,7 +41,7 @@ class ReplySerializer(serializers.ModelSerializer):
 class IssueSerializer(serializers.ModelSerializer):
     messages = MessageSerializer(many=True, read_only=True) # 添加嵌套字段
     reply = ReplySerializer(read_only=True)
-    topic = serializers.StringRelatedField(read_only=True)
+    topic = serializers.StringRelatedField()
 
 
     class Meta:
@@ -59,6 +59,8 @@ class IssueSerializer(serializers.ModelSerializer):
             'messages',
             'reply',
             'views',
-            'likes'
+            'likes',
+            'updated',
+            'created'
             ]
         read_only_fields = ['host_name']
