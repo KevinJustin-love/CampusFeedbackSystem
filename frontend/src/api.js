@@ -19,7 +19,8 @@ api.interceptors.request.use(
 );
 
 export const feedbackAPI = {
-  getIssueList: () => api.get("/feedback/issues/"),
+  // getIssueList: () => api.get("/feedback/issues/"),
+  getIssueList: (config = {}) => api.get("/feedback/issues/", config),
   createIssue: (data) => api.post("/feedback/issues/",data),
   getIssueDetail: (id) => api.get(`/feedback/issues/${id}/`),
   updateIssue: (id, data) => api.put(`/feedback/issues/${id}/`, data),
@@ -30,7 +31,6 @@ export const feedbackAPI = {
 
 export const authAPI = {
   register: (data) => api.post("/api/auth/register/", data),
-  // Add other auth methods here (e.g., login, etc.)
 };
 
 export default api;

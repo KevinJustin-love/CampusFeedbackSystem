@@ -15,7 +15,33 @@ class IssueListCreate(generics.ListCreateAPIView):
     serializer_class = IssueSerializer
 
     def get_queryset(self):
-        return Issue.objects.filter(is_public=True).order_by('-updated')
+        # 初始查询集：所有公开的问题
+        queryset = Issue.objects.filter(is_public=True)
+
+        # 获取查询参数
+        topic = self.request.query_params.get('topic', None)
+        sort_by = self.request.query_params.get('sortBy', None)
+
+
+        # 1. 过滤逻辑：按分类筛选
+        if topic and topic != 'all':
+            # 假设 topic 名称是唯一的，或者你需要根据你的模型进行修改
+            queryset = queryset.filter(topic__name=topic)
+
+        # 2. 排序逻辑
+        if sort_by == 'time':
+            # 默认排序（按更新时间）
+            queryset = queryset.order_by('-updated')
+        elif sort_by == 'popularity':
+            # 假设你的前端是发送 'popularity'，这里就用它
+            # 注意：Django ORM 无法直接计算一个复杂的 popularity 得分，
+            # 这里简单地按 likes 排序
+            queryset = queryset.order_by('-likes', '-updated')
+        else:
+            # 默认排序
+            queryset = queryset.order_by('-updated')
+        
+        return queryset
 
     def perform_create(self, serializer):
         # 从请求数据中获取 topic 的名称

@@ -1,9 +1,10 @@
 import { feedbackAPI } from "../../api";
 
-export const fetchIssues = async (setLoading, setIssues, setError) => {
+export const fetchIssues = async (setLoading, setIssues, setError,config) => {
     try {
       setLoading(true);
-      const res = await feedbackAPI.getIssueList();
+      // const res = await feedbackAPI.getIssueList();
+      const res = await feedbackAPI.getIssueList(config);
       console.log("API 响应数据:", res.data);
       setIssues(res.data);
       setError(null);

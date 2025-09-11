@@ -28,12 +28,9 @@ const StudentDashboard = ({ user }) => {
 
   // 在 useEffect 中从 API 获取问题列表
   useEffect(() => {
-    fetchIssues(setLoading, setIssues, setError);
-  }, []);
+    fetchIssues(setLoading, setIssues, setError,{ params: { topic:category, sortBy: sortBy }});
+  }, [category, sortBy]);
 
-  const handleSwitchToAdmin = () => {
-    navigate("/admin");
-  };
 
   //综合过滤和排序逻辑
   const filteredIssues = issues
