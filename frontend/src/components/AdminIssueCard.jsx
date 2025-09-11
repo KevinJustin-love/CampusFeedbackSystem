@@ -105,11 +105,10 @@ function AdminIssueCard({ issue, onReplySuccess }) {
         )}
         {issue.replies && issue.replies.length > 0 && (
           <div className="admin-issue-replies">
-            <h4>回复记录</h4>
             {issue.replies.map((reply, index) => (
               <div key={index} className="admin-issue-reply">
                 <p><strong>回复内容：</strong>{reply.content}</p>
-                <p><strong>回复时间：</strong>{formatDate(reply.createdAt)}</p>
+                <p><strong>回复时间：</strong>{formatDate(reply.created)}</p>
               </div>
             ))}
           </div>

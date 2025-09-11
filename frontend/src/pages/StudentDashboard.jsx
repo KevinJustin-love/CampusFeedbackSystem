@@ -40,16 +40,8 @@ const StudentDashboard = ({ user }) => {
       if (sortBy === "time") {
         return new Date(b.updated) - new Date(a.updated);
       } else {
-        // 定义权重，你可以根据实际需求调整这些值
-        const LIKE_WEIGHT = 2; // 点赞的权重
-        const VIEW_WEIGHT = 1;  // 浏览量的权重
-
-        // 计算每个问题的 popularity 得分
-        const scoreA = (a.likes || 0) * LIKE_WEIGHT + (a.views || 0) * VIEW_WEIGHT;
-        const scoreB = (b.likes || 0) * LIKE_WEIGHT + (b.views || 0) * VIEW_WEIGHT;
-
-        // 按照得分降序排列
-        return scoreB - scoreA;
+        // 直接使用后端返回的 popularity 值进行排序
+        return (b.popularity || 0) - (a.popularity || 0);
       }
     });
 
