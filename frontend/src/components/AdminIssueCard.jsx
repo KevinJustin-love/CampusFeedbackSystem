@@ -143,7 +143,6 @@ function AdminIssueCard({ issue, onReplySuccess }) {
       <div className="admin-issue-stats">
         <span>👀 {issue.views || 0}</span>
         <span>👍 {issue.likes || 0}</span>
-        <span>🔥 {(issue.popularity || 0).toFixed(1)}</span>
       </div>
 
       <div className="admin-issue-actions">

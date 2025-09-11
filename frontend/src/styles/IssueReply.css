@@ -44,6 +44,13 @@
     font-size: 24px;
 }
 
+/* 多个回复的列表容器 */
+.replies-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
 /* 单个回复的容器 */
 .reply {
     background: #ffffff;

@@ -117,7 +117,6 @@ function IssueDetailModal({ issueId, isOpen, onClose }) {
               <div className="issue-stats">
                 <span>👀 浏览量: {issue.views || 0}</span>
                 <span>👍 点赞数: {issue.likes || 0}</span>
-                <span>🔥 热度: {(issue.popularity || 0).toFixed(1)}</span>
               </div>
             </div>
 

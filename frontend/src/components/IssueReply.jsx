@@ -4,20 +4,22 @@ import { feedbackAPI } from "../api";
 
 function HandlingReply({ issueId }) {
 
-  const [reply, setReply] = useState(null);
+  const [replies, setReplies] = useState([]);
   const [loading, setLoading] = useState(true);
   
   useEffect(() => {
     if(issueId){
-        fetchReply();
+        fetchReplies();
       }  
   }, [issueId]);
   
-  const fetchReply = async () => {
+  const fetchReplies = async () => {
       try {
         setLoading(true)
         const res = await feedbackAPI.getIssueDetail(issueId);
-        setReply(res.data.reply || null);
+        // 获取所有回复
+        const repliesData = res.data.replies || [];
+        setReplies(repliesData);
       }catch (error) {
         console.error("获取结果失败", error);
       }finally {
@@ -37,32 +39,36 @@ function HandlingReply({ issueId }) {
   return (
     <div className="reply-container">
       <h1 className="reply-title">处理结果</h1>
-      {reply && reply.content ? (
-        <div className="reply">
-          <p className="reply-text">{reply.content}</p>
-          {reply.created && (
-            <p className="reply-date">
-              {new Date(reply.created).toLocaleString('zh-CN', {
-                year: 'numeric',
-                month: '2-digit',
-                day: '2-digit',
-                hour: '2-digit',
-                minute: '2-digit'
-              })}
-            </p>
-          )}
-          {reply.attachment && (
-            <div className="reply-file">
-              <h3>相关文件</h3>
-              <a
-                href={reply.attachment}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                点击下载
-              </a>
+      {replies && replies.length > 0 ? (
+        <div className="replies-list">
+          {replies.map((reply, index) => (
+            <div key={reply.id || index} className="reply">
+              <p className="reply-text">{reply.content}</p>
+              {reply.created && (
+                <p className="reply-date">
+                  {new Date(reply.created).toLocaleString('zh-CN', {
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                  })}
+                </p>
+              )}
+              {reply.attachment && (
+                <div className="reply-file">
+                  <h3>相关文件</h3>
+                  <a
+                    href={reply.attachment}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    点击下载
+                  </a>
+                </div>
+              )}
             </div>
-          )}
+          ))}
         </div>
       ) : (
         <div className="no-reply">
