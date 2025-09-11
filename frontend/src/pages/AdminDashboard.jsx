@@ -75,11 +75,6 @@ const AdminDashboard = ({ user }) => {
           onClick={handleSwitchToStudent}>
           切换
         </button>
-        {isAdmin && (
-          <button className="btn-primary" onClick={handleRestoreClick}>
-            管理员恢复
-          </button>
-        )}
       </div>
 
       <div className="content-wrapper">

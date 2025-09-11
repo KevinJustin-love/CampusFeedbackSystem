@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { feedbackAPI } from "../api";
+import IssueDetailModal from "./IssueDetailModal";
 import "../styles/AdminIssueCard.css";
 
 // Fixed undefined toFixed() error - updated component
@@ -13,6 +14,7 @@ function AdminIssueCard({ issue, onReplySuccess }) {
   const [replyContent, setReplyContent] = useState("");
   const [attachment, setAttachment] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showDetailModal, setShowDetailModal] = useState(false);
 
   const handleReplySubmit = async (e) => {
     e.preventDefault();
@@ -45,6 +47,10 @@ function AdminIssueCard({ issue, onReplySuccess }) {
     } finally {
       setIsSubmitting(false);
     }
+  };
+
+  const toggleReplyForm = () => {
+    setShowReplyForm(!showReplyForm);
   };
 
   const formatDate = (dateString) => {
@@ -97,6 +103,42 @@ function AdminIssueCard({ issue, onReplySuccess }) {
             </a>
           </p>
         )}
+        {issue.replies && issue.replies.length > 0 && (
+          <div className="admin-issue-replies">
+            <h4>回复记录</h4>
+            {issue.replies.map((reply, index) => (
+              <div key={index} className="admin-issue-reply">
+                <p><strong>回复内容：</strong>{reply.content}</p>
+                <p><strong>回复时间：</strong>{formatDate(reply.createdAt)}</p>
+              </div>
+            ))}
+          </div>
+        )}
+        {showReplyForm && (
+          <div className="admin-issue-reply-form">
+            <h4>回复问题</h4>
+            <form onSubmit={handleReplySubmit}>
+              <textarea
+                className="admin-issue-reply-input"
+                value={replyContent}
+                onChange={(e) => setReplyContent(e.target.value)}
+                placeholder="请输入回复内容"
+                required
+              />
+              <input
+                type="file"
+                onChange={(e) => setAttachment(e.target.files[0])}
+              />
+              <button 
+                type="submit" 
+                className="admin-issue-reply-submit"
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? '提交中...' : '提交回复'}
+              </button>
+            </form>
+          </div>
+        )}
       </div>
 
       <div className="admin-issue-stats">
@@ -106,6 +148,12 @@ function AdminIssueCard({ issue, onReplySuccess }) {
       </div>
 
       <div className="admin-issue-actions">
+        <button
+          className="btn-detail"
+          onClick={() => setShowDetailModal(true)}
+        >
+          查看详情
+        </button>
         {issue.status !== '已处理' && (
           <button
             className="btn-reply"
@@ -162,6 +210,13 @@ function AdminIssueCard({ issue, onReplySuccess }) {
           </form>
         </div>
       )}
+
+      {/* 问题详情模态框 */}
+      <IssueDetailModal
+        issueId={issue.id}
+        isOpen={showDetailModal}
+        onClose={() => setShowDetailModal(false)}
+      />
     </div>
   );
 }

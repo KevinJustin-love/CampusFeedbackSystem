@@ -95,6 +95,22 @@
   gap: 12px;
 }
 
+.btn-detail {
+  background: #17a2b8;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: background 0.3s ease;
+}
+
+.btn-detail:hover {
+  background: #138496;
+}
+
 .btn-reply {
   background: #007bff;
   color: white;
@@ -224,6 +240,16 @@
   .admin-issue-stats {
     flex-wrap: wrap;
     gap: 12px;
+  }
+  
+  .admin-issue-actions {
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .btn-detail,
+  .btn-reply {
+    width: 100%;
   }
   
   .form-actions {

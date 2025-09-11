@@ -60,7 +60,7 @@ class ReplySerializer(serializers.ModelSerializer):
 
 class IssueSerializer(serializers.ModelSerializer):
     messages = MessageSerializer(many=True, read_only=True) # 添加嵌套字段
-    reply = ReplySerializer(read_only=True)
+    replies = ReplySerializer(many=True, read_only=True, source='reply_set')
     topic = serializers.StringRelatedField()
 
 
@@ -77,7 +77,7 @@ class IssueSerializer(serializers.ModelSerializer):
             'attachment',
             'is_public',
             'messages',
-            'reply',
+            'replies',
             'views',
             'likes',
             'updated',
