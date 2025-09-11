@@ -39,10 +39,6 @@ function IssueCard({ issue }) {
         e.stopPropagation();
         
         try {
-            // 检查是否有token
-            const token = localStorage.getItem('access');
-            console.log('Token存在:', !!token);
-            
             const response = await api.post(`/feedback/issues/${issue.id}/like/`);
             
             if (response.data.likes !== undefined) {
@@ -51,7 +47,6 @@ function IssueCard({ issue }) {
             }
         } catch (error) {
             console.error('点赞失败:', error);
-            console.error('错误详情:', error.response?.data);
             if (error.response?.status === 401) {
                 alert('请先登录后再点赞');
             }

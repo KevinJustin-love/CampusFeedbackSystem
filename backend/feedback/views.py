@@ -121,14 +121,16 @@ def like_issue(request, issue_id):
         if like_exists:
             # 如果已经点过赞，则取消点赞
             IssueLike.objects.filter(user=request.user, issue=issue).delete()
-            issue.likes = max(0, issue.likes - 1)  # 确保点赞数不会变成负数
-            issue.save()
+            # 使用update()方法只更新likes字段，避免触发auto_now
+            Issue.objects.filter(pk=issue_id).update(likes=max(0, issue.likes - 1))
+            issue.refresh_from_db()  # 刷新实例以获取最新的likes值
             return Response({'likes': issue.likes, 'liked': False, 'message': '取消点赞'})
         else:
             # 如果没有点过赞，则添加点赞
             IssueLike.objects.create(user=request.user, issue=issue)
-            issue.likes += 1
-            issue.save()
+            # 使用update()方法只更新likes字段，避免触发auto_now
+            Issue.objects.filter(pk=issue_id).update(likes=issue.likes + 1)
+            issue.refresh_from_db()  # 刷新实例以获取最新的likes值
             return Response({'likes': issue.likes, 'liked': True, 'message': '点赞成功'})
             
     except Exception as e:
@@ -138,8 +140,9 @@ def like_issue(request, issue_id):
 def view_issue(request, issue_id):
     try:
         issue = get_object_or_404(Issue, pk=issue_id)
-        issue.views += 1
-        issue.save()
+        # 使用update()方法只更新views字段，避免触发auto_now
+        Issue.objects.filter(pk=issue_id).update(views=issue.views + 1)
+        issue.refresh_from_db()  # 刷新实例以获取最新的views值
         return Response({'views': issue.views})
     except Exception as e:
         return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
