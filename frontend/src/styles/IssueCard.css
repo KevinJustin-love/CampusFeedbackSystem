@@ -38,6 +38,13 @@
   margin-right: 16px; /* 为右侧元素添加内边距 */
 }
 
+/* 操作按钮容器 */
+.card-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
 /* 组合热度和互动区域的容器 */
 .card-stats {
   display: flex;
@@ -105,4 +112,22 @@
 
 .btn-link:hover {
   color: #1e40af;
+}
+
+/* 删除按钮样式 */
+.btn-delete {
+  color: #dc2626;
+  background: none;
+  border: none;
+  font-size: 14px;
+  cursor: pointer;
+  text-decoration: underline;
+  align-self: center;
+}
+
+.btn-delete:hover {
+  color: #b91c1c;
+  background-color: #fef2f2;
+  padding: 2px 6px;
+  border-radius: 4px;
 }

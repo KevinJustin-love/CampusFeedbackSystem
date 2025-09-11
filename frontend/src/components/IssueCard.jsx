@@ -14,6 +14,7 @@ function IssueCard({ issue }) {
     const [likes, setLikes] = useState(issue.likes || 0);
     const [views, setViews] = useState(issue.views || 0);
     const [isLiked, setIsLiked] = useState(false);
+    const [canDelete, setCanDelete] = useState(false);
 
     let formattedDate = 'N/A';
     if (updatedDateString) {
@@ -21,17 +22,22 @@ function IssueCard({ issue }) {
         formattedDate = dateObject.toLocaleString();
     }
 
-    // 检查用户是否已点赞
+    // 检查用户是否已点赞和删除权限
     useEffect(() => {
-        const checkLikeStatus = async () => {
+        const checkPermissions = async () => {
             try {
-                const response = await api.get(`/feedback/issues/${issue.id}/like-status/`);
-                setIsLiked(response.data.liked);
+                // 检查点赞状态
+                const likeResponse = await api.get(`/feedback/issues/${issue.id}/like-status/`);
+                setIsLiked(likeResponse.data.liked);
+                
+                // 检查删除权限
+                const deleteResponse = await api.get(`/feedback/issues/${issue.id}/delete-permission/`);
+                setCanDelete(deleteResponse.data.can_delete);
             } catch (error) {
-                console.error('检查点赞状态失败:', error);
+                console.error('检查权限失败:', error);
             }
         };
-        checkLikeStatus();
+        checkPermissions();
     }, [issue.id]);
 
     // 处理点赞点击事件
@@ -71,6 +77,29 @@ function IssueCard({ issue }) {
         navigate(`/detail/${issue.id}`);
     };
 
+    // 处理删除点击事件
+    const handleDeleteClick = async (e) => {
+        e.stopPropagation();
+        
+        if (!window.confirm('确定要删除这个问题吗？此操作不可撤销。')) {
+            return;
+        }
+        
+        try {
+            await api.delete(`/feedback/issues/${issue.id}/delete/`);
+            alert('问题删除成功');
+            // 刷新页面或通知父组件更新列表
+            window.location.reload();
+        } catch (error) {
+            console.error('删除失败:', error);
+            if (error.response?.status === 403) {
+                alert('您没有权限删除此问题');
+            } else {
+                alert('删除失败，请稍后重试');
+            }
+        }
+    };
+
     return (
         <div className="issue-card">
             <h3 className="issue-title">{issue.title}</h3>
@@ -79,12 +108,23 @@ function IssueCard({ issue }) {
             <p className="issue-date">更新时间:{formattedDate}</p>
 
             <div className="card-footer">
-                <button
-                    className="btn-link"
-                    onClick={handleViewClick}
-                >
-                    查看详情
-                </button>
+                <div className="card-actions">
+                    <button
+                        className="btn-link"
+                        onClick={handleViewClick}
+                    >
+                        查看详情
+                    </button>
+                    {canDelete && (
+                        <button
+                            className="btn-delete"
+                            onClick={handleDeleteClick}
+                            title="删除问题"
+                        >
+                            删除
+                        </button>
+                    )}
+                </div>
                 
                 <div className="card-stats">
                     <div className="issue-interactions">

@@ -158,6 +158,52 @@ def get_csrf_token(request):
     token = get_token(request)
     return JsonResponse({'csrfToken': token})
 
+def can_delete_issue(user, issue):
+    """检查用户是否有权限删除问题"""
+    if not user.is_authenticated:
+        return False
+    
+    # 作者本人可以删除
+    if issue.host == user:
+        return True
+    
+    # 管理员可以删除（检查用户是否是超级用户或有管理员角色）
+    if user.is_superuser or user.is_staff:
+        return True
+    
+    # 检查用户是否有管理员角色
+    if hasattr(user, 'roles') and user.roles.filter(name__icontains='管理员').exists():
+        return True
+    
+    return False
+
+@api_view(['DELETE'])
+@permission_classes([IsAuthenticated])
+def delete_issue(request, issue_id):
+    """删除问题"""
+    try:
+        issue = get_object_or_404(Issue, pk=issue_id)
+        
+        # 检查权限
+        if not can_delete_issue(request.user, issue):
+            return Response({'error': '您没有权限删除此问题'}, status=status.HTTP_403_FORBIDDEN)
+        
+        issue.delete()
+        return Response({'message': '问题删除成功'}, status=status.HTTP_200_OK)
+        
+    except Exception as e:
+        return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+@api_view(['GET'])
+def check_delete_permission(request, issue_id):
+    """检查用户是否有删除权限"""
+    try:
+        issue = get_object_or_404(Issue, pk=issue_id)
+        can_delete = can_delete_issue(request.user, issue)
+        return Response({'can_delete': can_delete})
+    except Exception as e:
+        return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 @api_view(['GET'])
 def check_like_status(request, issue_id):
     """检查用户是否已经点赞了某个问题"""

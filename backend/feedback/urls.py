@@ -12,5 +12,7 @@ urlpatterns = [
     path('issues/<int:issue_id>/like/', views.like_issue, name='like_issue'),
     path('issues/<int:issue_id>/like-status/', views.check_like_status, name='check_like_status'),
     path('issues/<int:issue_id>/view/', views.view_issue, name='view_issue'),
+    path('issues/<int:issue_id>/delete/', views.delete_issue, name='delete_issue'),
+    path('issues/<int:issue_id>/delete-permission/', views.check_delete_permission, name='check_delete_permission'),
     path('auth/csrf/', views.get_csrf_token, name='get_csrf_token'),
 ]
