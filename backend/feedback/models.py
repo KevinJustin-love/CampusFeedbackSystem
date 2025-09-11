@@ -31,6 +31,17 @@ class Issue(models.Model):
     def __str__(self):
         return self.title
 
+class IssueLike(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    issue = models.ForeignKey(Issue, on_delete=models.CASCADE)
+    created = models.DateTimeField(auto_now_add=True)
+    
+    class Meta:
+        unique_together = ('user', 'issue')  # 确保一个用户只能给一个问题点一次赞
+        
+    def __str__(self):
+        return f"{self.user.username} liked {self.issue.title}"
+
 class Message(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True)
     issue = models.ForeignKey(Issue,on_delete=models.CASCADE)
@@ -46,7 +57,7 @@ class Message(models.Model):
 class Reply(models.Model):
     administrator = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True)
     content = models.CharField()
-    attachment = models.FileField(upload_to='attachments/', help_text="附件”")
+    attachment = models.FileField(upload_to='attachments/', help_text="附件")
     issue = models.ForeignKey(Issue, on_delete=models.CASCADE)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)

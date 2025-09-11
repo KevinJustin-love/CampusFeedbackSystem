@@ -76,6 +76,15 @@
   color: #1f2937;
 }
 
+/* 点赞状态样式 */
+.interaction-button.liked {
+  color: #ef4444;
+}
+
+.interaction-button.liked:hover {
+  color: #dc2626;
+}
+
 .icon {
   width: 1em;
   height: 1em;

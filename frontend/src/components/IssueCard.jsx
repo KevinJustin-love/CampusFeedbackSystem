@@ -1,6 +1,6 @@
 // IssueCard.jsx (修改后)
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 // 从 api.js 导入 axios 实例
 import api from "../api"; 
@@ -13,6 +13,7 @@ function IssueCard({ issue }) {
 
     const [likes, setLikes] = useState(issue.likes || 0);
     const [views, setViews] = useState(issue.views || 0);
+    const [isLiked, setIsLiked] = useState(false);
 
     let formattedDate = 'N/A';
     if (updatedDateString) {
@@ -20,21 +21,40 @@ function IssueCard({ issue }) {
         formattedDate = dateObject.toLocaleString();
     }
 
+    // 检查用户是否已点赞
+    useEffect(() => {
+        const checkLikeStatus = async () => {
+            try {
+                const response = await api.get(`/feedback/issues/${issue.id}/like-status/`);
+                setIsLiked(response.data.liked);
+            } catch (error) {
+                console.error('检查点赞状态失败:', error);
+            }
+        };
+        checkLikeStatus();
+    }, [issue.id]);
+
     // 处理点赞点击事件
     const handleLikeClick = async (e) => {
         e.stopPropagation();
         
         try {
-            // 使用 api 实例，并修改请求路径
+            // 检查是否有token
+            const token = localStorage.getItem('access');
+            console.log('Token存在:', !!token);
+            
             const response = await api.post(`/feedback/issues/${issue.id}/like/`);
             
-            if (response.data.likes) {
+            if (response.data.likes !== undefined) {
                 setLikes(response.data.likes);
-            } else {
-                setLikes(prevLikes => prevLikes + 1);
+                setIsLiked(response.data.liked);
             }
         } catch (error) {
             console.error('点赞失败:', error);
+            console.error('错误详情:', error.response?.data);
+            if (error.response?.status === 401) {
+                alert('请先登录后再点赞');
+            }
         }
     };
 
@@ -72,10 +92,9 @@ function IssueCard({ issue }) {
                 </button>
                 
                 <div className="card-stats">
-                    <p className="issue-popularity">热度：{issue.popularity || 0}</p>
                     <div className="issue-interactions">
                         <button 
-                            className="interaction-button"
+                            className={`interaction-button ${isLiked ? 'liked' : ''}`}
                             onClick={handleLikeClick}
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon">

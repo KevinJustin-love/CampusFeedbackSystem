@@ -10,6 +10,7 @@ urlpatterns = [
     path('issues/<int:pk>/messages/', views.MessageListCreate.as_view(), name='message-list-create'),
     path('issues/<int:pk>/Replies/', views.ReplyListCreate.as_view(), name='reply-list-create'), 
     path('issues/<int:issue_id>/like/', views.like_issue, name='like_issue'),
+    path('issues/<int:issue_id>/like-status/', views.check_like_status, name='check_like_status'),
     path('issues/<int:issue_id>/view/', views.view_issue, name='view_issue'),
     path('auth/csrf/', views.get_csrf_token, name='get_csrf_token'),
 ]
