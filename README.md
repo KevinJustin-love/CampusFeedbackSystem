@@ -16,8 +16,9 @@
 
 ## 具体使用
 访问 http://localhost:5173/login, 注册后登录。
-如果使用管理员，username 必须设置为 lifeAdmin、studyAdmin、manageAdmin。
+现有管理员：
+- 用户名：admin
+- 密码：admin123
 
-## 亟待解决
-
-> 后端时间使用的是 UTC，是否使用北京时间？？ 前端 Home.jsx 取信息网址要改？
+-用户名：life_admin
+-密码：life123
