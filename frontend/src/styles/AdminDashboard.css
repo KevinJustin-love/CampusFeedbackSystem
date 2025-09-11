@@ -2,29 +2,41 @@
   margin-top: 30px;
 }
 
-.button-container{
-    position: absolute;
-    top: 85px;
-    right: 20px;
-    display: flex;
-    gap: 10px;
+/* 调整按钮容器的位置，使用 flexbox 布局来更好地控制 */
+.button-container {
+  position: absolute; /* 继续使用绝对定位，但调整参数 */
+  top: 55px; /* 调整到顶部，与页面顶部有一定间距 */
+  right: 45px; /* 保持在右侧 */
+  display: flex;
+  gap: 10px;
+  z-index: 100; /* 确保按钮在其他元素之上 */
 }
 
+/* 调整切换按钮的样式，使其与页面风格更统一 */
 .btn-switch {
+  /* 保持原有的尺寸 */
   width: 100px;
   height: 40px;
-  margin-left: 10px;
-  margin-right: 60px;
-  padding: 5px 10px;
-  background-color: #007bff;
-  color: white;
+
+  /* 调整颜色，使其与背景渐变色更协调 */
+  background-color: #667eea; /* 使用渐变色中的一种作为背景色 */
+  color: white; /* 保持白色文字 */
   border: none;
-  border-radius: 4px;
+
+  /* 调整圆角，使其与 .admin-issues-container 风格一致 */
+  border-radius: 8px; /* 增大圆角 */
+
+  /* 添加阴影效果，增加立体感 */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
   cursor: pointer;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .btn-switch:hover {
-  background-color: #0056b3;
+  /* 鼠标悬停时的背景色 */
+  background-color: #764ba2; /* 使用渐变色的另一种颜色 */
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15); /* 悬停时加深阴影 */
 }
 
 .admin-container {
