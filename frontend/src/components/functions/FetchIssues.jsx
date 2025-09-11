@@ -1,4 +1,4 @@
-import { feedbackAPI } from "../api";
+import { feedbackAPI } from "../../api";
 
 export const fetchIssues = async (setLoading, setIssues, setError) => {
     try {

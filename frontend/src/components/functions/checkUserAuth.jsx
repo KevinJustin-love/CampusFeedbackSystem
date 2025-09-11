@@ -1,5 +1,5 @@
 import { jwtDecode } from "jwt-decode";
-import { ACCESS_TOKEN } from "./constants";
+import { ACCESS_TOKEN } from "../../constants";
 
 // 检查用户登录状态的函数
 export const checkUserAuth = (setIsLoading, setUser) => {

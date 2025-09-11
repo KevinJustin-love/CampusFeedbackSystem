@@ -2,164 +2,87 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Home from "../components/Home";
+import { jwtDecode } from "jwt-decode";
+import { ACCESS_TOKEN } from "../constants";
 
 import "../styles/admin&dash.css";
 import "../styles/issueCard&admin.css";
 import "../styles/AdminDashboard.css";
+import IssueGrid from "../components/IssueGrid";
+import { fetchIssues } from "../components/functions/FetchIssues";
 
-const AdminDashboard = ({ issues, categories, category, users, user }) => {
+const AdminDashboard = ({ user }) => {
   const navigate = useNavigate();
-  const [showModal, setShowModal] = useState(false);
+
+  const [issues, setIssues] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  // 获取并解码JWT令牌以获取用户角色和主题
+  const token = localStorage.getItem(ACCESS_TOKEN);
+  let userRoles = [];
+  let userTopics = [];
+  if (token) {
+    const decodedToken = jwtDecode(token);
+    userRoles = decodedToken.roles || [];
+    userTopics = decodedToken.topics || [];
+  }
+  const isAdmin = userRoles.includes("super_admin") || userRoles.includes("content_admin");
+
+  useEffect(() => {
+    // 权限检查：如果不是管理员，重定向到学生页面
+    if (!isAdmin) {
+      navigate("/dashboard");
+    } else {
+      fetchIssues(setLoading, setIssues, setError);
+    }
+  }, [isAdmin, navigate]);
+
+  // 根据管理员负责的主题来过滤问题
+  const filteredIssues = issues
+    .filter((issue) => {
+      // 如果是超级管理员，显示所有问题
+      if (userRoles.includes("super_admin")) {
+        return true;
+      }
+      // 对于内容管理员，只显示与其主题匹配的问题
+      return userTopics.includes(issue.topic);
+    })
+    .sort((a, b) => {
+      return new Date(b.updated) - new Date(a.updated);
+    });
 
   const handleSwitchToStudent = () => {
     navigate("/dashboard");
   };
 
-  const handleViewDetail = (id) => {
-    navigate(`/detail/${id}`);
-  };
-
-  // 管理员角色配置
-  const adminConfig = {
-    life_admin: {
-      title: "生活管理",
-      category: "生活",
-      showUsers: false,
-    },
-    study_admin: {
-      title: "学业管理",
-      category: "学业",
-      showUsers: false,
-    },
-    manage_admin: {
-      title: "管理管理",
-      category: "管理",
-      showUsers: true,
-    },
-  };
-
-  // 通用表格组件
-  const IssueTable = ({ title, issueList, showViewButton = true }) => (
-    <div className="table-card">
-      <h2 className="table-title">{title}</h2>
-      <div className="table-wrapper">
-        <table className="data-table">
-          <thead>
-            <tr>
-              <th>标题</th>
-              <th>分类</th>
-              <th>状态</th>
-              <th>操作</th>
-            </tr>
-          </thead>
-          <tbody>
-            {issueList.map((issue) => (
-              <tr key={issue.id} className="table-row">
-                <td>{issue.title}</td>
-                <td>{issue.category}</td>
-                <td>{issue.status}</td>
-                <td>
-                  {showViewButton && (
-                    <button
-                      className="btn-link"
-                      onClick={() => handleViewDetail(issue.id)}
-                    >
-                      查看
-                    </button>
-                  )}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </div>
-  );
-
-  // 用户管理表格组件
-  const UserTable = () => (
-    <div className="table-card">
-      <h2 className="table-title">用户管理</h2>
-      <div className="table-wrapper">
-        <table className="data-table">
-          <thead>
-            <tr>
-              <th>用户名</th>
-              <th>角色</th>
-              <th>操作</th>
-            </tr>
-          </thead>
-          <tbody>
-            {users.map((user) => (
-              <tr key={user.id} className="table-row">
-                <td>{user.username}</td>
-                <td>{user.role}</td>
-                <td>
-                  <button
-                    className="btn-link"
-                    onClick={() => handleViewDetail(user.id)}
-                  >
-                    查看
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </div>
-  );
-
-  // 根据角色确定显示的内容
-  const renderContent = () => {
-    const config = adminConfig[user.role];
-
-    if (!config) {
-      return <div>无权限访问</div>;
-    }
-
-    const filteredIssues = issues.filter(
-      (issue) => issue.category === config.category
-    );
-
-    return (
-      <div>
-        <h2>{config.title}</h2>
-        <IssueTable
-          title={`${config.category}问题列表`}
-          issueList={filteredIssues}
-          showViewButton={user.role !== "manage_admin"}
-        />
-        {config.showUsers && <UserTable />}
-      </div>
-    );
+  const handleRestoreClick = () => {
+    // 导航到管理员恢复页面
+    navigate("/admin/restore");
   };
 
   return (
     <div className="admin-container" style={{ padding: 0 }}>
-      {/* 使用 Home 组件替代原有的标题栏 */}
       <Home user={user} />
-
-      <div
-        style={{
-          position: "absolute",
-          top: "85px",
-          right: "20px",
-          display: "flex",
-          gap: "10px",
-        }}
-      >
+      <div className="button-container">
         <button
           className="btn-switch"
-          onClick={handleSwitchToStudent}
-          style={{ marginRight: "60px" }}
-        >
+          onClick={handleSwitchToStudent}>
           切换
         </button>
+        {isAdmin && (
+          <button className="btn-primary" onClick={handleRestoreClick}>
+            管理员恢复
+          </button>
+        )}
       </div>
 
-      <div className="content-wrapper" style={{ marginTop: "30px" }}>
-        {renderContent()}
+      <div className="content-wrapper">
+        <IssueGrid
+          isssue={filteredIssues}
+          loading={loading}
+          error={error}
+        />
       </div>
     </div>
   );

@@ -18,15 +18,18 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     @classmethod
     def get_token(cls, user):
         token = super().get_token(user)
-        
+
         # 将用户信息添加到令牌的自定义载荷中
         token['username'] = user.username
-        
-        # 1. 从用户的多对多关系中动态获取角色
-        #    并将其作为列表添加到令牌载荷中
+
+        # 获取用户的所有角色名称
         roles = [role.name for role in user.roles.all()]
         token['roles'] = roles
-        
+
+        # 新增：从用户的角色中获取所有相关的主题
+        topics = [role.topic for role in user.roles.all() if role.topic]
+        token['topics'] = topics
+
         return token
 
 class MyTokenObtainPairView(TokenObtainPairView):

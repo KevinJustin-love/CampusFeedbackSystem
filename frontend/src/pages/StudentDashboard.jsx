@@ -13,7 +13,7 @@ import "../styles/StudentDashboard.css";
 
 import { fetchIssues } from "../components/functions/FetchIssues";
 
-const StudentDashboard = ({ user, id }) => {
+const StudentDashboard = ({ user }) => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("all");
   const [sortBy, setSortBy] = useState("time");
