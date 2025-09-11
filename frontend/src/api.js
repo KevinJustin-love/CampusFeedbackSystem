@@ -39,6 +39,19 @@ export const feedbackAPI = {
   deleteIssue: (id) => api.delete(`/feedback/issues/${id}/`),
 
   getTopicList: () => api.get("/feedback/topics/"),
+  
+  // 评论相关API
+  createMessage: (issueId, data) => api.post(`/feedback/issues/${issueId}/messages/`, data),
+  getMessages: (issueId) => api.get(`/feedback/issues/${issueId}/messages/`),
+  
+  // 点赞相关API
+  likeIssue: (issueId) => api.post(`/feedback/issues/${issueId}/like/`),
+  checkLikeStatus: (issueId) => api.get(`/feedback/issues/${issueId}/like-status/`),
+  viewIssue: (issueId) => api.post(`/feedback/issues/${issueId}/view/`),
+  
+  // 删除权限相关API
+  checkDeletePermission: (issueId) => api.get(`/feedback/issues/${issueId}/delete-permission/`),
+  deleteIssueById: (issueId) => api.delete(`/feedback/issues/${issueId}/delete/`),
 };
 
 export const authAPI = {

@@ -11,19 +11,30 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['id', 'username']
+    
+    def to_representation(self, instance):
+        if instance is None:
+            return None
+        return super().to_representation(instance)
 
 class MessageSerializer(serializers.ModelSerializer):
-    user = UserSerializer(read_only=True) # 嵌套用户序列化器
+    user_name = serializers.SerializerMethodField()  # 添加用户名字段
+
+    def get_user_name(self, obj):
+        """获取用户名，如果用户为None则返回'匿名用户'"""
+        if obj.user:
+            return obj.user.username
+        return '匿名用户'
 
     class Meta:
         model = Message
         fields = [
+            "id",
             "user_name",
-            "issue",
             "body",
             'created'
         ]
-        read_only_fields = ["user_name", 'created']
+        read_only_fields = ["id", "user_name", 'created']
 
 class ReplySerializer(serializers.ModelSerializer):
     class Meta:
@@ -32,7 +43,7 @@ class ReplySerializer(serializers.ModelSerializer):
             "administrator_name",
             "content",
             "attachment",
-            "issue"
+            "issue",
             "created"
         ]
         read_only_fields = ["administrator_name"] 

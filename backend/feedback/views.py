@@ -1,14 +1,13 @@
-from django.shortcuts import render
+from django.shortcuts import render,get_object_or_404
 from django.contrib.auth.models import User
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated, AllowAny
+from rest_framework.exceptions import PermissionDenied
 from django.middleware.csrf import get_token
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 from django.views.decorators.csrf import csrf_exempt
-from django.shortcuts import get_object_or_404
 from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
 from .models import Issue, Reply, Message, Topic, IssueLike
@@ -23,6 +22,7 @@ class TopicListCreate(generics.ListCreateAPIView):
 
 class IssueListCreate(generics.ListCreateAPIView):
     serializer_class = IssueSerializer
+    permission_classes = [AllowAny]  # 允许查看问题列表，但创建需要认证
 
     def get_queryset(self):
         # 初始查询集：所有公开的问题
@@ -73,9 +73,11 @@ class IssueDetailView(generics.RetrieveUpdateDestroyAPIView):
 
 class ReplyListCreate(generics.ListCreateAPIView):
     serializer_class = ReplySerializer
+    permission_classes = [AllowAny]  # 允许查看回复，但创建需要认证
 
     def get_queryset(self):
-        return Reply.objects.all()
+        issue_id = self.kwargs.get('pk')
+        return Reply.objects.filter(issue_id=issue_id)
     
     def perform_create(self, serializer):
         if self.request.user.is_authenticated:
@@ -91,9 +93,11 @@ class ReplyListCreate(generics.ListCreateAPIView):
 
 class MessageListCreate(generics.ListCreateAPIView):
     serializer_class = MessageSerializer
+    permission_classes = [AllowAny]  # 允许查看评论，但创建需要认证
 
     def get_queryset(self):
-        return Message.objects.all()
+        issue_id = self.kwargs.get('pk')
+        return Message.objects.filter(issue_id=issue_id)
     
     def perform_create(self, serializer):
         if self.request.user.is_authenticated:

@@ -70,7 +70,7 @@ class Message(models.Model):
 
 class Reply(models.Model):
     administrator = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True)
-    content = models.CharField()
+    content = models.CharField(max_length=1000)
     attachment = models.FileField(upload_to='attachments/', help_text="附件")
     issue = models.ForeignKey(Issue, on_delete=models.CASCADE)
     created = models.DateTimeField(auto_now_add=True)
@@ -80,4 +80,4 @@ class Reply(models.Model):
         ordering = [ '-created']
 
     def __str__(self):
-        return self.body[0:50]
+        return self.content[0:50]
