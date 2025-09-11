@@ -28,10 +28,11 @@ const Form = ({ route, method }) => {
 
         // 解码JWT Token获取用户角色
         const decodedToken = jwtDecode(res.data.access);
-        const role = decodedToken.role || "student";
+        const roles = decodedToken.roles || [];
 
         // 根据角色决定导航路径
-        if (role.includes("admin")) {
+        const isAdmin = roles.includes("super_admin") || roles.some(role => role.endsWith("_admin"));
+        if (isAdmin) {
           navigate("/admin");
         } else {
           navigate("/dashboard");

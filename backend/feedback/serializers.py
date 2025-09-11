@@ -37,16 +37,25 @@ class MessageSerializer(serializers.ModelSerializer):
         read_only_fields = ["id", "user_name", 'created']
 
 class ReplySerializer(serializers.ModelSerializer):
+    administrator_name = serializers.SerializerMethodField()
+    
+    def get_administrator_name(self, obj):
+        """获取管理员用户名，如果管理员为None则返回'系统管理员'"""
+        if obj.administrator:
+            return obj.administrator.username
+        return '系统管理员'
+    
     class Meta:
         model = Reply
         fields = [
+            "id",
             "administrator_name",
             "content",
             "attachment",
             "issue",
             "created"
         ]
-        read_only_fields = ["administrator_name"] 
+        read_only_fields = ["id", "administrator_name", "created"] 
 
 
 class IssueSerializer(serializers.ModelSerializer):

@@ -2,20 +2,20 @@ import axios from "axios";
 import { ACCESS_TOKEN } from "./constants";
 
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL
+  baseURL: import.meta.env.VITE_API_URL || ''
 });
 
-// 使用一个自执行的异步函数来设置拦截器
-(async () => {
-  try {
-      const response = await api.get('/auth/csrf/');
-      const csrfToken = response.data.csrfToken;
-      // 如果成功获取到 CSRF Token，将其添加到默认请求头
-      api.defaults.headers.common['X-CSRFToken'] = csrfToken;
-  } catch (error) {
-      console.error("Failed to fetch CSRF token:", error);
-  }
-})();
+// CSRF token is not needed for JWT authentication, commenting out
+// (async () => {
+//   try {
+//       const response = await api.get('/auth/csrf/');
+//       const csrfToken = response.data.csrfToken;
+//       // 如果成功获取到 CSRF Token，将其添加到默认请求头
+//       api.defaults.headers.common['X-CSRFToken'] = csrfToken;
+//   } catch (error) {
+//       console.error("Failed to fetch CSRF token:", error);
+//   }
+// })();
 
 api.interceptors.request.use(
   (config) => {
@@ -52,6 +52,10 @@ export const feedbackAPI = {
   // 删除权限相关API
   checkDeletePermission: (issueId) => api.get(`/feedback/issues/${issueId}/delete-permission/`),
   deleteIssueById: (issueId) => api.delete(`/feedback/issues/${issueId}/delete/`),
+  
+  // 管理员相关API
+  getAdminIssues: () => api.get('/api/admin/issues/'),
+  adminReplyIssue: (issueId, data) => api.post(`/api/admin/issues/${issueId}/reply/`, data),
 };
 
 export const authAPI = {

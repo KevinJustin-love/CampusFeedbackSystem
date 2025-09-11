@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import Home from "../components/Home";
+import AdminIssueCard from "../components/AdminIssueCard";
 import { jwtDecode } from "jwt-decode";
 import { ACCESS_TOKEN } from "../constants";
+import { feedbackAPI } from "../api";
 
 import "../styles/admin&dash.css";
 import "../styles/AdminDashboard.css";
-import IssueGrid from "../components/IssueGrid";
-import { fetchIssues } from "../components/functions/FetchIssues";
 
 const AdminDashboard = ({ user }) => {
   const navigate = useNavigate();
@@ -26,30 +25,37 @@ const AdminDashboard = ({ user }) => {
     userRoles = decodedToken.roles || [];
     userTopics = decodedToken.topics || [];
   }
-  const isAdmin = userRoles.includes("super_admin") || userRoles.includes("content_admin");
+  const isAdmin = userRoles.includes("super_admin") || userRoles.some(role => role.endsWith("_admin"));
 
   useEffect(() => {
     // 权限检查：如果不是管理员，重定向到学生页面
     if (!isAdmin) {
       navigate("/dashboard");
     } else {
-      fetchIssues(setLoading, setIssues, setError);
+      fetchAdminIssues();
     }
   }, [isAdmin, navigate]);
 
-  // 根据管理员负责的主题来过滤问题
-  const filteredIssues = issues
-    .filter((issue) => {
-      // 如果是超级管理员，显示所有问题
-      if (userRoles.includes("super_admin")) {
-        return true;
-      }
-      // 对于内容管理员，只显示与其主题匹配的问题
-      return userTopics.includes(issue.topic);
-    })
-    .sort((a, b) => {
-      return new Date(b.updated) - new Date(a.updated);
-    });
+  const fetchAdminIssues = async () => {
+    try {
+      setLoading(true);
+      const response = await feedbackAPI.getAdminIssues();
+      setIssues(response.data);
+      setError(null);
+    } catch (error) {
+      console.error('获取管理员问题列表失败:', error);
+      setError('获取问题列表失败');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleReplySuccess = () => {
+    // 回复成功后重新获取问题列表
+    fetchAdminIssues();
+  };
+
+  // 后端已经按照管理员权限过滤过了，这里直接使用
 
   const handleSwitchToStudent = () => {
     navigate("/dashboard");
@@ -77,11 +83,24 @@ const AdminDashboard = ({ user }) => {
       </div>
 
       <div className="content-wrapper">
-        <IssueGrid
-          isssue={filteredIssues}
-          loading={loading}
-          error={error}
-        />
+        {loading && <div className="loading-container">加载中...</div>}
+        {error && <div className="error-container">{error}</div>}
+        {!loading && !error && (
+          <div className="admin-issues-container">
+            <h2 className="admin-issues-title">问题管理 ({issues.length} 个问题)</h2>
+            {issues.length === 0 ? (
+              <div className="no-issues">暂无问题</div>
+            ) : (
+              issues.map(issue => (
+                <AdminIssueCard
+                  key={issue.id}
+                  issue={issue}
+                  onReplySuccess={handleReplySuccess}
+                />
+              ))
+            )}
+          </div>
+        )}
       </div>
     </div>
   );

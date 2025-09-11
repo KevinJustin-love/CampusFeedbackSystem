@@ -27,7 +27,7 @@ export default function UserProfile({ user, onClose, onUpdate }) {
         }
         try {
           const response = await axios.get(
-            `${API_BASE_URL}/api/auth/profile/`,
+            `${API_BASE_URL}/api/profile/`,
             {
               headers: {
                 Authorization: `Bearer ${token}`,
@@ -81,7 +81,7 @@ export default function UserProfile({ user, onClose, onUpdate }) {
   
       try {
         const response = await axios.patch(
-          `${API_BASE_URL}/api/auth/profile/`,
+          `${API_BASE_URL}/api/profile/`,
           formData,
           {
             headers: {

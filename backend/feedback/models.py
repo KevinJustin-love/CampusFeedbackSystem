@@ -71,7 +71,7 @@ class Message(models.Model):
 class Reply(models.Model):
     administrator = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True)
     content = models.CharField(max_length=1000)
-    attachment = models.FileField(upload_to='attachments/', help_text="附件")
+    attachment = models.FileField(upload_to='attachments/', help_text="附件", null=True, blank=True)
     issue = models.ForeignKey(Issue, on_delete=models.CASCADE)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
