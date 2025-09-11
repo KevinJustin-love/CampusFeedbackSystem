@@ -66,13 +66,14 @@ AUTH_USER_MODEL = 'api.CustomUser'
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    # 确保这一行只出现一次，并且位置正确
+    "corsheaders.middleware.CorsMiddleware",  
     "django.contrib.sessions.middleware.SessionMiddleware",
-    "django.middleware.common.CommonMiddleware",
+    "django.middleware.common.CommonMiddleware", # 这一行也只需要出现一次
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "corsheaders.middleware.CorsMiddleware",
 ]
 
 ROOT_URLCONF = "backend.urls"
@@ -150,3 +151,8 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOWS_CREDENTIALS = True
+
+CORS_TRUSTED_ORIGINS = [
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
+]

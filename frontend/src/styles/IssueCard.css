@@ -1,39 +1,99 @@
+/* IssueCard.css */
+
 .issue-card {
   background-color: #ffffff;
   padding: 16px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
 }
 
-.issue-title {
-  font-size: 20px;
-  font-weight: 600;
-  color: #1f2937;
-  margin-bottom: 8px;
-  position: relative;
-  left: 30px;
+.issue-title{
+  margin-left: 30px;
+  margin-bottom: 15px;
+  margin-top: 15px;
 }
-
 .issue-info {
-  color: #6b7280;
-  font-size: 14px;
-  margin-bottom: 4px;
-  position: relative;
-  left: 30px;
+  margin-left: 30px;
+  margin-top: 10px;
+  color: #5f646d;
+  font-size: 15px;
 }
 
 .issue-date {
   color: #9ca3af;
   font-size: 12px;
-  position: relative;
-  left: 700px;
-  bottom: 80px;
+  margin-left: auto;
+  margin-bottom: 4px;
+  padding-right: 16px; /* 为日期添加右侧内边距 */
+}
+
+/* 包含所有底部元素的Flexbox容器 */
+.card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+  margin-left: 16px; /* 为左侧元素添加内边距 */
+  margin-right: 16px; /* 为右侧元素添加内边距 */
+}
+
+/* 组合热度和互动区域的容器 */
+.card-stats {
+  display: flex;
+  align-items: center;
+  gap: 15px;
 }
 
 .issue-popularity {
   color: #ff6b6b;
   font-weight: bold;
-  margin: 5px 0;
-  position: relative;
-  left: 30px;
-  bottom: 20px;
+}
+
+.issue-interactions {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.interaction-button,
+.interaction-views {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 16px;
+  color: #6b7280;
+}
+
+.interaction-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.interaction-button:hover {
+  color: #1f2937;
+}
+
+.icon {
+  width: 1em;
+  height: 1em;
+  stroke: currentColor;
+}
+
+/* 查看详情按钮样式 */
+.btn-link {
+  color: #2563eb;
+  background: none;
+  border: none;
+  font-size: 14px;
+  cursor: pointer;
+  text-decoration: underline;
+  /* 确保按钮在 Flexbox 布局中正常工作 */
+  align-self: center;
+}
+
+.btn-link:hover {
+  color: #1e40af;
 }

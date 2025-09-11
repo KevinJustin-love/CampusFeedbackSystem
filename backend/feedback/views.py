@@ -2,8 +2,14 @@ from django.shortcuts import render
 from django.contrib.auth.models import User
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated, AllowAny
+from django.middleware.csrf import get_token
+from django.http import JsonResponse
+from django.views.decorators.http import require_POST
+from django.views.decorators.csrf import csrf_exempt
+from django.shortcuts import get_object_or_404
 from .models import Issue, Reply, Message, Topic
 from .serializers import IssueSerializer, ReplySerializer, MessageSerializer, TopicSerializer
+import json
 
 
 class TopicListCreate(generics.ListCreateAPIView):
@@ -98,3 +104,29 @@ class MessageListCreate(generics.ListCreateAPIView):
         else:
             # 如果未认证用户尝试创建，抛出权限拒绝异常
             raise PermissionDenied("你必须登录才能发布。")
+
+@csrf_exempt
+@require_POST
+def like_issue(request, issue_id):
+    try:
+        issue = get_object_or_404(Issue, pk=issue_id)
+        issue.likes += 1
+        issue.save()
+        return JsonResponse({'likes': issue.likes})
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
+
+@csrf_exempt
+@require_POST
+def view_issue(request, issue_id):
+    try:
+        issue = get_object_or_404(Issue, pk=issue_id)
+        issue.views += 1
+        issue.save()
+        return JsonResponse({'views': issue.views})
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
+        
+def get_csrf_token(request):
+    token = get_token(request)
+    return JsonResponse({'csrfToken': token})

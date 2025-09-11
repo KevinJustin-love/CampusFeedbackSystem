@@ -6,7 +6,6 @@ import { jwtDecode } from "jwt-decode";
 import { ACCESS_TOKEN } from "../constants";
 
 import "../styles/admin&dash.css";
-import "../styles/issueCard&admin.css";
 import "../styles/AdminDashboard.css";
 import IssueGrid from "../components/IssueGrid";
 import { fetchIssues } from "../components/functions/FetchIssues";
