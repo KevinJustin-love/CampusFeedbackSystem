@@ -38,12 +38,22 @@ class MessageSerializer(serializers.ModelSerializer):
 
 class ReplySerializer(serializers.ModelSerializer):
     administrator_name = serializers.SerializerMethodField()
+    attachment = serializers.SerializerMethodField()
     
     def get_administrator_name(self, obj):
         """获取管理员用户名，如果管理员为None则返回'系统管理员'"""
         if obj.administrator:
             return obj.administrator.username
         return '系统管理员'
+    
+    def get_attachment(self, obj):
+        """获取附件的完整URL"""
+        if obj.attachment:
+            request = self.context.get('request')
+            if request:
+                return request.build_absolute_uri(obj.attachment.url)
+            return obj.attachment.url
+        return None
     
     class Meta:
         model = Reply
@@ -62,7 +72,16 @@ class IssueSerializer(serializers.ModelSerializer):
     messages = MessageSerializer(many=True, read_only=True) # 添加嵌套字段
     replies = ReplySerializer(many=True, read_only=True, source='reply_set')
     topic = serializers.StringRelatedField()
+    attachment = serializers.SerializerMethodField()
 
+    def get_attachment(self, obj):
+        """获取附件的完整URL"""
+        if obj.attachment:
+            request = self.context.get('request')
+            if request:
+                return request.build_absolute_uri(obj.attachment.url)
+            return obj.attachment.url
+        return None
 
     class Meta:
         model = Issue
@@ -80,6 +99,7 @@ class IssueSerializer(serializers.ModelSerializer):
             'replies',
             'views',
             'likes',
+            'popularity',
             'updated',
             'created'
             ]

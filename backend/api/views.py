@@ -84,7 +84,7 @@ def admin_issues_list(request):
     # 按更新时间排序
     issues = issues.order_by('-updated')
     
-    serializer = IssueSerializer(issues, many=True)
+    serializer = IssueSerializer(issues, many=True, context={'request': request})
     return Response(serializer.data)
 
 @api_view(['POST'])
@@ -118,7 +118,7 @@ def admin_reply_issue(request, issue_id):
         issue.status = "已处理"
         issue.save()
         
-        serializer = ReplySerializer(reply)
+        serializer = ReplySerializer(reply, context={'request': request})
         return Response({
             'reply': serializer.data,
             'message': '回复成功',
