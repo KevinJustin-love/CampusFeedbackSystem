@@ -43,10 +43,8 @@ class IssueListCreate(generics.ListCreateAPIView):
             # 默认排序（按更新时间）
             queryset = queryset.order_by('-updated')
         elif sort_by == 'popularity':
-            # 假设你的前端是发送 'popularity'，这里就用它
-            # 注意：Django ORM 无法直接计算一个复杂的 popularity 得分，
-            # 这里简单地按 likes 排序
-            queryset = queryset.order_by('-likes', '-updated')
+            # 按热度值排序，热度值高的在前
+            queryset = queryset.order_by('-popularity', '-updated')
         else:
             # 默认排序
             queryset = queryset.order_by('-updated')
@@ -121,17 +119,23 @@ def like_issue(request, issue_id):
         if like_exists:
             # 如果已经点过赞，则取消点赞
             IssueLike.objects.filter(user=request.user, issue=issue).delete()
-            # 使用update()方法只更新likes字段，避免触发auto_now
-            Issue.objects.filter(pk=issue_id).update(likes=max(0, issue.likes - 1))
-            issue.refresh_from_db()  # 刷新实例以获取最新的likes值
-            return Response({'likes': issue.likes, 'liked': False, 'message': '取消点赞'})
+            new_likes = max(0, issue.likes - 1)
+            # 计算新的热度值
+            new_popularity = new_likes * 5 + issue.views * 0.1
+            # 使用update()方法更新likes和popularity字段，避免触发auto_now
+            Issue.objects.filter(pk=issue_id).update(likes=new_likes, popularity=new_popularity)
+            issue.refresh_from_db()  # 刷新实例以获取最新值
+            return Response({'likes': issue.likes, 'popularity': issue.popularity, 'liked': False, 'message': '取消点赞'})
         else:
             # 如果没有点过赞，则添加点赞
             IssueLike.objects.create(user=request.user, issue=issue)
-            # 使用update()方法只更新likes字段，避免触发auto_now
-            Issue.objects.filter(pk=issue_id).update(likes=issue.likes + 1)
-            issue.refresh_from_db()  # 刷新实例以获取最新的likes值
-            return Response({'likes': issue.likes, 'liked': True, 'message': '点赞成功'})
+            new_likes = issue.likes + 1
+            # 计算新的热度值
+            new_popularity = new_likes * 5 + issue.views * 0.1
+            # 使用update()方法更新likes和popularity字段，避免触发auto_now
+            Issue.objects.filter(pk=issue_id).update(likes=new_likes, popularity=new_popularity)
+            issue.refresh_from_db()  # 刷新实例以获取最新值
+            return Response({'likes': issue.likes, 'popularity': issue.popularity, 'liked': True, 'message': '点赞成功'})
             
     except Exception as e:
         return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
@@ -140,10 +144,13 @@ def like_issue(request, issue_id):
 def view_issue(request, issue_id):
     try:
         issue = get_object_or_404(Issue, pk=issue_id)
-        # 使用update()方法只更新views字段，避免触发auto_now
-        Issue.objects.filter(pk=issue_id).update(views=issue.views + 1)
-        issue.refresh_from_db()  # 刷新实例以获取最新的views值
-        return Response({'views': issue.views})
+        new_views = issue.views + 1
+        # 计算新的热度值
+        new_popularity = issue.likes * 5 + new_views * 0.1
+        # 使用update()方法更新views和popularity字段，避免触发auto_now
+        Issue.objects.filter(pk=issue_id).update(views=new_views, popularity=new_popularity)
+        issue.refresh_from_db()  # 刷新实例以获取最新值
+        return Response({'views': issue.views, 'popularity': issue.popularity})
     except Exception as e:
         return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
