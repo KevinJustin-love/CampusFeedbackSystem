@@ -2,7 +2,7 @@ import React from "react";
 
 import "../../styles/CommentMessage.css";
 
-function CommentMessage({ message, sender,timestamp }) {
+function CommentMessage({ message, sender, timestamp }) {
   const formattedTime = new Date(timestamp).toLocaleString('zh-CN', {
     year: 'numeric',
     month: '2-digit',
@@ -12,20 +12,18 @@ function CommentMessage({ message, sender,timestamp }) {
   });
 
   return (
-    <div 
-      className="comment-message-container solid">
-        <p 
-          className="comment-message-text"
-          role = "text">
-            <span 
-              className="comment-sender">
-                {sender}:
-            </span> 
-            {message}
-        </p>
-        <p className="comment-message-time">
+    <div className="comment-message-container">
+      <div className="comment-message-header">
+        <span className="comment-sender">
+          {sender}
+        </span>
+        <span className="comment-message-time">
           {formattedTime}
-        </p>
+        </span>
+      </div>
+      <p className="comment-message-text">
+        {message}
+      </p>
     </div>
   );
 }

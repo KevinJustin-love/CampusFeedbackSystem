@@ -1,0 +1,263 @@
+.admin-issue-card {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e1e5e9;
+  transition: all 0.3s ease;
+}
+
+.admin-issue-card:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px);
+}
+
+.admin-issue-header {
+  margin-bottom: 16px;
+}
+
+.admin-issue-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.admin-issue-title h3 {
+  margin: 0;
+  color: #2c3e50;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.admin-issue-status {
+  padding: 4px 12px;
+  border-radius: 20px;
+  color: white;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.admin-issue-meta {
+  display: flex;
+  gap: 16px;
+  color: #6c757d;
+  font-size: 14px;
+}
+
+.admin-issue-topic {
+  background: #e9ecef;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-weight: 500;
+}
+
+.admin-issue-content {
+  margin-bottom: 16px;
+  line-height: 1.6;
+}
+
+.admin-issue-content p {
+  margin: 8px 0;
+  color: #495057;
+}
+
+.admin-issue-content strong {
+  color: #2c3e50;
+}
+
+.admin-issue-content a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.admin-issue-content a:hover {
+  text-decoration: underline;
+}
+
+.admin-issue-stats {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 16px;
+  padding: 12px;
+  background: #f8f9fa;
+  border-radius: 8px;
+}
+
+.admin-issue-stats span {
+  color: #6c757d;
+  font-size: 14px;
+}
+
+.admin-issue-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.btn-detail {
+  background: #17a2b8;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: background 0.3s ease;
+}
+
+.btn-detail:hover {
+  background: #138496;
+}
+
+.btn-reply {
+  background: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: background 0.3s ease;
+}
+
+.btn-reply:hover:not(:disabled) {
+  background: #0056b3;
+}
+
+.btn-reply:disabled {
+  background: #6c757d;
+  cursor: not-allowed;
+}
+
+.admin-reply-form {
+  margin-top: 20px;
+  padding: 20px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border: 1px solid #dee2e6;
+}
+
+.form-group {
+  margin-bottom: 16px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 6px;
+  color: #495057;
+  font-weight: 500;
+}
+
+.form-group textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ced4da;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 14px;
+  line-height: 1.5;
+  resize: vertical;
+  min-height: 100px;
+}
+
+.form-group textarea:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+}
+
+.form-group input[type="file"] {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ced4da;
+  border-radius: 6px;
+  background: white;
+}
+
+.form-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+}
+
+.btn-submit {
+  background: #28a745;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: background 0.3s ease;
+}
+
+.btn-submit:hover:not(:disabled) {
+  background: #218838;
+}
+
+.btn-submit:disabled {
+  background: #6c757d;
+  cursor: not-allowed;
+}
+
+.btn-cancel {
+  background: #6c757d;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: background 0.3s ease;
+}
+
+.btn-cancel:hover:not(:disabled) {
+  background: #5a6268;
+}
+
+@media (max-width: 768px) {
+  .admin-issue-card {
+    padding: 16px;
+    margin-bottom: 12px;
+  }
+  
+  .admin-issue-title {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  
+  .admin-issue-meta {
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .admin-issue-stats {
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  
+  .admin-issue-actions {
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .btn-detail,
+  .btn-reply {
+    width: 100%;
+  }
+  
+  .form-actions {
+    flex-direction: column;
+  }
+  
+  .btn-submit,
+  .btn-cancel {
+    width: 100%;
+  }
+}

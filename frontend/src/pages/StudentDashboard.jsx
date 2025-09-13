@@ -6,12 +6,14 @@ import FilterBar from "../components/FilterBar";
 import Pagination from "../components/Pagination";
 import IssueGrid from "../components/IssueGrid";
 import SubmitIssuePage from "../pages/SubmitIssuePage";
-import { feedbackAPI } from "../api";
+
 
 import "../styles/admin&dash.css";
 import "../styles/StudentDashboard.css";
 
-const StudentDashboard = ({ user, id }) => {
+import { fetchIssues } from "../components/functions/FetchIssues";
+
+const StudentDashboard = ({ user }) => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("all");
   const [sortBy, setSortBy] = useState("time");
@@ -26,44 +28,20 @@ const StudentDashboard = ({ user, id }) => {
 
   // 在 useEffect 中从 API 获取问题列表
   useEffect(() => {
-    const fetchIssues = async () => {
-      try {
-        setLoading(true);
-        const res = await feedbackAPI.getIssueList();
-        setIssues(res.data);
-        setError(null);
-      } catch (err) {
-        console.error("获取问题列表失败：", err);
-        setError("加载问题列表失败。请稍后重试。");
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchIssues();
-  }, []);
+    fetchIssues(setLoading, setIssues, setError,{ params: { topic:category, sortBy: sortBy }});
+  }, [category, sortBy]);
 
-  const handleSwitchToAdmin = () => {
-    navigate("/admin");
-  };
 
   //综合过滤和排序逻辑
   const filteredIssues = issues
     .filter((issue) => activeTab === "all" || issue.author === user.username)
-    .filter((issue) => category === "all" || issue.category === category)
+    .filter((issue) => category === "all" || issue.topic === category)
     .sort((a, b) => {
       if (sortBy === "time") {
-        return new Date(b.updated_at) - new Date(a.updated_at);
+        return new Date(b.updated) - new Date(a.updated);
       } else {
-        // 定义权重，你可以根据实际需求调整这些值
-        const LIKE_WEIGHT = 2; // 点赞的权重
-        const VIEW_WEIGHT = 1;  // 浏览量的权重
-
-        // 计算每个问题的 popularity 得分
-        const scoreA = (a.likes || 0) * LIKE_WEIGHT + (a.views || 0) * VIEW_WEIGHT;
-        const scoreB = (b.likes || 0) * LIKE_WEIGHT + (b.views || 0) * VIEW_WEIGHT;
-
-        // 按照得分降序排列
-        return scoreB - scoreA;
+        // 直接使用后端返回的 popularity 值进行排序
+        return (b.popularity || 0) - (a.popularity || 0);
       }
     });
 

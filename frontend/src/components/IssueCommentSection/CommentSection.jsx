@@ -20,8 +20,8 @@ function CommentSection({ issueId }) {
   const fetchMessages = async () => {
     try {
       setLoading(true)
-      const res = await feedbackAPI.getIssueDetail(issueId);
-      setMessages(res.data.messages || []);
+      const res = await feedbackAPI.getMessages(issueId);
+      setMessages(res.data || []);
     }catch (error) {
       console.error("获取留言失败", error);
     }finally {
@@ -31,17 +31,17 @@ function CommentSection({ issueId }) {
 
   const handlePublish = async (newComment) => {
     try {
-      const res = await feedbackAPI.createIssue({
+      const res = await feedbackAPI.createMessage(issueId, {
          body: newComment
         });
       console.log('评论发送成功', res.data);
 
-      const updatedMessages = [...messages, res.data];
-      setMessages(updatedMessages);
+      // 重新获取所有评论以确保数据同步
+      await fetchMessages();
     }catch (error) {
       console.error("发送评论失败:", error);
+      alert("发送评论失败，请重试");
     }
-
   };
 
   useEffect(() => {
@@ -61,8 +61,9 @@ function CommentSection({ issueId }) {
       <div className="comment-section" ref={commentMessagesReff}>
         {messages.map((msg) => (
           <CommentMessage
+            key={msg.id}
             message={msg.body}
-            sender={msg.user.name}
+            sender={msg.user_name}
             timestamp={msg.created}
           />
         ))}

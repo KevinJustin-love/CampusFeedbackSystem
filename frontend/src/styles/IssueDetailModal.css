@@ -1,0 +1,283 @@
+/* 问题详情模态框样式 */
+.issue-detail-modal {
+  max-width: 900px;
+  max-height: 90vh;
+  width: 90%;
+  overflow-y: auto;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  border-bottom: 1px solid #eee;
+  background-color: #f8f9fa;
+}
+
+.modal-header h2 {
+  margin: 0;
+  color: #333;
+}
+
+.close-button {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #666;
+  padding: 0;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background-color 0.2s;
+}
+
+.close-button:hover {
+  background-color: #e9ecef;
+  color: #333;
+}
+
+.modal-body {
+  padding: 20px;
+}
+
+.loading, .error {
+  text-align: center;
+  padding: 40px;
+  font-size: 16px;
+}
+
+.error {
+  color: #dc3545;
+}
+
+/* 问题信息样式 */
+.issue-info {
+  margin-bottom: 30px;
+}
+
+.issue-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.issue-header h3 {
+  margin: 0;
+  color: #333;
+  font-size: 24px;
+}
+
+.status-badge {
+  color: white;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.issue-meta {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 10px;
+  margin-bottom: 20px;
+  padding: 15px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+}
+
+.issue-meta span {
+  color: #666;
+  font-size: 14px;
+}
+
+.issue-description {
+  margin-bottom: 20px;
+}
+
+.issue-description h4 {
+  margin: 0 0 10px 0;
+  color: #333;
+  font-size: 16px;
+}
+
+.issue-description p {
+  margin: 0;
+  line-height: 1.6;
+  color: #555;
+  padding: 15px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  white-space: pre-wrap;
+}
+
+.issue-attachment {
+  margin-bottom: 20px;
+}
+
+.issue-attachment h4 {
+  margin: 0 0 10px 0;
+  color: #333;
+  font-size: 16px;
+}
+
+.issue-attachment a {
+  color: #007bff;
+  text-decoration: none;
+  padding: 8px 12px;
+  background-color: #f8f9fa;
+  border-radius: 4px;
+  display: inline-block;
+  border: 1px solid #dee2e6;
+  transition: background-color 0.2s;
+}
+
+.issue-attachment a:hover {
+  background-color: #e9ecef;
+}
+
+.issue-stats {
+  display: flex;
+  gap: 20px;
+  padding: 15px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.issue-stats span {
+  color: #666;
+  font-size: 14px;
+}
+
+/* 评论区域样式 */
+.messages-section, .replies-section {
+  margin-bottom: 30px;
+}
+
+.messages-section h4, .replies-section h4 {
+  margin: 0 0 15px 0;
+  color: #333;
+  font-size: 18px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid #007bff;
+}
+
+.replies-section h4 {
+  border-bottom-color: #28a745;
+}
+
+.messages-list, .replies-list {
+  space-y: 15px;
+}
+
+.message-item, .reply-item {
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 15px;
+  background-color: #fff;
+}
+
+.reply-item {
+  background-color: #f8f9fa;
+  border-left: 4px solid #28a745;
+}
+
+.message-header, .reply-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.message-author, .reply-author {
+  font-weight: 500;
+  color: #333;
+}
+
+.reply-author {
+  color: #28a745;
+}
+
+.message-date, .reply-date {
+  font-size: 12px;
+  color: #666;
+}
+
+.message-body, .reply-content {
+  color: #555;
+  line-height: 1.6;
+  white-space: pre-wrap;
+}
+
+.reply-attachment {
+  margin-top: 10px;
+}
+
+.reply-attachment a {
+  color: #28a745;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.reply-attachment a:hover {
+  text-decoration: underline;
+}
+
+/* 模态框底部 */
+.modal-footer {
+  padding: 20px;
+  border-top: 1px solid #eee;
+  background-color: #f8f9fa;
+  text-align: right;
+}
+
+.btn-close {
+  background-color: #6c757d;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.2s;
+}
+
+.btn-close:hover {
+  background-color: #5a6268;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .issue-detail-modal {
+    width: 95%;
+    margin: 10px;
+  }
+  
+  .issue-meta {
+    grid-template-columns: 1fr;
+  }
+  
+  .issue-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  
+  .issue-stats {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .message-header, .reply-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+  }
+}

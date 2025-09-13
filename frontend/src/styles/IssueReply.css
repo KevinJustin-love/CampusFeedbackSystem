@@ -1,81 +1,245 @@
-/* Styling for the HandlingReply Component */
+/* 处理结果组件样式 - 现代化设计 */
 
 /* 整体容器 */
 .reply-container {
-    background-color: #f9f9f9;
-    border-radius: 8px;
-    border: 1px solid #e0e0e0;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-    padding: 20px;
-    margin-top: 30px;
-    font-family: 'Helvetica Neue', Arial, sans-serif;
-    color: #333;
-  }
-  
-  /* 标题样式 */
-  .reply-title {
+    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    padding: 24px;
+    margin-top: 32px;
+    max-width: 800px;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    color: #334155;
+    position: relative;
+    overflow: hidden;
+}
+
+.reply-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #3b82f6, #06b6d4, #10b981);
+}
+
+/* 标题样式 */
+.reply-title {
+    font-size: 28px;
+    font-weight: 700;
+    color: #1e293b;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.reply-title::before {
+    content: '📋';
     font-size: 24px;
-    font-weight: bold;
-    color: #007bff; /* 强调色 */
-    border-bottom: 2px solid #007bff;
-    padding-bottom: 10px;
-    margin-bottom: 20px;
-    text-align: left;
-  }
-  
-  /* 单个回复的容器 */
-  .reply {
-    line-height: 1.6;
-  }
-  
-  /* 回复内容 */
-  .reply-text {
+}
+
+/* 多个回复的列表容器 */
+.replies-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+/* 单个回复的容器 */
+.reply {
+    background: #ffffff;
+    border-radius: 8px;
+    padding: 20px;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    line-height: 1.7;
+    position: relative;
+}
+
+.reply::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background: linear-gradient(180deg, #3b82f6, #06b6d4);
+    border-radius: 0 2px 2px 0;
+}
+
+/* 回复内容 */
+.reply-text {
     font-size: 16px;
-    color: #555;
-    margin-bottom: 15px;
-    white-space: pre-wrap; /* 保留文本中的换行 */
-  }
-  
-  /* 日期和时间戳 */
-  .reply-date {
+    color: #475569;
+    margin-bottom: 20px;
+    white-space: pre-wrap;
+    line-height: 1.8;
+    padding-left: 16px;
+}
+
+/* 空状态处理 */
+.reply-text:empty::before {
+    content: '暂无处理结果';
+    color: #94a3b8;
+    font-style: italic;
+}
+
+/* 日期和时间戳 */
+.reply-date {
     font-size: 14px;
-    color: #888;
+    color: #64748b;
     text-align: right;
-    margin-top: 10px;
-  }
-  
-  /* 附件部分容器 */
-  .reply-file {
-    margin-top: 20px;
-    padding: 10px 15px;
-    background-color: #f1f1f1;
-    border: 1px dashed #ccc;
-    border-radius: 5px;
+    margin-top: 16px;
+    padding: 8px 16px;
+    background: #f8fafc;
+    border-radius: 6px;
+    border: 1px solid #e2e8f0;
+    display: inline-block;
+    float: right;
+    clear: both;
+}
+
+.reply-date::before {
+    content: '🕒 ';
+    margin-right: 4px;
+}
+
+/* 附件部分容器 */
+.reply-file {
+    margin-top: 24px;
+    padding: 16px 20px;
+    background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+    border: 2px dashed #f59e0b;
+    border-radius: 8px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-  }
-  
-  .reply-file h3 {
+    transition: all 0.3s ease;
+}
+
+.reply-file:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(245, 158, 11, 0.2);
+}
+
+.reply-file h3 {
     font-size: 16px;
     margin: 0;
-    color: #444;
-  }
-  
-  .reply-file a {
-    color: #007bff;
+    color: #92400e;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.reply-file h3::before {
+    content: '📎';
+    font-size: 18px;
+}
+
+.reply-file a {
+    color: #1d4ed8;
     text-decoration: none;
-    font-weight: bold;
-    transition: color 0.2s ease-in-out;
-  }
-  
-  .reply-file a:hover {
-    color: #0056b3;
-    text-decoration: underline;
-  }
-  
-  /* 可选：加载状态的样式 */
-  .reply-container p {
-      text-align: center;
-      color: #888;
-  }
+    font-weight: 600;
+    padding: 8px 16px;
+    background: #ffffff;
+    border-radius: 6px;
+    border: 1px solid #e2e8f0;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.reply-file a::after {
+    content: '⬇️';
+    font-size: 14px;
+}
+
+.reply-file a:hover {
+    background: #3b82f6;
+    color: #ffffff;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
+}
+
+/* 加载状态的样式 */
+.reply-container .loading {
+    text-align: center;
+    color: #64748b;
+    font-style: italic;
+    padding: 40px 0;
+}
+
+.reply-container .loading::before {
+    content: '⏳ ';
+    margin-right: 8px;
+}
+
+/* 无内容状态 */
+.reply-container .no-reply {
+    text-align: center;
+    color: #94a3b8;
+    font-style: italic;
+    padding: 40px 0;
+    background: #f8fafc;
+    border-radius: 8px;
+    border: 2px dashed #cbd5e1;
+}
+
+.reply-container .no-reply::before {
+    content: '📝 ';
+    margin-right: 8px;
+    font-size: 20px;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .reply-container {
+        padding: 16px;
+        margin-top: 20px;
+    }
+    
+    .reply-title {
+        font-size: 24px;
+        margin-bottom: 16px;
+    }
+    
+    .reply {
+        padding: 16px;
+    }
+    
+    .reply-file {
+        flex-direction: column;
+        gap: 12px;
+        text-align: center;
+    }
+    
+    .reply-date {
+        float: none;
+        text-align: center;
+        margin: 16px auto 0;
+    }
+}
+
+/* 动画效果 */
+.reply-container {
+    animation: fadeInUp 0.6s ease-out;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

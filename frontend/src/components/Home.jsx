@@ -93,7 +93,7 @@ const Home = ({ user }) => {
 
       try {
         const response = await axios.get(
-          "http://127.0.0.1:8000/api/auth/profile/",
+          "http://127.0.0.1:8000/api/profile/",
           {
             headers: {
               Authorization: `Bearer ${token}`,
