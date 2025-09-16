@@ -8,7 +8,7 @@ import NotificationPanel from "../pages/MessagePage";
 
 import "../styles/Home.css";
 
-const Home = ({ user }) => {
+const Home = ({ user, onSearch }) => {
   const navigate = useNavigate();
   const [currentUser, setCurrentUser] = useState(user);
   const [isLoading, setIsLoading] = useState(false);
@@ -122,30 +122,35 @@ const Home = ({ user }) => {
   return (
     <div>
       <div className="dashboard-title">
-        <img
-          src={currentUser?.avatar || "../../pictures/OIP-C.jpg"}
-          alt="用户头像"
-          className="userimg"
-          onClick={() => setShowModal(true)}
-        />
-        {showModal && (
-          <UserProfile
-            user={currentUser}
-            onClose={() => setShowModal(false)}
-            onUpdate={handleUserUpdate}
+        <div className="dashboard-title-content">
+          <img
+            src={currentUser?.avatar || "../../pictures/OIP-C.jpg"}
+            alt="用户头像"
+            className="userimg"
+            onClick={() => setShowModal(true)}
           />
-        )}
+          {showModal && (
+            <UserProfile
+              user={currentUser}
+              onClose={() => setShowModal(false)}
+              onUpdate={handleUserUpdate}
+            />
+          )}
+          欢迎，{currentUser?.username || user?.username || "访客"}
+        </div>
+        
+        <Navbar
+          onMessageBarClick={handleMessageBarClick}
+          onSearch={onSearch}
+          // unreadCount={unreadCount}
+        />
+        
         <NotificationPanel
           isOpen={showNotificationPanel}
           onClose={() => setShowNotificationPanel(false)}
           notifications={notifications}
           onNotificationClick={handleNotificationClick}
           onMarkAllAsRead={markAllAsRead}
-        />
-        欢迎，{currentUser?.username || user?.username || "访客"}
-        <Navbar
-          onMessageBarClick={handleMessageBarClick}
-          // unreadCount={unreadCount}
         />
       </div>
     </div>

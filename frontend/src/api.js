@@ -2,7 +2,7 @@ import axios from "axios";
 import { ACCESS_TOKEN } from "./constants";
 
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || ''
+  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:8000'
 });
 
 // CSRF token is not needed for JWT authentication, commenting out

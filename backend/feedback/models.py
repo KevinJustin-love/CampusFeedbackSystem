@@ -31,10 +31,10 @@ class Issue(models.Model):
 
     def calculate_popularity(self):
         """
-        计算热度值：点赞权重更高，浏览量权重较低
-        公式：热度 = 点赞数 * 5 + 浏览量 * 0.1
+        计算热度值：点赞权重=2，浏览权重=1
+        公式：热度 = 点赞数 * 2 + 浏览量 * 1
         """
-        return self.likes * 5 + self.views * 0.1
+        return self.likes * 2 + self.views * 1
     
     def update_popularity(self):
         """更新热度值"""

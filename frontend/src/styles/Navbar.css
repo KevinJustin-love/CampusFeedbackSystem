@@ -1,13 +1,14 @@
+.navbar-container {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
 .message-bar {
   display: flex;
   align-items: center;
-  gap: 16px;
   color: #d0d0d0;
-  position: relative;
-  bottom: 20px;
-  left: 991.5px;
   cursor: pointer;
-  width: 20px;
   transition: transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1.5);
 }
 
@@ -16,62 +17,41 @@
   color: #ffffff;
 }
 
-/* 通知徽章样式 - 新增 */
-/* .notification-badge {
-  position: absolute;
-  top: -8px;
-  right: -8px;
-  background: #ff4757;
-  color: white;
-  border-radius: 10px;
-  padding: 2px 4px;
-  font-size: 12px;
-  font-weight: bold;
-  min-width: 16px;
-  height: 16px;
+.clock-icon-container {
   display: flex;
   align-items: center;
-  justify-content: center;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-  z-index: 10; 
-} */
-
-.clock-icon {
   cursor: pointer;
   color: #d0d0d0;
-  position: relative;
-  left: 811px;
-  top: 7.8px;
-  width: 21px;
   transition: transform 0.3s ease;
 }
 
-.clock-icon:hover {
+.clock-icon-container:hover {
   transform: scale(1.2);
   color: #ffffff;
-  /* 移除了 text-overflow，因为这个属性不能这样使用 */
+}
+
+.star-icon-container {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.star-icon-container:hover {
+  transform: scale(1.2);
 }
 
 .star-icon {
   width: 24px;
   stroke: #d0d0d0;
   stroke-width: 1.6px;
-  position: relative;
-  left: 1024px;
-  bottom: 43px;
-  cursor: pointer;
-  transition: transform 0.3s ease;
 }
 
-.star-icon:hover {
+.star-icon-container:hover .star-icon {
   stroke: #ffffff;
-  transform: scale(1.2);
 }
 
 .search-container {
-  position: relative;
-  left: 710px;
-  bottom: 75px;
   display: flex;
   align-items: center;
   width: 250px;
@@ -81,6 +61,7 @@
   padding: 8px 15px;
   transition: border-color 0.3s ease;
   background-color: #ffffff;
+  position: relative;
 }
 
 .search-container:hover, 
@@ -104,9 +85,6 @@
   padding: 0;
   margin-left: 8px;
   color: #000000;
-  position: relative;
-  top: 1px;
-  left: 4px;
 }
 
 .search-icon {
@@ -114,4 +92,48 @@
   height: 20px;
   stroke-width: 2;
   color: #000000;
+}
+
+/* 响应式设计 */
+@media (max-width: 1200px) {
+  .search-container {
+    width: 200px;
+  }
+  
+  .navbar-container {
+    gap: 15px;
+  }
+}
+
+@media (max-width: 768px) {
+  .dashboard-title {
+    flex-direction: column;
+    height: auto;
+    padding: 10px;
+  }
+  
+  .dashboard-title-content {
+    margin-bottom: 10px;
+  }
+  
+  .search-container {
+    width: 100%;
+    max-width: 300px;
+    margin: 10px 0;
+  }
+  
+  .navbar-container {
+    justify-content: center;
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .navbar-container {
+    gap: 10px;
+  }
+  
+  .search-container {
+    width: 100%;
+  }
 }

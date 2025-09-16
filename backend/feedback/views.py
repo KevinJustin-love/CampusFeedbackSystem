@@ -29,8 +29,8 @@ class IssueListCreate(generics.ListCreateAPIView):
         queryset = Issue.objects.filter(is_public=True)
 
         # 获取查询参数
-        topic = self.request.query_params.get('topic', None)
-        sort_by = self.request.query_params.get('sortBy', None)
+        topic = self.request.GET.get('topic', None)
+        sort_by = self.request.GET.get('sortBy', None)
 
 
         # 1. 过滤逻辑：按分类筛选
@@ -124,8 +124,8 @@ def like_issue(request, issue_id):
             # 如果已经点过赞，则取消点赞
             IssueLike.objects.filter(user=request.user, issue=issue).delete()
             new_likes = max(0, issue.likes - 1)
-            # 计算新的热度值
-            new_popularity = new_likes * 5 + issue.views * 0.1
+            # 计算新的热度值（点赞权重=2，浏览权重=1）
+            new_popularity = new_likes * 2 + issue.views * 1
             # 使用update()方法更新likes和popularity字段，避免触发auto_now
             Issue.objects.filter(pk=issue_id).update(likes=new_likes, popularity=new_popularity)
             issue.refresh_from_db()  # 刷新实例以获取最新值
@@ -134,8 +134,8 @@ def like_issue(request, issue_id):
             # 如果没有点过赞，则添加点赞
             IssueLike.objects.create(user=request.user, issue=issue)
             new_likes = issue.likes + 1
-            # 计算新的热度值
-            new_popularity = new_likes * 5 + issue.views * 0.1
+            # 计算新的热度值（点赞权重=2，浏览权重=1）
+            new_popularity = new_likes * 2 + issue.views * 1
             # 使用update()方法更新likes和popularity字段，避免触发auto_now
             Issue.objects.filter(pk=issue_id).update(likes=new_likes, popularity=new_popularity)
             issue.refresh_from_db()  # 刷新实例以获取最新值
@@ -149,8 +149,8 @@ def view_issue(request, issue_id):
     try:
         issue = get_object_or_404(Issue, pk=issue_id)
         new_views = issue.views + 1
-        # 计算新的热度值
-        new_popularity = issue.likes * 5 + new_views * 0.1
+        # 计算新的热度值（点赞权重=2，浏览权重=1）
+        new_popularity = issue.likes * 2 + new_views * 1
         # 使用update()方法更新views和popularity字段，避免触发auto_now
         Issue.objects.filter(pk=issue_id).update(views=new_views, popularity=new_popularity)
         issue.refresh_from_db()  # 刷新实例以获取最新值
