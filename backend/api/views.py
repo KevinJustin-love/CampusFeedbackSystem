@@ -79,7 +79,14 @@ def admin_issues_list(request):
         issues = Issue.objects.filter(is_public=True)
     else:
         # 内容管理员只能看到自己负责的分类
-        issues = Issue.objects.filter(is_public=True, topic__name__in=user_topics)
+        # 使用 Q 对象和 icontains 进行模糊匹配
+        from django.db.models import Q
+        query = Q()
+        for topic in user_topics:
+            # 匹配包含该topic关键字的主题
+            query |= Q(topic__name__icontains=topic)
+        
+        issues = Issue.objects.filter(is_public=True).filter(query)
     
     # 按更新时间排序
     issues = issues.order_by('-updated')
@@ -99,7 +106,14 @@ def admin_reply_issue(request, issue_id):
         
         # 权限检查：超级管理员可以回复所有问题，内容管理员只能回复自己负责的分类
         if 'super_admin' not in user_roles:
-            if issue.topic.name not in user_topics:
+            # 检查issue的主题是否包含用户负责的任何主题关键字
+            has_permission = False
+            for topic in user_topics:
+                if topic in issue.topic.name:
+                    has_permission = True
+                    break
+            
+            if not has_permission:
                 return Response({'error': '您没有权限回复此问题'}, status=status.HTTP_403_FORBIDDEN)
         
         # 创建回复
