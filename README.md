@@ -24,11 +24,21 @@
 
 -用户名：life_admin -密码：life123
 
+## 开会
+
+### 现存 bug
+
 - 登录界面 Register/Login 按钮 CSS 样式有问题（飘到右上角了
-- register 无法正确进行
+- register 无法正确进行 登录时无法实现区分 lifeAdmin、studyAdmin...因此无法进入管理员界面
 - 用户信息无法更新
 - “我的”部分无法显示（是空的吗
-- 登录时无法实现区分 lifeAdmin、studyAdmin...因此无法进入管理员界面
-- 导航栏的信息都目前是硬编码的
-- 任何人都能随意删除问题？？但删除问题后在后端仍能看到 Topics 暂存
 - 点赞功能是否应该移到 IssueDetailPage
+
+### 做到什么程度
+
+- 把所有 bug 修好
+- 评论区的展示逻辑
+- 导航栏的信息都目前是硬编码的
+
+
+> register 界面
