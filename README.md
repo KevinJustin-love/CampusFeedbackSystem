@@ -25,5 +25,3 @@
 - 对于非管理员（学生等），直接在前端进行注册。访问 http://localhost:5173/login, 注册后登录。
 
 - 对于管理员，在后端文件夹中运行 `python create_admin_data.py`，会创建 super_admin、life_admin 两名用户。其中，super_admin 的用户名设置为 admin, 密码设置为 admin123。life_admin 用户名设置为 life_admin，密码设置为 life123
-
-> 这里还有个 bug，life_admin页面没法正确渲染 life issues
