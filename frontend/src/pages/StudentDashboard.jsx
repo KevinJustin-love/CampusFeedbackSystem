@@ -129,7 +129,7 @@ const StudentDashboard = ({ user }) => {
             提交新问题
           </button>
         )}
-        {user && user.role.includes("admin") && (
+        {user && user.username.includes("admin") && (
           <button
             onClick={() => navigate("/admin")}
             className="btn-primary"

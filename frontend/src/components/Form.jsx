@@ -5,7 +5,7 @@ import { ACCESS_TOKEN, REFRESH_TOKEN } from "../constants";
 import { jwtDecode } from "jwt-decode";
 
 import "../styles/Form.css";
-import "../styles/form&submitIssuePage.css"
+import "../styles/form&submitIssuePage.css";
 
 const Form = ({ route, method }) => {
   const [username, setUsername] = useState("");
@@ -31,7 +31,9 @@ const Form = ({ route, method }) => {
         const roles = decodedToken.roles || [];
 
         // 根据角色决定导航路径
-        const isAdmin = roles.includes("super_admin") || roles.some(role => role.endsWith("_admin"));
+        const isAdmin =
+          roles.includes("super_admin") ||
+          roles.some((role) => role.endsWith("_admin"));
         if (isAdmin) {
           navigate("/admin");
         } else {
@@ -97,18 +99,13 @@ const Form = ({ route, method }) => {
             {method === "login" && (
               <button
                 type="button"
-                className="btn-primary1"  
+                className="btn-primary1"
                 onClick={handleRegisterClick}
-                style={{ marginRight: "10px" }}
               >
                 Register
               </button>
             )}
-            <button
-              type="submit"
-              className="btn-primary1"
-              disabled={loading}
-            >
+            <button type="submit" className="btn-primary1" disabled={loading}>
               {loading ? "处理中..." : name}
             </button>
           </div>

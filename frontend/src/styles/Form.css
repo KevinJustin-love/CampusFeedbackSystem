@@ -8,15 +8,20 @@
   justify-content: center;
   min-height: 100vh;
   background-color: #f3f4f6;
+  position: relative;
+  width: 100%;
 }
 
 .login-card {
   background-color: #ffffff;
-  padding: 32px;
+  padding: 20px; 
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   width: 100%;
   max-width: 400px;
+  min-height: auto;
+  position: relative;
+  overflow: visible; /* 改为visible避免内容被裁剪 */
 }
 
 .logo-container {
@@ -35,6 +40,15 @@
   color: #2563eb;
   text-align: center;
   margin-bottom: 24px;
+}
+
+/* 确保表单容器正确 */
+.login-card form {
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  min-height: 200px; /* 确保表单有足够高度 */
 }
 
 /* Form CSS */
@@ -104,12 +118,17 @@
 .button-container {
   display: flex;
   justify-content: center;
-  margin-top: 20px;
+  gap: 10px; /* 按钮之间的间距 */
+  margin-top: 80px; /* 确保与密码框有足够距离 */
+  margin-bottom: 20px; /* 设置按钮距离login-card底部的距离 */
+  position: relative;
+  width: 100%;
+  padding-top: 10px; /* 额外的顶部内边距 */
 }
 
 /* 无标签的表单组 */
 .form-group-no-label {
-  margin-bottom: 20px;
+  margin-bottom: 25px; /* 增加底部边距，给输入框更多空间 */
 }
 
 /* 更大的输入框 */
