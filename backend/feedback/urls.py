@@ -20,4 +20,9 @@ urlpatterns = [
     path('notifications/unread-count/', views.get_unread_count, name='unread-count'),
     path('notifications/mark-read/', views.mark_notifications_read, name='mark-notifications-read'),
     path('notifications/mark-all-read/', views.mark_all_read, name='mark-all-read'),
+    
+    # 历史记录相关路由
+    path('view-history/', views.ViewHistoryListCreate.as_view(), name='view-history-list'),
+    path('issues/<int:issue_id>/record-view/', views.record_view_history, name='record-view-history'),
+    path('view-history/clear/', views.clear_view_history, name='clear-view-history'),
 ]

@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
-from .models import Issue, Reply, Message, Topic, Notification
+from .models import Issue, Reply, Message, Topic, Notification, ViewHistory
 
 class TopicSerializer(serializers.ModelSerializer):
     class Meta:
@@ -135,3 +135,32 @@ class NotificationSerializer(serializers.ModelSerializer):
             'created'
         ]
         read_only_fields = ['id', 'sender_name', 'issue_title', 'created']
+
+class ViewHistorySerializer(serializers.ModelSerializer):
+    issue_title = serializers.SerializerMethodField()
+    issue_status = serializers.SerializerMethodField()
+    issue_topic = serializers.SerializerMethodField()
+    
+    def get_issue_title(self, obj):
+        """获取问题标题"""
+        return obj.issue.title
+    
+    def get_issue_status(self, obj):
+        """获取问题状态"""
+        return obj.issue.status
+    
+    def get_issue_topic(self, obj):
+        """获取问题分类"""
+        return obj.issue.topic.name if obj.issue.topic else '未分类'
+    
+    class Meta:
+        model = ViewHistory
+        fields = [
+            'id',
+            'issue',
+            'issue_title',
+            'issue_status',
+            'issue_topic',
+            'viewed_at'
+        ]
+        read_only_fields = ['id', 'issue_title', 'issue_status', 'issue_topic', 'viewed_at']

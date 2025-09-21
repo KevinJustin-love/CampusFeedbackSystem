@@ -10,8 +10,8 @@ from django.views.decorators.csrf import csrf_exempt
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework import status
-from .models import Issue, Reply, Message, Topic, IssueLike, Notification
-from .serializers import IssueSerializer, ReplySerializer, MessageSerializer, TopicSerializer, NotificationSerializer
+from .models import Issue, Reply, Message, Topic, IssueLike, Notification, ViewHistory
+from .serializers import IssueSerializer, ReplySerializer, MessageSerializer, TopicSerializer, NotificationSerializer, ViewHistorySerializer
 from .notification_service import NotificationService
 import json
 
@@ -282,3 +282,59 @@ def mark_all_read(request):
     ).update(is_read=True)
     
     return Response({'updated_count': updated_count})
+
+# 历史记录相关API
+class ViewHistoryListCreate(generics.ListCreateAPIView):
+    """获取用户浏览历史记录"""
+    serializer_class = ViewHistorySerializer
+    permission_classes = [IsAuthenticated]
+    
+    def get_queryset(self):
+        return ViewHistory.objects.filter(user=self.request.user)
+    
+    def perform_create(self, serializer):
+        # 检查是否已存在该用户对该问题的浏览记录
+        issue_id = self.request.data.get('issue')
+        if issue_id:
+            # 如果存在，更新浏览时间；如果不存在，创建新记录
+            from django.utils import timezone
+            ViewHistory.objects.update_or_create(
+                user=self.request.user,
+                issue_id=issue_id,
+                defaults={'viewed_at': timezone.now()}
+            )
+        else:
+            serializer.save(user=self.request.user)
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def record_view_history(request, issue_id):
+    """记录用户浏览问题"""
+    try:
+        issue = get_object_or_404(Issue, pk=issue_id)
+        
+        # 使用update_or_create来避免重复记录
+        from django.utils import timezone
+        view_history, created = ViewHistory.objects.update_or_create(
+            user=request.user,
+            issue=issue,
+            defaults={'viewed_at': timezone.now()}
+        )
+        
+        return Response({
+            'message': '浏览记录已更新' if not created else '浏览记录已创建',
+            'viewed_at': view_history.viewed_at
+        })
+        
+    except Exception as e:
+        return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+@api_view(['DELETE'])
+@permission_classes([IsAuthenticated])
+def clear_view_history(request):
+    """清空用户浏览历史"""
+    try:
+        deleted_count = ViewHistory.objects.filter(user=request.user).delete()[0]
+        return Response({'message': f'已清空 {deleted_count} 条浏览记录'})
+    except Exception as e:
+        return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

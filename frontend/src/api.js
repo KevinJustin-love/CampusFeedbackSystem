@@ -85,6 +85,17 @@ export const notificationAPI = {
   markAllAsRead: () => api.post("/feedback/notifications/mark-all-read/"),
 };
 
+export const historyAPI = {
+  // 获取用户浏览历史记录
+  getViewHistory: () => api.get("/feedback/view-history/"),
+  
+  // 记录用户浏览问题
+  recordView: (issueId) => api.post(`/feedback/issues/${issueId}/record-view/`),
+  
+  // 清空浏览历史
+  clearHistory: () => api.delete("/feedback/view-history/clear/"),
+};
+
 export const authAPI = {
   register: (data) => api.post("/api/auth/register/", data),
 };

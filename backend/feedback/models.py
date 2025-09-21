@@ -105,3 +105,16 @@ class Notification(models.Model):
         
     def __str__(self):
         return f"{self.recipient.username} - {self.title}"
+
+class ViewHistory(models.Model):
+    """用户浏览历史记录"""
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='view_histories')
+    issue = models.ForeignKey(Issue, on_delete=models.CASCADE, related_name='view_histories')
+    viewed_at = models.DateTimeField(auto_now_add=True)
+    
+    class Meta:
+        ordering = ['-viewed_at']  # 最新的在最上面
+        unique_together = ['user', 'issue']  # 每个用户对每个问题只记录一次最新浏览时间
+        
+    def __str__(self):
+        return f"{self.user.username} 浏览了 {self.issue.title} 在 {self.viewed_at}"
