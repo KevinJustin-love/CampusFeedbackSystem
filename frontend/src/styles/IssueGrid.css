@@ -1,10 +1,60 @@
 .issues-grid {
+  display: grid;
   grid-template-columns: 1fr;
-  gap: 20px;
+  gap: 1rem;
+  padding: 0;
+}
+
+.issue-item {
+  padding: 1rem 0;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.issue-item:last-child {
+  border-bottom: none;
+}
+
+.issue-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 0.5rem;
+}
+
+.issue-meta {
+  display: flex;
+  justify-content: space-between;
+  color: #64748b;
+  font-size: 0.875rem;
+  margin-bottom: 0.5rem;
+}
+
+.issue-description {
+  color: #475569;
+  font-size: 0.9375rem;
+  line-height: 1.5;
+}
+
+.issue-status {
+  display: inline-block;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.status-pending {
+  background-color: #fef3c7;
+  color: #92400e;
+}
+
+.status-resolved {
+  background-color: #d1fae5;
+  color: #065f46;
 }
 
 @media (max-width: 768px) {
-  .issues-grid {
-    grid-template-columns: 1fr;
+  .issue-item {
+    padding: 0.75rem 0;
   }
 }

@@ -32,6 +32,9 @@
 
 .detail-actions {
   margin-left: auto;
+  display: flex;
+  gap: 12px;
+  align-items: center;
 }
 
 .favorite-btn {
@@ -67,4 +70,35 @@
 .favorite-btn.favorited:hover {
   background-color: #fde68a;
   border-color: #f59e0b;
+}
+
+.like-button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0.5rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+  color: #64748b;
+}
+
+.like-button svg {
+  width: 24px;
+  height: 24px;
+  margin-bottom: 0.25rem;
+}
+
+.like-button:hover {
+  color: #2563eb;
+}
+
+.like-button.liked {
+  color: #2563eb;
+}
+
+.like-count {
+  font-size: 0.75rem;
+  color: inherit;
 }
