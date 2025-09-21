@@ -58,6 +58,55 @@ export const feedbackAPI = {
   adminReplyIssue: (issueId, data) => api.post(`/api/admin/issues/${issueId}/reply/`, data),
 };
 
+export const notificationAPI = {
+  // 获取通知列表
+  getNotifications: (isRead = null, adminFilter = false) => {
+    const params = {};
+    if (isRead !== null) {
+      params.is_read = isRead;
+    }
+    if (adminFilter) {
+      params.admin_filter = true;
+    }
+    return api.get("/feedback/notifications/", { params });
+  },
+  
+  // 获取未读通知数量
+  getUnreadCount: (adminFilter = false) => {
+    const params = adminFilter ? { admin_filter: true } : {};
+    return api.get("/feedback/notifications/unread-count/", { params });
+  },
+  
+  // 标记指定通知为已读
+  markAsRead: (notificationIds) => 
+    api.post("/feedback/notifications/mark-read/", { notification_ids: notificationIds }),
+  
+  // 标记所有通知为已读
+  markAllAsRead: () => api.post("/feedback/notifications/mark-all-read/"),
+};
+
+export const historyAPI = {
+  // 获取用户浏览历史记录
+  getViewHistory: () => api.get("/feedback/view-history/"),
+  
+  // 记录用户浏览问题
+  recordView: (issueId) => api.post(`/feedback/issues/${issueId}/record-view/`),
+  
+  // 清空浏览历史
+  clearHistory: () => api.delete("/feedback/view-history/clear/"),
+};
+
+export const favoriteAPI = {
+  // 获取用户收藏列表
+  getFavorites: () => api.get("/feedback/favorites/"),
+  
+  // 切换收藏状态
+  toggleFavorite: (issueId) => api.post(`/feedback/issues/${issueId}/favorite/`),
+  
+  // 检查收藏状态
+  checkFavoriteStatus: (issueId) => api.get(`/feedback/issues/${issueId}/favorite-status/`),
+};
+
 export const authAPI = {
   register: (data) => api.post("/api/auth/register/", data),
 };

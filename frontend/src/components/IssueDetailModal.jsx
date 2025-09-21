@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { feedbackAPI } from "../api";
+import { feedbackAPI, historyAPI } from "../api";
 import "../styles/IssueDetailModal.css";
 
 function IssueDetailModal({ issueId, isOpen, onClose }) {
@@ -23,6 +23,14 @@ function IssueDetailModal({ issueId, isOpen, onClose }) {
       const response = await feedbackAPI.getIssueDetail(issueId);
       console.log("Issue detail response:", response.data); // 调试信息
       setIssue(response.data);
+      
+      // 记录浏览历史
+      try {
+        await historyAPI.recordView(issueId);
+      } catch (historyError) {
+        console.error("记录浏览历史失败:", historyError);
+        // 不阻止页面加载，只是记录错误
+      }
       
       // 获取评论
       const messagesResponse = await feedbackAPI.getMessages(issueId);
