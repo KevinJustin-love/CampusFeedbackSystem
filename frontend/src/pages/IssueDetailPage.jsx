@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import IssueDetail from "../components/IssueDetail";
 import CommentSection from "../components/IssueCommentSection/CommentSection";
 import HandlingReply from "../components/IssueReply";
-import { feedbackAPI } from "../api"
+import { feedbackAPI, historyAPI } from "../api"
 
 import "../styles/IssueDetailPage.css";
 
@@ -32,6 +32,14 @@ function IssueDetailPage() {
       try {
         const response = await feedbackAPI.getIssueDetail(id);
         setIssue(response.data);
+        
+        // 记录浏览历史
+        try {
+          await historyAPI.recordView(id);
+        } catch (historyError) {
+          console.error("记录浏览历史失败:", historyError);
+          // 不阻止页面加载，只是记录错误
+        }
       } catch (error) {
         console.error("获取问题详情失败:", error);
       } finally {

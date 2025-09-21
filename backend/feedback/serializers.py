@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
-from .models import Issue, Reply, Message, Topic
+from .models import Issue, Reply, Message, Topic, Notification, ViewHistory, Favorite
 
 class TopicSerializer(serializers.ModelSerializer):
     class Meta:
@@ -73,6 +73,7 @@ class IssueSerializer(serializers.ModelSerializer):
     replies = ReplySerializer(many=True, read_only=True, source='reply_set')
     topic = serializers.StringRelatedField()
     attachment = serializers.SerializerMethodField()
+    is_favorited = serializers.SerializerMethodField()
 
     def get_attachment(self, obj):
         """获取附件的完整URL"""
@@ -82,6 +83,13 @@ class IssueSerializer(serializers.ModelSerializer):
                 return request.build_absolute_uri(obj.attachment.url)
             return obj.attachment.url
         return None
+
+    def get_is_favorited(self, obj):
+        """检查当前用户是否已收藏此问题"""
+        request = self.context.get('request')
+        if request and request.user.is_authenticated:
+            return Favorite.objects.filter(user=request.user, issue=obj).exists()
+        return False
 
     class Meta:
         model = Issue
@@ -101,6 +109,96 @@ class IssueSerializer(serializers.ModelSerializer):
             'likes',
             'popularity',
             'updated',
-            'created'
+            'created',
+            'is_favorited'
             ]
-        read_only_fields = ['host_name']
+        read_only_fields = ['host_name', 'is_favorited']
+
+class NotificationSerializer(serializers.ModelSerializer):
+    sender_name = serializers.SerializerMethodField()
+    issue_title = serializers.SerializerMethodField()
+    
+    def get_sender_name(self, obj):
+        """获取发送者用户名"""
+        if obj.sender:
+            return obj.sender.username
+        return '系统'
+    
+    def get_issue_title(self, obj):
+        """获取相关问题标题"""
+        if obj.issue:
+            return obj.issue.title
+        return None
+    
+    class Meta:
+        model = Notification
+        fields = [
+            'id',
+            'notification_type',
+            'title',
+            'message',
+            'sender_name',
+            'issue_title',
+            'issue',
+            'is_read',
+            'created'
+        ]
+        read_only_fields = ['id', 'sender_name', 'issue_title', 'created']
+
+class ViewHistorySerializer(serializers.ModelSerializer):
+    issue_title = serializers.SerializerMethodField()
+    issue_status = serializers.SerializerMethodField()
+    issue_topic = serializers.SerializerMethodField()
+    
+    def get_issue_title(self, obj):
+        """获取问题标题"""
+        return obj.issue.title
+    
+    def get_issue_status(self, obj):
+        """获取问题状态"""
+        return obj.issue.status
+    
+    def get_issue_topic(self, obj):
+        """获取问题分类"""
+        return obj.issue.topic.name if obj.issue.topic else '未分类'
+    
+    class Meta:
+        model = ViewHistory
+        fields = [
+            'id',
+            'issue',
+            'issue_title',
+            'issue_status',
+            'issue_topic',
+            'viewed_at'
+        ]
+        read_only_fields = ['id', 'issue_title', 'issue_status', 'issue_topic', 'viewed_at']
+
+class FavoriteSerializer(serializers.ModelSerializer):
+    issue_title = serializers.SerializerMethodField()
+    issue_status = serializers.SerializerMethodField()
+    issue_topic = serializers.SerializerMethodField()
+    
+    def get_issue_title(self, obj):
+        """获取问题标题"""
+        return obj.issue.title
+    
+    def get_issue_status(self, obj):
+        """获取问题状态"""
+        return obj.issue.status
+    
+    def get_issue_topic(self, obj):
+        """获取问题分类"""
+        return obj.issue.topic.name if obj.issue.topic else '未分类'
+    
+    class Meta:
+        model = Favorite
+        fields = [
+            'id',
+            'issue',
+            'issue_title',
+            'issue_status',
+            'issue_topic',
+            'created'
+        ]
+        read_only_fields = ['id', 'issue_title', 'issue_status', 'issue_topic', 'created']

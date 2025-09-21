@@ -5,6 +5,7 @@ import AdminIssueCard from "../components/AdminIssueCard";
 import { jwtDecode } from "jwt-decode";
 import { ACCESS_TOKEN } from "../constants";
 import { feedbackAPI } from "../api";
+import { useNotifications } from "../hooks/useNotifications";
 
 import "../styles/admin&dash.css";
 import "../styles/AdminDashboard.css";
@@ -16,6 +17,9 @@ const AdminDashboard = ({ user }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [searchQuery, setSearchQuery] = useState(""); // 添加搜索查询状态
+  
+  // 使用管理员过滤的通知Hook
+  const { unreadCount, fetchUnreadCount } = useNotifications(true);
 
   // 获取并解码JWT令牌以获取用户角色和主题
   const token = localStorage.getItem(ACCESS_TOKEN);
@@ -36,8 +40,10 @@ const AdminDashboard = ({ user }) => {
       navigate("/dashboard");
     } else {
       fetchAdminIssues();
+      // 获取管理员相关的未读通知数量
+      fetchUnreadCount();
     }
-  }, [isAdmin, navigate]);
+  }, [isAdmin, navigate, fetchUnreadCount]);
 
   const fetchAdminIssues = async () => {
     try {
@@ -87,7 +93,7 @@ const AdminDashboard = ({ user }) => {
 
   return (
     <div className="admin-container" style={{ padding: 0 }}>
-      <Home user={user} onSearch={handleSearch} />
+      <Home user={user} onSearch={handleSearch} adminUnreadCount={unreadCount} adminFilter={true} />
       <div className="button-container">
         <button className="btn-switch" onClick={handleSwitchToStudent}>
           切换

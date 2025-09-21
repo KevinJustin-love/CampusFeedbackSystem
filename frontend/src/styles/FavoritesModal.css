@@ -201,7 +201,37 @@
   color: #d97706;
 }
 
-/* 移除分类标签样式 */
+/* 收藏项元数据样式 */
+.favorite-item-meta {
+  display: flex;
+  gap: 12px;
+  font-size: 0.75rem;
+  color: #6b7280;
+  margin-top: 4px;
+}
+
+.favorite-item-topic {
+  background: #f3f4f6;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-weight: 500;
+}
+
+.favorite-item-status {
+  color: #059669;
+  font-weight: 500;
+}
+
+.favorite-item-date {
+  color: #9ca3af;
+}
+
+.favorites-loading,
+.favorites-error {
+  padding: 40px 20px;
+  text-align: center;
+  color: #6b7280;
+}
 
 .favorite-item-action {
   background: none;

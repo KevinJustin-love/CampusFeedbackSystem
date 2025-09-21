@@ -1,46 +1,99 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useViewHistory } from '../hooks/useViewHistory';
+import { useNavigate } from 'react-router-dom';
 import '../styles/HistoryModal.css';
 
-const HistoryModal = ({ isOpen, onClose, historyData = [] }) => {
+const HistoryModal = ({ isOpen, onClose }) => {
+  const navigate = useNavigate();
+  const {
+    history,
+    loading,
+    error,
+    fetchHistory,
+    clearHistory,
+    formatTime,
+    getStatusText,
+    getStatusClass
+  } = useViewHistory();
+
+  // 当弹窗打开时获取历史记录
+  useEffect(() => {
+    if (isOpen) {
+      fetchHistory();
+    }
+  }, [isOpen, fetchHistory]);
+
   if (!isOpen) return null;
 
-  // 示例历史数据 - 校园生活问题
-  const sampleData = [
-    { id: 1, title: '宿舍网络连接不稳定', time: '2024-09-15 14:30', status: '已解决' },
-    { id: 2, title: '图书馆座位预约系统故障', time: '2024-09-14 10:15', status: '处理中' },
-    { id: 3, title: '食堂饭菜质量改进建议', time: '2024-09-13 16:45', status: '已关闭' },
-    { id: 4, title: '教学楼空调温度调节问题', time: '2024-09-12 09:20', status: '已解决' },
-    { id: 5, title: '校园卡充值系统使用问题', time: '2024-09-11 15:10', status: '待处理' }
-  ];
+  const handleItemClick = (issueId) => {
+    onClose();
+    navigate(`/detail/${issueId}`);
+  };
 
-  const displayData = historyData.length > 0 ? historyData : sampleData;
+  const handleClearHistory = async () => {
+    if (window.confirm('确定要清空所有浏览历史吗？')) {
+      await clearHistory();
+    }
+  };
 
   return (
     <div className="history-modal-overlay" onClick={onClose}>
       <div className="history-modal-content" onClick={(e) => e.stopPropagation()}>
         <div className="history-modal-header">
-          <h2>历史记录</h2>
-          <button className="history-modal-close" onClick={onClose}>
-            ×
-          </button>
+          <h2>浏览历史</h2>
+          <div className="history-header-actions">
+            {history.length > 0 && (
+              <button className="clear-history-btn" onClick={handleClearHistory}>
+                清空历史
+              </button>
+            )}
+            <button className="history-modal-close" onClick={onClose}>
+              ×
+            </button>
+          </div>
         </div>
         
         <div className="history-modal-body">
-          {displayData.length === 0 ? (
-            <div className="history-empty">
-              <p>暂无历史记录</p>
+          {loading && (
+            <div className="history-loading">
+              <div className="loading-spinner"></div>
+              <p>加载中...</p>
             </div>
-          ) : (
+          )}
+          
+          {error && (
+            <div className="history-error">
+              <p>{error}</p>
+              <button onClick={fetchHistory}>重试</button>
+            </div>
+          )}
+          
+          {!loading && !error && history.length === 0 && (
+            <div className="history-empty">
+              <div className="empty-icon">🕒</div>
+              <p>暂无浏览历史</p>
+              <p className="empty-hint">浏览问题后，历史记录会显示在这里</p>
+            </div>
+          )}
+          
+          {!loading && !error && history.length > 0 && (
             <div className="history-list">
-              {displayData.map((item) => (
-                <div key={item.id} className="history-item">
+              {history.map((item) => (
+                <div 
+                  key={item.id} 
+                  className="history-item"
+                  onClick={() => handleItemClick(item.issue)}
+                >
                   <div className="history-item-main">
-                    <h3 className="history-item-title">{item.title}</h3>
-                    <span className="history-item-time">{item.time}</span>
+                    <h3 className="history-item-title">{item.issue_title}</h3>
+                    <div className="history-item-meta">
+                      <span className="history-item-topic">{item.issue_topic}</span>
+                      <span className="history-item-time">{formatTime(item.viewed_at)}</span>
+                    </div>
                   </div>
                   <div className="history-item-status">
-                    <span className={`status-badge status-${item.status}`}>
-                      {item.status}
+                    <span className={`status-badge ${getStatusClass(item.issue_status)}`}>
+                      {getStatusText(item.issue_status)}
                     </span>
                   </div>
                 </div>

@@ -30,10 +30,46 @@
   font-weight: 600;
 }
 
-.like-section {
-  margin-top: 1.5rem;
+.detail-actions {
+  margin-left: auto;
   display: flex;
-  justify-content: flex-end;
+  gap: 12px;
+  align-items: center;
+}
+
+.favorite-btn {
+  background-color: #f3f4f6;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-size: 14px;
+  color: #374151;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.favorite-btn:hover {
+  background-color: #e5e7eb;
+  border-color: #9ca3af;
+}
+
+.favorite-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.favorite-btn.favorited {
+  background-color: #fef3c7;
+  border-color: #fbbf24;
+  color: #92400e;
+}
+
+.favorite-btn.favorited:hover {
+  background-color: #fde68a;
+  border-color: #f59e0b;
 }
 
 .like-button {
