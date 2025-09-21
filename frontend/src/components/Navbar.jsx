@@ -1,16 +1,18 @@
 import React, { useState } from "react";
 import HistoryModal from "../pages/HistoryModal";
 import FavoritesModal from "../pages/FavoritesModal";
+import NotificationModal from "./NotificationModal";
+import { useNotifications } from "../hooks/useNotifications";
 
 import "../styles/Navbar.css";
 
-export default function Navbar({ onMessageBarClick, onSearch }) {
+export default function Navbar({ onSearch }) {
+  const { unreadCount } = useNotifications();
   //消息栏图标
   function MessageBar() {
     return (
       <span
         className="message-bar"
-        onClick={onMessageBarClick}
         style={{ cursor: "pointer" }}
       >
         <svg
@@ -27,11 +29,11 @@ export default function Navbar({ onMessageBarClick, onSearch }) {
           <polyline points="22,6 12,13 2,6" />
         </svg>
         {/* 显示未读消息数量的小红点 */}
-        {/* {unreadCount > 0 && (
+        {unreadCount > 0 && (
           <span className="notification-badge">
             {unreadCount > 99 ? "99+" : unreadCount}
           </span>
-        )} */}
+        )}
       </span>
     );
   }
@@ -169,6 +171,7 @@ export default function Navbar({ onMessageBarClick, onSearch }) {
 
   const [isHistoryModalOpen, setIsHistoryModalOpen] = useState(false);
   const [isFavoritesModalOpen, setIsFavoritesModalOpen] = useState(false);
+  const [isNotificationModalOpen, setIsNotificationModalOpen] = useState(false);
 
   const handleClockIconClick = () => {
     setIsHistoryModalOpen(true);
@@ -186,10 +189,21 @@ export default function Navbar({ onMessageBarClick, onSearch }) {
     setIsFavoritesModalOpen(false);
   };
 
+  const handleMessageBarClick = () => {
+    setIsNotificationModalOpen(true);
+    // 移除对原有 onMessageBarClick 的调用，避免冲突
+  };
+
+  const handleCloseNotificationModal = () => {
+    setIsNotificationModalOpen(false);
+  };
+
   return (
     <div className="navbar-container">
       <ClockIcon onClick={handleClockIconClick} />
-      <MessageBar />
+      <div onClick={handleMessageBarClick}>
+        <MessageBar />
+      </div>
       <StarIcon onClick={handleStarIconClick} />
       <SearchBar />
       <HistoryModal
@@ -199,6 +213,10 @@ export default function Navbar({ onMessageBarClick, onSearch }) {
       <FavoritesModal
         isOpen={isFavoritesModalOpen}
         onClose={handleCloseFavoritesModal}
+      />
+      <NotificationModal
+        isOpen={isNotificationModalOpen}
+        onClose={handleCloseNotificationModal}
       />
     </div>
   );

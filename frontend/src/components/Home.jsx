@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import UserProfile from "./Profile";
 import Navbar from "../components/Navbar";
-import NotificationPanel from "../pages/MessagePage";
+// import NotificationPanel from "../pages/MessagePage"; // 已替换为新的通知系统
 // /dashboard 与 /admin 都是基于此页面的
 
 import "../styles/Home.css";
@@ -12,74 +12,7 @@ const Home = ({ user, onSearch }) => {
   const navigate = useNavigate();
   const [currentUser, setCurrentUser] = useState(user);
   const [isLoading, setIsLoading] = useState(false);
-  const [showNotificationPanel, setShowNotificationPanel] = useState(false);
-
-  // 下面是消息界面，目前采用硬编码
-
-  const [notifications, setNotifications] = useState([
-    {
-      id: 1,
-      problemId: 101,
-      problemTitle: "登录页面加载缓慢",
-      content: "您关注的问题状态已更新：处理中 → 已解决",
-      time: "10分钟前",
-      isRead: false,
-      type: "status",
-    },
-    {
-      id: 2,
-      problemId: 102,
-      problemTitle: "支付功能异常",
-      content: "您关注的问题状态已更新：待处理 → 处理中",
-      time: "2小时前",
-      isRead: false,
-      type: "status",
-    },
-    {
-      id: 3,
-      problemId: 103,
-      problemTitle: "图片上传失败",
-      content: "您关注的问题有了新的回复",
-      time: "昨天",
-      isRead: true,
-      type: "reply",
-    },
-  ]);
-
-  // 计算未读消息数量
-  // const unreadCount = notifications.filter((n) => !n.isRead).length;
-
-  // 标记单条消息为已读
-  const markAsRead = (id) => {
-    setNotifications(
-      notifications.map((notification) =>
-        notification.id === id
-          ? { ...notification, isRead: true }
-          : notification
-      )
-    );
-  };
-
-  // 标记所有消息为已读
-  const markAllAsRead = () => {
-    setNotifications(
-      notifications.map((notification) => ({
-        ...notification,
-        isRead: true,
-      }))
-    );
-  };
-
-  // 处理消息点击
-  const handleNotificationClick = (notification) => {
-    markAsRead(notification.id);
-    navigate(`/detail/${notification.problemId}`);
-  };
-
-  // 处理消息栏点击 - 新增函数
-  const handleMessageBarClick = () => {
-    setShowNotificationPanel(true);
-  };
+  // 旧的通知系统已移除，现在使用新的集成通知系统
 
   // 在组件挂载时获取用户信息
   useEffect(() => {
@@ -140,17 +73,7 @@ const Home = ({ user, onSearch }) => {
         </div>
         
         <Navbar
-          onMessageBarClick={handleMessageBarClick}
           onSearch={onSearch}
-          // unreadCount={unreadCount}
-        />
-        
-        <NotificationPanel
-          isOpen={showNotificationPanel}
-          onClose={() => setShowNotificationPanel(false)}
-          notifications={notifications}
-          onNotificationClick={handleNotificationClick}
-          onMarkAllAsRead={markAllAsRead}
         />
       </div>
     </div>

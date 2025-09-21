@@ -11,6 +11,7 @@ import AdminDashboard from "./pages/AdminDashboard";
 import IssueDetailPage from "./pages/IssueDetailPage";
 import RegisterPage from "./pages/RegisterPage";
 import NotFound from "./pages/NotFound";
+import NotificationPage from "./pages/NotificationPage";
 import ProtectedRoute from "./components/ProtectedRoute";
 
 import { checkUserAuth } from "./components/functions/checkUserAuth";
@@ -62,6 +63,15 @@ const App = () => {
         element={
           <ProtectedRoute>
             <IssueDetailPage />
+          </ProtectedRoute>
+        }
+      />
+      
+      <Route
+        path="/notifications"
+        element={
+          <ProtectedRoute>
+            <NotificationPage />
           </ProtectedRoute>
         }
       />

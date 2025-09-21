@@ -58,6 +58,24 @@ export const feedbackAPI = {
   adminReplyIssue: (issueId, data) => api.post(`/api/admin/issues/${issueId}/reply/`, data),
 };
 
+export const notificationAPI = {
+  // 获取通知列表
+  getNotifications: (isRead = null) => {
+    const params = isRead !== null ? { is_read: isRead } : {};
+    return api.get("/feedback/notifications/", { params });
+  },
+  
+  // 获取未读通知数量
+  getUnreadCount: () => api.get("/feedback/notifications/unread-count/"),
+  
+  // 标记指定通知为已读
+  markAsRead: (notificationIds) => 
+    api.post("/feedback/notifications/mark-read/", { notification_ids: notificationIds }),
+  
+  // 标记所有通知为已读
+  markAllAsRead: () => api.post("/feedback/notifications/mark-all-read/"),
+};
+
 export const authAPI = {
   register: (data) => api.post("/api/auth/register/", data),
 };
