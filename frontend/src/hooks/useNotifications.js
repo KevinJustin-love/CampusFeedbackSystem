@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { notificationAPI } from '../api';
 import { ACCESS_TOKEN } from '../constants';
 
-export const useNotifications = () => {
+export const useNotifications = (adminFilter = false) => {
   const [notifications, setNotifications] = useState([]);
   const [unreadCount, setUnreadCount] = useState(0);
   const [loading, setLoading] = useState(false);
@@ -11,20 +11,20 @@ export const useNotifications = () => {
   // 获取未读通知数量
   const fetchUnreadCount = useCallback(async () => {
     try {
-      const response = await notificationAPI.getUnreadCount();
+      const response = await notificationAPI.getUnreadCount(adminFilter);
       setUnreadCount(response.data.unread_count);
     } catch (err) {
       console.error('获取未读通知数量失败:', err);
       setError('获取未读通知数量失败');
     }
-  }, []);
+  }, [adminFilter]);
 
   // 获取通知列表
   const fetchNotifications = useCallback(async (isRead = null) => {
     setLoading(true);
     setError(null);
     try {
-      const response = await notificationAPI.getNotifications(isRead);
+      const response = await notificationAPI.getNotifications(isRead, adminFilter);
       setNotifications(response.data);
     } catch (err) {
       console.error('获取通知列表失败:', err);
@@ -32,7 +32,7 @@ export const useNotifications = () => {
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [adminFilter]);
 
   // 标记通知为已读
   const markAsRead = useCallback(async (notificationIds) => {

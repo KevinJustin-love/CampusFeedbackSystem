@@ -6,8 +6,11 @@ import { useNotifications } from "../hooks/useNotifications";
 
 import "../styles/Navbar.css";
 
-export default function Navbar({ onSearch }) {
+export default function Navbar({ onSearch, adminUnreadCount, adminFilter = false }) {
   const { unreadCount } = useNotifications();
+  
+  // 如果传入了管理员未读数量，优先使用管理员的过滤结果
+  const displayUnreadCount = adminUnreadCount !== undefined ? adminUnreadCount : unreadCount;
   //消息栏图标
   function MessageBar() {
     return (
@@ -29,9 +32,9 @@ export default function Navbar({ onSearch }) {
           <polyline points="22,6 12,13 2,6" />
         </svg>
         {/* 显示未读消息数量的小红点 */}
-        {unreadCount > 0 && (
+        {displayUnreadCount > 0 && (
           <span className="notification-badge">
-            {unreadCount > 99 ? "99+" : unreadCount}
+            {displayUnreadCount > 99 ? "99+" : displayUnreadCount}
           </span>
         )}
       </span>
@@ -217,6 +220,7 @@ export default function Navbar({ onSearch }) {
       <NotificationModal
         isOpen={isNotificationModalOpen}
         onClose={handleCloseNotificationModal}
+        adminFilter={adminFilter}
       />
     </div>
   );

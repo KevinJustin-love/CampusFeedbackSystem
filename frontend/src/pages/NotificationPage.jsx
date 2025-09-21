@@ -12,7 +12,7 @@ const NotificationPage = () => {
     fetchNotifications,
     markAsRead,
     markAllAsRead
-  } = useNotifications();
+  } = useNotifications(false);
 
   const [filter, setFilter] = useState('all');
 

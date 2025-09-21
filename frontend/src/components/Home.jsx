@@ -8,7 +8,7 @@ import Navbar from "../components/Navbar";
 
 import "../styles/Home.css";
 
-const Home = ({ user, onSearch }) => {
+const Home = ({ user, onSearch, adminUnreadCount, adminFilter = false }) => {
   const navigate = useNavigate();
   const [currentUser, setCurrentUser] = useState(user);
   const [isLoading, setIsLoading] = useState(false);
@@ -74,6 +74,8 @@ const Home = ({ user, onSearch }) => {
         
         <Navbar
           onSearch={onSearch}
+          adminUnreadCount={adminUnreadCount}
+          adminFilter={adminFilter}
         />
       </div>
     </div>

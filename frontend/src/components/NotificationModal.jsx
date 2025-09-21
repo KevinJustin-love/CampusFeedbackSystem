@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useNotifications } from '../hooks/useNotifications';
 import '../styles/NotificationModal.css';
 
-const NotificationModal = ({ isOpen, onClose }) => {
+const NotificationModal = ({ isOpen, onClose, adminFilter = false }) => {
   const navigate = useNavigate();
   const {
     notifications,
@@ -12,7 +12,7 @@ const NotificationModal = ({ isOpen, onClose }) => {
     fetchNotifications,
     markAsRead,
     markAllAsRead
-  } = useNotifications();
+  } = useNotifications(adminFilter);
 
   const [filter, setFilter] = useState('all'); // 'all', 'unread', 'read'
 

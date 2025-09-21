@@ -57,12 +57,16 @@ class IssueListCreate(generics.ListCreateAPIView):
         topic_name = self.request.data.get('topic')
             
         # 查找或创建一个 Topic 实例
-        # 这段代码实现了“自定义”分类，如果前端只提供固定选项，这个方法也适用
+        # 这段代码实现了"自定义"分类，如果前端只提供固定选项，这个方法也适用
         topic_instance, created = Topic.objects.get_or_create(name=topic_name)
             
         if self.request.user.is_authenticated:
             # 将 host 和 topic 实例传递给序列化器的 save 方法
-            serializer.save(host=self.request.user, topic=topic_instance)
+            issue = serializer.save(host=self.request.user, topic=topic_instance)
+            
+            # 通知相关管理员有新问题
+            from .notification_service import NotificationService
+            NotificationService.notify_new_issue_to_admins(issue)
         else:
             raise PermissionDenied("你必须登录才能发布。")
 
@@ -233,18 +237,27 @@ class NotificationListView(generics.ListAPIView):
     def get_queryset(self):
         user = self.request.user
         is_read = self.request.query_params.get('is_read', None)
+        admin_filter = self.request.query_params.get('admin_filter', 'false').lower() == 'true'
         
         if is_read is not None:
             is_read = is_read.lower() == 'true'
-            return NotificationService.get_user_notifications(user, is_read=is_read)
+            return NotificationService.get_user_notifications(user, is_read=is_read, admin_filter=admin_filter)
         
-        return NotificationService.get_user_notifications(user)
+        return NotificationService.get_user_notifications(user, admin_filter=admin_filter)
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def get_unread_count(request):
     """获取未读通知数量"""
-    count = NotificationService.get_unread_count(request.user)
+    admin_filter = request.query_params.get('admin_filter', 'false').lower() == 'true'
+    
+    if admin_filter:
+        # 使用过滤后的通知查询集计算未读数量
+        notifications = NotificationService.get_user_notifications(request.user, admin_filter=True)
+        count = notifications.filter(is_read=False).count()
+    else:
+        count = NotificationService.get_unread_count(request.user)
+    
     return Response({'unread_count': count})
 
 @api_view(['POST'])

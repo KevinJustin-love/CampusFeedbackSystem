@@ -60,13 +60,22 @@ export const feedbackAPI = {
 
 export const notificationAPI = {
   // 获取通知列表
-  getNotifications: (isRead = null) => {
-    const params = isRead !== null ? { is_read: isRead } : {};
+  getNotifications: (isRead = null, adminFilter = false) => {
+    const params = {};
+    if (isRead !== null) {
+      params.is_read = isRead;
+    }
+    if (adminFilter) {
+      params.admin_filter = true;
+    }
     return api.get("/feedback/notifications/", { params });
   },
   
   // 获取未读通知数量
-  getUnreadCount: () => api.get("/feedback/notifications/unread-count/"),
+  getUnreadCount: (adminFilter = false) => {
+    const params = adminFilter ? { admin_filter: true } : {};
+    return api.get("/feedback/notifications/unread-count/", { params });
+  },
   
   // 标记指定通知为已读
   markAsRead: (notificationIds) => 
