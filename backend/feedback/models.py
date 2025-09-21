@@ -81,3 +81,27 @@ class Reply(models.Model):
 
     def __str__(self):
         return self.content[0:50]
+
+class Notification(models.Model):
+    NOTIFICATION_TYPES = [
+        ('status_update', '状态更新'),
+        ('admin_reply', '管理员回复'),
+        ('new_comment', '新评论'),
+        ('issue_liked', '问题被点赞'),
+        ('system', '系统通知'),
+    ]
+    
+    recipient = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='notifications')
+    sender = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True, related_name='sent_notifications')
+    notification_type = models.CharField(max_length=20, choices=NOTIFICATION_TYPES)
+    title = models.CharField(max_length=100)
+    message = models.TextField()
+    issue = models.ForeignKey(Issue, on_delete=models.CASCADE, null=True, blank=True)
+    is_read = models.BooleanField(default=False)
+    created = models.DateTimeField(auto_now_add=True)
+    
+    class Meta:
+        ordering = ['-created']
+        
+    def __str__(self):
+        return f"{self.recipient.username} - {self.title}"

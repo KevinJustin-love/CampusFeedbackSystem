@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
-from .models import Issue, Reply, Message, Topic
+from .models import Issue, Reply, Message, Topic, Notification
 
 class TopicSerializer(serializers.ModelSerializer):
     class Meta:
@@ -104,3 +104,34 @@ class IssueSerializer(serializers.ModelSerializer):
             'created'
             ]
         read_only_fields = ['host_name']
+
+class NotificationSerializer(serializers.ModelSerializer):
+    sender_name = serializers.SerializerMethodField()
+    issue_title = serializers.SerializerMethodField()
+    
+    def get_sender_name(self, obj):
+        """获取发送者用户名"""
+        if obj.sender:
+            return obj.sender.username
+        return '系统'
+    
+    def get_issue_title(self, obj):
+        """获取相关问题标题"""
+        if obj.issue:
+            return obj.issue.title
+        return None
+    
+    class Meta:
+        model = Notification
+        fields = [
+            'id',
+            'notification_type',
+            'title',
+            'message',
+            'sender_name',
+            'issue_title',
+            'issue',
+            'is_read',
+            'created'
+        ]
+        read_only_fields = ['id', 'sender_name', 'issue_title', 'created']

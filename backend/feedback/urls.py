@@ -15,4 +15,9 @@ urlpatterns = [
     path('issues/<int:issue_id>/delete/', views.delete_issue, name='delete_issue'),
     path('issues/<int:issue_id>/delete-permission/', views.check_delete_permission, name='check_delete_permission'),
     path('auth/csrf/', views.get_csrf_token, name='get_csrf_token'),
+    # 通知相关路由
+    path('notifications/', views.NotificationListView.as_view(), name='notification-list'),
+    path('notifications/unread-count/', views.get_unread_count, name='unread-count'),
+    path('notifications/mark-read/', views.mark_notifications_read, name='mark-notifications-read'),
+    path('notifications/mark-all-read/', views.mark_all_read, name='mark-all-read'),
 ]

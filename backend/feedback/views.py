@@ -10,8 +10,9 @@ from django.views.decorators.csrf import csrf_exempt
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework import status
-from .models import Issue, Reply, Message, Topic, IssueLike
-from .serializers import IssueSerializer, ReplySerializer, MessageSerializer, TopicSerializer
+from .models import Issue, Reply, Message, Topic, IssueLike, Notification
+from .serializers import IssueSerializer, ReplySerializer, MessageSerializer, TopicSerializer, NotificationSerializer
+from .notification_service import NotificationService
 import json
 
 
@@ -83,10 +84,12 @@ class ReplyListCreate(generics.ListCreateAPIView):
         if self.request.user.is_authenticated:
             issue_id = self.kwargs.get('pk')
             issue = get_object_or_404(Issue, pk=issue_id)
-            serializer.save(
+            reply = serializer.save(
                 administrator=self.request.user,
                 issue=issue
             )
+            # 触发管理员回复通知
+            NotificationService.notify_admin_reply(reply)
         else:
             # 如果未认证用户尝试创建，抛出权限拒绝异常
             raise PermissionDenied("你必须登录才能发布。")
@@ -103,10 +106,12 @@ class MessageListCreate(generics.ListCreateAPIView):
         if self.request.user.is_authenticated:
             issue_id = self.kwargs.get('pk')
             issue = get_object_or_404(Issue, pk=issue_id)
-            serializer.save(
+            message = serializer.save(
                 user=self.request.user,
                 issue=issue
             )
+            # 触发新评论通知
+            NotificationService.notify_new_comment(message)
         else:
             # 如果未认证用户尝试创建，抛出权限拒绝异常
             raise PermissionDenied("你必须登录才能发布。")
@@ -139,6 +144,8 @@ def like_issue(request, issue_id):
             # 使用update()方法更新likes和popularity字段，避免触发auto_now
             Issue.objects.filter(pk=issue_id).update(likes=new_likes, popularity=new_popularity)
             issue.refresh_from_db()  # 刷新实例以获取最新值
+            # 触发点赞通知
+            NotificationService.notify_issue_liked(issue, request.user)
             return Response({'likes': issue.likes, 'popularity': issue.popularity, 'liked': True, 'message': '点赞成功'})
             
     except Exception as e:
@@ -217,3 +224,48 @@ def check_like_status(request, issue_id):
     issue = get_object_or_404(Issue, pk=issue_id)
     liked = IssueLike.objects.filter(user=request.user, issue=issue).exists()
     return Response({'liked': liked})
+
+class NotificationListView(generics.ListAPIView):
+    """获取用户通知列表"""
+    serializer_class = NotificationSerializer
+    permission_classes = [IsAuthenticated]
+    
+    def get_queryset(self):
+        user = self.request.user
+        is_read = self.request.query_params.get('is_read', None)
+        
+        if is_read is not None:
+            is_read = is_read.lower() == 'true'
+            return NotificationService.get_user_notifications(user, is_read=is_read)
+        
+        return NotificationService.get_user_notifications(user)
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_unread_count(request):
+    """获取未读通知数量"""
+    count = NotificationService.get_unread_count(request.user)
+    return Response({'unread_count': count})
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def mark_notifications_read(request):
+    """标记通知为已读"""
+    notification_ids = request.data.get('notification_ids', [])
+    
+    if not notification_ids:
+        return Response({'error': '请提供通知ID列表'}, status=status.HTTP_400_BAD_REQUEST)
+    
+    updated_count = NotificationService.mark_as_read(notification_ids, request.user)
+    return Response({'updated_count': updated_count})
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def mark_all_read(request):
+    """标记所有通知为已读"""
+    updated_count = Notification.objects.filter(
+        recipient=request.user,
+        is_read=False
+    ).update(is_read=True)
+    
+    return Response({'updated_count': updated_count})
