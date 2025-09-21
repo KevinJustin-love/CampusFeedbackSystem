@@ -13,11 +13,11 @@ export const checkUserAuth = (setIsLoading, setUser) => {
       try {
         const decodedToken = jwtDecode(token);
         console.log("解码后的token:", decodedToken);
-        // 提取username和role，如果不存在则使用默认值
-        const username =
-          decodedToken.username || `user_${decodedToken.user_id}`;
+        // 提取用户信息
+        const username = decodedToken.username || `user_${decodedToken.user_id}`;
         const role = decodedToken.role || "student";
-        setUser({ username, role });
+        const id = decodedToken.user_id; // 从token中获取用户ID
+        setUser({ id, username, role }); // 包含id字段
         console.log("设置用户:", { username, role });
       } catch (error) {
         console.error("无效的令牌:", error);

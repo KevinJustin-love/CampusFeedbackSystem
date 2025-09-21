@@ -4,8 +4,16 @@
   padding: 12px 18px;
   border: none;
   border-radius: 4px;
-  font-size: 20px;
+  font-size: 16px; /* 稍微减小字体以适应布局 */
   cursor: pointer;
   width: 120px;
+  height: 48px; /* 设置固定高度确保一致性 */
   transition: transform 0.2s ease;
+  position: relative;
+  display: inline-block;
+}
+
+.btn-primary1:hover {
+  background-color: #1d4ed8;
+  transform: translateY(-1px);
 }

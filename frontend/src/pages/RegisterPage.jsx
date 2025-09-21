@@ -1,8 +1,8 @@
 import React from "react";
-import Form from "../components/Form"
+import Form from "../components/Form";
 
 const RegisterPage = () => {
-    return <Form route="/api/auth/register/" method="register" />
-}
+  return <Form route="/api/register/" method="register" />;
+};
 
 export default RegisterPage;

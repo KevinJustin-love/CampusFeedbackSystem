@@ -17,10 +17,12 @@ export const fetchIssues = async (setLoading, setIssues, setError, config) => {
     if (Array.isArray(res.data)) {
       setIssues(res.data);
       setError(null);
+      return res.data; // 返回数据供调用方使用
     } else {
       console.error("API返回数据格式错误，期望数组但得到:", typeof res.data);
       setIssues([]);
       setError("数据格式错误");
+      return [];
     }
   } catch (err) {
     console.error("获取问题列表失败：", err);
@@ -28,6 +30,7 @@ export const fetchIssues = async (setLoading, setIssues, setError, config) => {
     console.error("错误状态码:", err.response?.status);
     console.error("请求URL:", err.config?.url);
     setError("加载问题列表失败。请检查后端服务是否运行。");
+    return null;
   } finally {
     setLoading(false);
   }
