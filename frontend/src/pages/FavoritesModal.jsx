@@ -1,19 +1,50 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { favoriteAPI } from '../api';
 import '../styles/FavoritesModal.css';
 
-const FavoritesModal = ({ isOpen, onClose, favoritesData = [] }) => {
+const FavoritesModal = ({ isOpen, onClose }) => {
+  const [favorites, setFavorites] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  // 获取收藏列表
+  useEffect(() => {
+    const fetchFavorites = async () => {
+      if (!isOpen) return;
+      
+      try {
+        setLoading(true);
+        setError(null);
+        const response = await favoriteAPI.getFavorites();
+        setFavorites(response.data);
+      } catch (error) {
+        console.error('获取收藏列表失败:', error);
+        setError('获取收藏列表失败');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchFavorites();
+  }, [isOpen]);
+
+  // 取消收藏
+  const handleRemoveFavorite = async (issueId) => {
+    try {
+      await favoriteAPI.toggleFavorite(issueId);
+      // 从列表中移除
+      setFavorites(prev => prev.filter(item => item.issue !== issueId));
+    } catch (error) {
+      console.error('取消收藏失败:', error);
+    }
+  };
+
+  const handleItemClick = (issueId) => {
+    // 跳转到问题详情页
+    window.location.href = `/detail/${issueId}`;
+  };
+
   if (!isOpen) return null;
-
-  // 示例收藏数据 - 校园生活问题
-  const sampleData = [
-    { id: 1, title: '宿舍网络连接不稳定问题', starred: true },
-    { id: 2, title: '图书馆座位预约系统故障', starred: true },
-    { id: 3, title: '食堂饭菜质量改进建议', starred: true },
-    { id: 4, title: '教学楼空调温度调节问题', starred: true },
-    { id: 5, title: '校园卡充值系统使用问题', starred: true }
-  ];
-
-  const displayData = favoritesData.length > 0 ? favoritesData : sampleData;
 
   return (
     <div className="favorites-modal-overlay" onClick={onClose}>
@@ -26,20 +57,37 @@ const FavoritesModal = ({ isOpen, onClose, favoritesData = [] }) => {
         </div>
         
         <div className="favorites-modal-body">
-          {displayData.length === 0 ? (
+          {loading ? (
+            <div className="favorites-loading">加载中...</div>
+          ) : error ? (
+            <div className="favorites-error">{error}</div>
+          ) : favorites.length === 0 ? (
             <div className="favorites-empty">
               <div className="empty-icon">⭐</div>
               <p>暂无收藏内容</p>
-              <span className="empty-hint">点击星号图标收藏您喜欢的内容</span>
+              <span className="empty-hint">点击收藏按钮收藏您喜欢的问题</span>
             </div>
           ) : (
             <div className="favorites-list">
-              {displayData.map((item) => (
+              {favorites.map((item) => (
                 <div key={item.id} className="favorite-item">
-                  <div className="favorite-item-main">
-                    <h4 className="favorite-item-title">{item.title}</h4>
+                  <div 
+                    className="favorite-item-main"
+                    onClick={() => handleItemClick(item.issue)}
+                    style={{ cursor: 'pointer' }}
+                  >
+                    <h4 className="favorite-item-title">{item.issue_title}</h4>
+                    <div className="favorite-item-meta">
+                      <span className="favorite-item-topic">{item.issue_topic}</span>
+                      <span className="favorite-item-status">{item.issue_status}</span>
+                      <span className="favorite-item-date">{new Date(item.created).toLocaleDateString()}</span>
+                    </div>
                   </div>
-                  <button className="favorite-item-action">
+                  <button 
+                    className="favorite-item-action"
+                    onClick={() => handleRemoveFavorite(item.issue)}
+                    title="取消收藏"
+                  >
                     <svg
                       width="16"
                       height="16"

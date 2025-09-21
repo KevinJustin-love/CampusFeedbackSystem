@@ -10,8 +10,8 @@ from django.views.decorators.csrf import csrf_exempt
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework import status
-from .models import Issue, Reply, Message, Topic, IssueLike, Notification, ViewHistory
-from .serializers import IssueSerializer, ReplySerializer, MessageSerializer, TopicSerializer, NotificationSerializer, ViewHistorySerializer
+from .models import Issue, Reply, Message, Topic, IssueLike, Notification, ViewHistory, Favorite
+from .serializers import IssueSerializer, ReplySerializer, MessageSerializer, TopicSerializer, NotificationSerializer, ViewHistorySerializer, FavoriteSerializer
 from .notification_service import NotificationService
 import json
 
@@ -338,3 +338,50 @@ def clear_view_history(request):
         return Response({'message': f'已清空 {deleted_count} 条浏览记录'})
     except Exception as e:
         return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+# 收藏夹相关API
+class FavoriteListView(generics.ListAPIView):
+    """获取用户收藏列表"""
+    serializer_class = FavoriteSerializer
+    permission_classes = [IsAuthenticated]
+    
+    def get_queryset(self):
+        return Favorite.objects.filter(user=self.request.user)
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def toggle_favorite(request, issue_id):
+    """切换收藏状态"""
+    try:
+        issue = get_object_or_404(Issue, pk=issue_id)
+        
+        # 检查是否已收藏
+        favorite_exists = Favorite.objects.filter(user=request.user, issue=issue).exists()
+        
+        if favorite_exists:
+            # 如果已收藏，则取消收藏
+            Favorite.objects.filter(user=request.user, issue=issue).delete()
+            return Response({
+                'favorited': False, 
+                'message': '取消收藏成功'
+            })
+        else:
+            # 如果未收藏，则添加收藏
+            Favorite.objects.create(user=request.user, issue=issue)
+            return Response({
+                'favorited': True, 
+                'message': '收藏成功'
+            })
+            
+    except Exception as e:
+        return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+@api_view(['GET'])
+def check_favorite_status(request, issue_id):
+    """检查用户是否已收藏某个问题"""
+    if not request.user.is_authenticated:
+        return Response({'favorited': False})
+    
+    issue = get_object_or_404(Issue, pk=issue_id)
+    favorited = Favorite.objects.filter(user=request.user, issue=issue).exists()
+    return Response({'favorited': favorited})

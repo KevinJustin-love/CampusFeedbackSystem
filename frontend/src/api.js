@@ -96,6 +96,17 @@ export const historyAPI = {
   clearHistory: () => api.delete("/feedback/view-history/clear/"),
 };
 
+export const favoriteAPI = {
+  // 获取用户收藏列表
+  getFavorites: () => api.get("/feedback/favorites/"),
+  
+  // 切换收藏状态
+  toggleFavorite: (issueId) => api.post(`/feedback/issues/${issueId}/favorite/`),
+  
+  // 检查收藏状态
+  checkFavoriteStatus: (issueId) => api.get(`/feedback/issues/${issueId}/favorite-status/`),
+};
+
 export const authAPI = {
   register: (data) => api.post("/api/auth/register/", data),
 };

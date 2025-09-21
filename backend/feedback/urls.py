@@ -25,4 +25,9 @@ urlpatterns = [
     path('view-history/', views.ViewHistoryListCreate.as_view(), name='view-history-list'),
     path('issues/<int:issue_id>/record-view/', views.record_view_history, name='record-view-history'),
     path('view-history/clear/', views.clear_view_history, name='clear-view-history'),
+    
+    # 收藏夹相关路由
+    path('favorites/', views.FavoriteListView.as_view(), name='favorite-list'),
+    path('issues/<int:issue_id>/favorite/', views.toggle_favorite, name='toggle-favorite'),
+    path('issues/<int:issue_id>/favorite-status/', views.check_favorite_status, name='check-favorite-status'),
 ]

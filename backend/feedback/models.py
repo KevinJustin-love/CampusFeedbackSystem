@@ -118,3 +118,16 @@ class ViewHistory(models.Model):
         
     def __str__(self):
         return f"{self.user.username} 浏览了 {self.issue.title} 在 {self.viewed_at}"
+
+class Favorite(models.Model):
+    """用户收藏夹"""
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='favorites')
+    issue = models.ForeignKey(Issue, on_delete=models.CASCADE, related_name='favorites')
+    created = models.DateTimeField(auto_now_add=True)
+    
+    class Meta:
+        ordering = ['-created']  # 最新收藏的在最上面
+        unique_together = ['user', 'issue']  # 每个用户对每个问题只能收藏一次
+        
+    def __str__(self):
+        return f"{self.user.username} 收藏了 {self.issue.title}"
