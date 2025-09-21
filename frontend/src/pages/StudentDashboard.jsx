@@ -32,13 +32,36 @@ const StudentDashboard = ({ user }) => {
 
   // 在 useEffect 中从 API 获取问题列表
   useEffect(() => {
-    fetchIssues(setLoading, setIssues, setError, { params: { topic: category, sortBy: sortBy } });
-  }, [category, sortBy]);
+    const fetchData = async () => {
+      try {
+        const data = await fetchIssues(setLoading, setIssues, setError, { params: { topic: category, sortBy: sortBy } });
+        console.log('API返回数据:', data);
+        console.log('处理前的问题数据:', issues);
+        console.log('用户对象:', user);
+        
+        if (data && data.length > 0) {
+          console.log('第一个问题的完整数据:', data[0]);
+          console.log('host字段类型:', typeof data[0].host);
+        }
+      } catch (error) {
+        console.error('数据获取失败:', error);
+      }
+    };
+    fetchData();
+  }, [category, sortBy, user]);
 
 
   //综合过滤和排序逻辑
   const filteredIssues = issues
-    .filter((issue) => activeTab === "all" || issue.author === user.username)
+    .filter((issue) => {
+      if (activeTab === "all") return true;
+      if (!user?.id) {
+        console.error("用户ID缺失，无法过滤'我的'问题", user);
+        return false;
+      }
+      console.log('比较host:', issue.host, '用户ID:', user.id);
+      return Number(issue.host) === Number(user.id);
+    })
     .filter((issue) => category === "all" || issue.topic === category)
     .filter((issue) => {
       if (!searchQuery.trim()) return true;
@@ -128,6 +151,11 @@ const StudentDashboard = ({ user }) => {
           >
             提交新问题
           </button>
+        )}
+        {activeTab === "mine" && (!user || !user.username) && (
+          <div className="error-message" style={{ color: "red", margin: "10px 0" }}>
+            无法显示"我的"问题：用户信息缺失
+          </div>
         )}
         {user && user.username.includes("admin") && (
           <button

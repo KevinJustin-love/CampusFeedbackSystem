@@ -59,43 +59,80 @@
 
 .issue-interactions {
   display: flex;
-  align-items: center;
+  align-items: flex-start; /* 改为顶部对齐 */
   gap: 15px;
 }
 
 .interaction-button,
 .interaction-views {
-  display: flex;
+  display: grid;
+  grid-template-rows: auto auto;
+  justify-items: center;
   align-items: center;
-  gap: 5px;
+  min-width: 30px;
+  color: #64748b;
+  font-size: 14px;
+}
+
+.interaction-button span,
+.interaction-views span {
+  grid-row: 2;
+  text-align: center;
+  font-feature-settings: "tnum";
+  font-variant-numeric: tabular-nums;
+  width: 100%;
+  margin-top: 2px;
   font-size: 16px;
-  color: #6b7280;
+}
+
+.interaction-button .icon,
+.interaction-views .icon {
+  grid-row: 1;
 }
 
 .interaction-button {
   background: none;
   border: none;
   cursor: pointer;
-  padding: 0;
+  padding: 4px;
+  transition: all 0.2s;
 }
 
 .interaction-button:hover {
-  color: #1f2937;
+  color: #2563eb;
 }
 
 /* 点赞状态样式 */
 .interaction-button.liked {
-  color: #ef4444;
-}
-
-.interaction-button.liked:hover {
-  color: #dc2626;
+  color: #2563eb;
 }
 
 .icon {
-  width: 1em;
-  height: 1em;
+  width: 20px;
+  height: 20px;
   stroke: currentColor;
+  stroke-width: 2;
+  fill: none;
+}
+
+.interaction-button.liked .icon {
+  fill: currentColor;
+}
+
+.interaction-views {
+  padding: 4px;
+  transition: all 0.2s;
+}
+
+.interaction-views .icon {
+  stroke-width: 2;
+  width: 20px;
+  height: 20px;
+  fill: none;
+}
+
+.interaction-views:hover {
+  color: #2563eb;
 }
 
 /* 查看详情按钮样式 */
