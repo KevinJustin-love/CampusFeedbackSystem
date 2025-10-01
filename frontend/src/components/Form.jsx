@@ -5,7 +5,8 @@ import { ACCESS_TOKEN, REFRESH_TOKEN } from "../constants";
 import { jwtDecode } from "jwt-decode";
 
 import "../styles/Form.css";
-import "../styles/form&submitIssuePage.css";
+
+import dovelinkLogo from "../../pictures/dovelink-logo.jpg";
 
 const Form = ({ route, method }) => {
   const [username, setUsername] = useState("");
@@ -92,7 +93,7 @@ const Form = ({ route, method }) => {
           <div className="button-container vertical">
             {/* 只在登录页面显示Register按钮 */}
             <button type="submit" className="btn-primary1" disabled={loading}>
-              {loading ? "处理中..." : "登录"}
+              {loading ? "处理中..." : (method === "login" ? "登录" : "注册")}
             </button>
             {method === "login" && (
               <button type="button" className="register-link" onClick={handleRegisterClick}>
