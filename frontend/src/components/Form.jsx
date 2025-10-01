@@ -14,7 +14,6 @@ const Form = ({ route, method }) => {
   const navigate = useNavigate();
 
   const name = method === "login" ? "Login" : "Register";
-  const title = method === "login" ? "校园反馈系统登录" : "校园反馈系统注册";
 
   const handleSubmit = async (e) => {
     setLoading(true);
@@ -57,14 +56,10 @@ const Form = ({ route, method }) => {
   return (
     <div className="login-container">
       <div className="login-card">
-        <div className="logo-container">
-          <img
-            src="../../pictures/ustcLogo.jpg"
-            alt="School Logo"
-            className="logo"
-          />
+        <div className="brand">
+          <div className="brand-zh">多闻林</div>
+          <div className="brand-en">DoveLink</div> 
         </div>
-        <h2 className="login-title">{title}</h2>
         <form onSubmit={handleSubmit}>
           <div className="form-group-no-label">
             <div className="input-with-icon">
@@ -94,20 +89,16 @@ const Form = ({ route, method }) => {
               />
             </div>
           </div>
-          <div className="button-container">
+          <div className="button-container vertical">
             {/* 只在登录页面显示Register按钮 */}
+            <button type="submit" className="btn-primary1" disabled={loading}>
+              {loading ? "处理中..." : "登录"}
+            </button>
             {method === "login" && (
-              <button
-                type="button"
-                className="btn-primary1"
-                onClick={handleRegisterClick}
-              >
-                Register
+              <button type="button" className="register-link" onClick={handleRegisterClick}>
+                还没有账户？立即注册
               </button>
             )}
-            <button type="submit" className="btn-primary1" disabled={loading}>
-              {loading ? "处理中..." : name}
-            </button>
           </div>
         </form>
       </div>
