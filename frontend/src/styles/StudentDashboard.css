@@ -1,20 +1,3 @@
-.btn-primary {
-  background: #fffdf5;
-  color: #4a3c28;
-  padding: 10px 18px;
-  border: 1px solid #d6c6a5;
-  border-radius: 12px;
-  font-size: 14px;
-  cursor: pointer;
-  width: 140px;
-  box-shadow: 2px 2px 6px rgba(0,0,0,0.15);
-  transition: transform 0.2s ease;
-  position: relative;
-  left: 0;
-  top: 0;
-  font-family: "Georgia", "Times New Roman", serif;
-}
-
 /* 信件风格：导航栏 */
 .issues-navbar {
   display: flex;
@@ -84,10 +67,6 @@
 }
 
 
-.btn-primary:hover {
-  transform: scale(1.02);
-  background: #fff7e6;
-}
 
 .dashboard-container {
   min-height: 100vh;
@@ -95,4 +74,70 @@
   background-size: cover;
   padding: 0px;
   overflow-x: hidden;
+}
+
+
+/* 确保按钮容器在右侧 */
+.content-wrapper {
+  /* 确保按钮和内容可以并排，或根据需要调整布局 */
+  /* 添加一个用于包裹按钮的 Flex 容器 */
+  position: relative; 
+  padding: 20px;
+}
+
+.top-buttons-container {
+  display: flex;
+  justify-content: flex-end; /* 推到最右侧 */
+  margin-bottom: 20px;
+  gap: 10px;
+}
+
+/* 新问题提交按钮：信箱/鸽子投递效果 */
+.dashboard-container .btn-primary.submit-issue-btn {
+  background-color: #d1bfa3; /* 浅棕色背景 */
+  color: #4a3c28; /* 深棕色文字 */
+  border: 1px solid #a39074;
+  padding: 10px 15px;
+  border-radius: 25px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.25, 0.1, 0.25, 1.5); /* 弹跳动画 */
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+}
+
+.dashboard-container .btn-primary.submit-issue-btn:hover {
+  background-color: #bfa58a;
+  transform: scale(1.05); /* 放大一点，增加点击感 */
+  box-shadow: 0 5px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* 鸽子图标 (使用 Emoji 模拟) */
+.submit-issue-btn .icon-pigeon {
+  font-size: 20px;
+  line-height: 1; /* 确保不影响高度 */
+  transition: transform 0.5s ease-in-out;
+}
+
+.submit-issue-btn:hover .icon-pigeon {
+  /* 模拟鸽子/信件飞走的动作 */
+  transform: translateX(5px) translateY(-5px) rotate(10deg) scale(1.1); 
+}
+
+/* 切换按钮 (Admin) 保持原样或略作调整 */
+.dashboard-container .btn-primary {
+  background-color: #a39074;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 25px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.dashboard-container .btn-primary:hover {
+  background-color: #8a7a5c;
 }

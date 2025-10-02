@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import Home from "../components/Home";
+import Home from "../components/Hero";
 import IssuesNavbar from "../components/IssuesNavbar";
 import FilterBar from "../components/FilterBar";
 import Pagination from "../components/Pagination";
@@ -8,8 +8,7 @@ import IssueGrid from "../components/IssueGrid";
 import SubmitIssuePage from "../pages/SubmitIssuePage";
 
 
-import "../styles/admin&dash.css";
-import "../styles/StudentDashboard.css";
+import "../styles/StudentDashboard.css"; // 新按钮样式将在此文件中或 admin&dash.css 中
 
 import { fetchIssues } from "../components/functions/FetchIssues";
 
@@ -143,6 +142,7 @@ const StudentDashboard = ({ user }) => {
     <div className="dashboard-container">
       <Home user={user} onSearch={handleSearch} />
       <div className="content-wrapper">
+<<<<<<< HEAD
         {!showSubmitForm && (
           <button
             onClick={() => setShowSubmitForm(true)}
@@ -166,6 +166,31 @@ const StudentDashboard = ({ user }) => {
             切换
           </button>
         )}
+=======
+        {/* 新增顶部的按钮容器，用于将按钮推到右侧 */}
+        <div className="top-buttons-container"> 
+          {/* Admin 切换按钮 */}
+          {user && user.username.includes("admin") && (
+            <button
+              onClick={() => navigate("/admin")}
+              className="btn-primary"
+            >
+              切换
+            </button>
+          )}
+
+          {/* 提交新问题按钮 (最右侧，设计成信箱投递动作) */}
+          {!showSubmitForm && (
+            <button
+              onClick={() => setShowSubmitForm(true)}
+              className="btn-primary submit-issue-btn"
+            >
+              提交新问题 <span className="icon-pigeon">🕊️</span> {/* 鸽子图标 */}
+            </button>
+          )}
+        </div>
+        
+>>>>>>> 8e17144 (fix:修改Hero引用)
         {renderContent()}
       </div>
     </div>

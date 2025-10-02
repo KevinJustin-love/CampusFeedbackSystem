@@ -2,11 +2,9 @@ import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import UserProfile from "./Profile";
-import Navbar from "../components/Navbar";
-// import NotificationPanel from "../pages/MessagePage"; // 已替换为新的通知系统
-// /dashboard 与 /admin 都是基于此页面的
+import Navbar from "./Navbar";
 
-import "../styles/Home.css";
+import "../styles/Hero.css";
 
 const Home = ({ user, onSearch, adminUnreadCount, adminFilter = false }) => {
   const navigate = useNavigate();

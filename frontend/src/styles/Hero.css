@@ -1,10 +1,9 @@
 /* Home.css */
-
 .dashboard-title {
   font-size: 17px;
   font-weight: bold;
   color: #ffffff;
-  /* ！！！导航栏颜色优化为磨砂透明浅棕色 */
+  /* 导航栏颜色优化为磨砂透明浅棕色 */
   background-color: rgba(189, 169, 137, 0.85); /* 浅棕色，85% 透明度 */
   backdrop-filter: blur(5px); /* 磨砂效果 */
   -webkit-backdrop-filter: blur(5px); /* 兼容 Safari */
