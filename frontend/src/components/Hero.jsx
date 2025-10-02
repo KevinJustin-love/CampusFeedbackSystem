@@ -67,7 +67,7 @@ const Home = ({ user, onSearch, adminUnreadCount, adminFilter = false }) => {
               onUpdate={handleUserUpdate}
             />
           )}
-          欢迎，{currentUser?.username || user?.username || "访客"}
+          <span className="welcome-text">欢迎，{currentUser?.username || user?.username || "访客"}</span>
         </div>
         
         <Navbar

@@ -37,7 +37,7 @@ const Form = ({ route, method }) => {
         if (isAdmin) {
           navigate("/admin");
         } else {
-          navigate("/dashboard");
+          navigate("/");
         }
       } else {
         navigate("/login");

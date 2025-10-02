@@ -1,0 +1,74 @@
+/* 容器样式，包含背景图和相对定位 */
+.homeContainer {
+    min-height: 100vh;
+    /* 背景图本身 */
+    background-image: url('/assets/home-island.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: relative; /* 必须设置为 relative 以便子元素进行绝对定位 */
+  }
+  
+  /* 背景覆盖层样式：实现透明度控制 */
+  .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* 调整这个颜色和透明度值来控制背景的明暗和协调性 */
+    /* 示例: 30% 不透明的黑色。如果想让背景更亮，可以尝试 rgba(255, 255, 255, 0.2) */
+    background-color: rgba(0, 0, 0, 0.3);
+    z-index: 1; /* 位于背景图之上 */
+  }
+  
+  /* 内容容器样式：移除居中属性，使其内容从顶部开始 */
+.heroContent {
+    position: relative;
+    z-index: 2;
+    min-height: 100vh;
+    /* --- 关键调整 --- */
+    display: flex;
+    flex-direction: column;
+    /* 移除 align-items: center; 和 justify-content: center; */
+    /* 保持 align-items: center; 可以让 Hero 组件（如果它是一个块级元素）水平居中，但不影响导航栏 */
+    align-items: center; 
+    
+    /* 调整 padding-top，让内容从顶部开始往下排 */
+    padding-top: 60px; /* 如果导航栏是固定定位，这个 padding 应该设置在主体内容上 */
+}
+
+/* 导航栏样式：确保它固定在顶部 */
+.homeContainer .dashboard-title {
+    /* 保持吸顶定位 */
+    position: fixed; /* 从 sticky 改为 fixed，确保它不受父元素滚动影响 */
+    top: 0;
+    left: 0;
+    right: 0;
+    
+    /* 确保它在最上面 */
+    z-index: 1001; 
+    
+    /* 保持您的美化样式 */
+    color: #FFFFFF;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    background-color: rgba(0, 128, 0, 0.15);
+    
+    /* 增加一个高度或内边距，让它看起来像一个导航条 */
+    height: 60px; 
+    display: flex;
+    align-items: center; /* 垂直居中导航内容 */
+    padding: 0 20px; /* 左右内边距 */
+}
+
+/* 导航栏内容样式保持不变 */
+.homeContainer .dashboard-title-content {
+    color: #FFFFFF;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);
+    width: 100%; /* 确保内容撑满导航条宽度 */
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* 或者 flex-start，取决于您想如何布局导航项 */
+}

@@ -13,6 +13,7 @@ import RegisterPage from "./pages/RegisterPage";
 import NotFound from "./pages/NotFound";
 import NotificationPage from "./pages/NotificationPage";
 import ProtectedRoute from "./components/ProtectedRoute";
+import HomePage from "./pages/HomePage";
 
 import { checkUserAuth } from "./components/functions/checkUserAuth";
 
@@ -87,6 +88,7 @@ const App = () => {
           </ProtectedRoute>
         }
       />
+      <Route path="/" element={<ProtectedRoute>{user ? <HomePage user={user} /> : <div>加载用户信息中...</div>}</ProtectedRoute>} />
       <Route path="/login" element={<LoginPage />} />
 
       <Route path="/logout" element={<Logout />} />

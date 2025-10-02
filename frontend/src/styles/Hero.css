@@ -1,4 +1,4 @@
-/* Home.css */
+/* Hero.css */
 .dashboard-title {
   font-size: 17px;
   font-weight: bold;
@@ -9,24 +9,38 @@
   -webkit-backdrop-filter: blur(5px); /* 兼容 Safari */
   box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.2);
   height: 65px;
-  position: sticky;
+  /* 建议改为 fixed，以确保它始终紧贴视口顶部，不会被父组件的 flex 影响 */
+  position: fixed; 
   top: 0px;
+  left: 0; /* 确保占据全宽 */
+  right: 0; /* 确保占据全宽 */
   /* 移除原有的背景图片，只保留颜色 */
   background-image: none; 
   background-size: cover;
   z-index: 1000;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  /* 保持 space-between 布局：左边用户信息，右边导航栏 */
+  justify-content: space-between; 
   padding: 0 20px;
 }
 
-/* 确保内部文字颜色在浅棕色背景下清晰 */
+/* 左侧容器：包含头像和欢迎文本 */
 .dashboard-title-content {
   display: flex;
   align-items: center;
-  gap: 15px;
-  color: #4a3c28; /* 深棕色文字 */
+  gap: 12px; /* 增加头像与文本之间的间距 */
+  color: #4a3c28;
+}
+
+/* 欢迎文本样式调整：确保它垂直居中对齐 */
+.welcome-text {
+  /* 移除不必要的 margin-left，由父元素 gap 控制 */
+  /* margin-left: 8px; */
+  white-space: nowrap;
+  /* 确保文本能与头像垂直居中对齐 */
+  line-height: 1; /* 重置行高，避免文本被推高或推低 */
+  align-self: center;
 }
 
 /* 保持用户图片样式不变 */
@@ -34,11 +48,13 @@
   height: 40px;
   width: 40px;
   border-radius: 50%;
-  align-self: center;
-  right: 8px;
+  /* 移除 align-self: center; 由父元素 .dashboard-title-content 的 align-items: center; 统一控制 */
+  /* align-self: center; */
+  /* right: 8px; - 移除不必要的定位属性 */
   transition: transform 0.3s ease;
   cursor: pointer;
   border: 2px solid #c2c2c2;
+  /* 添加 margin-right 或使用 gap 来控制间距，这里使用 gap */
 }
 
 .userimg:hover {

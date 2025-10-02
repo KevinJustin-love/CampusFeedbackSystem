@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import Home from "../components/Hero";
+import Hero from "../components/Hero";
 import IssuesNavbar from "../components/IssuesNavbar";
 import FilterBar from "../components/FilterBar";
 import Pagination from "../components/Pagination";
@@ -140,7 +140,7 @@ const StudentDashboard = ({ user }) => {
 
   return (
     <div className="dashboard-container">
-      <Home user={user} onSearch={handleSearch} />
+      <Hero user={user} onSearch={handleSearch} />
       <div className="content-wrapper">
 <<<<<<< HEAD
         {!showSubmitForm && (
