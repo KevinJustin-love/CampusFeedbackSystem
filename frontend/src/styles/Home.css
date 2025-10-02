@@ -1,13 +1,19 @@
+/* Home.css */
+
 .dashboard-title {
   font-size: 17px;
   font-weight: bold;
   color: #ffffff;
-  background-color: #ffffff;
+  /* ！！！导航栏颜色优化为磨砂透明浅棕色 */
+  background-color: rgba(189, 169, 137, 0.85); /* 浅棕色，85% 透明度 */
+  backdrop-filter: blur(5px); /* 磨砂效果 */
+  -webkit-backdrop-filter: blur(5px); /* 兼容 Safari */
   box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.2);
   height: 65px;
   position: sticky;
   top: 0px;
-  background-image: url("../../pictures/background4.jpg");
+  /* 移除原有的背景图片，只保留颜色 */
+  background-image: none; 
   background-size: cover;
   z-index: 1000;
   display: flex;
@@ -16,12 +22,15 @@
   padding: 0 20px;
 }
 
+/* 确保内部文字颜色在浅棕色背景下清晰 */
 .dashboard-title-content {
   display: flex;
   align-items: center;
   gap: 15px;
+  color: #4a3c28; /* 深棕色文字 */
 }
 
+/* 保持用户图片样式不变 */
 .userimg {
   height: 40px;
   width: 40px;

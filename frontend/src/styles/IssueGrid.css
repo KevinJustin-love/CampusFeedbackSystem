@@ -1,60 +1,59 @@
-.issues-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 1rem;
-  padding: 0;
-}
+/* IssueGrid.css */
 
-.issue-item {
-  padding: 1rem 0;
-  border-bottom: 1px solid #e2e8f0;
-}
-
-.issue-item:last-child {
-  border-bottom: none;
-}
-
-.issue-title {
-  font-size: 1rem;
-  font-weight: 600;
-  color: #1e293b;
-  margin-bottom: 0.5rem;
-}
-
-.issue-meta {
+/* 整体背景：牛皮纸 (保持不变，如果它是页面更外层的背景) */
+/* .issues-grid {
   display: flex;
-  justify-content: space-between;
-  color: #64748b;
-  font-size: 0.875rem;
-  margin-bottom: 0.5rem;
+  flex-direction: column;
+  gap: 20px;
+  padding: 30px;
+  background: url("/assets/paper-bg.jpg") repeat;
+  background-size: cover;
+  min-height: 100vh;
+} 
+*/
+/* 保留原有的 IssueGrid 样式，假设它承载了牛皮纸背景，
+  但为了区分度，我建议将牛皮纸背景放到一个更外层的容器上（例如 body 或 .dashboard-container）。
+  如果 .issues-grid 确实是所有内容的直接容器，我们让它更像一个“展示板”。
+*/
+
+/* 优化后的 .issues-grid 样式：作为内容展示板，与牛皮纸背景区分 */
+.issues-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  /* 相对牛皮纸（假设为深色/有纹理）的区分背景 */
+  background-color: #fcf8f0; /* 略微柔和的米白色，比 IssueCard 的 #fffdf5 略深 */
+  padding: 30px;
+  border: 4px solid #d1bfa3; /* 浅棕色粗边框，模拟画框 */
+  border-radius: 8px;
+  /* 移除原有的背景图片，假设父组件有牛皮纸背景 */
+  /* min-height: calc(100vh - 200px); /* 保持一定高度 */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-.issue-description {
-  color: #475569;
-  font-size: 0.9375rem;
-  line-height: 1.5;
+/* 单条问题：信件卡片 (样式已在 IssueCard.css 中精修) */
+.issue-card {
+  /* ... 保持动画和基本布局不变，其余细节转移到 IssueCard.css */
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp 0.6s ease forwards;
 }
 
-.issue-status {
-  display: inline-block;
-  padding: 0.25rem 0.5rem;
-  border-radius: 0.25rem;
-  font-size: 0.75rem;
-  font-weight: 500;
-}
+/* 批量显示时做一个小延迟 */
+.issue-card:nth-child(1) { animation-delay: 0.1s; }
+.issue-card:nth-child(2) { animation-delay: 0.2s; }
+.issue-card:nth-child(3) { animation-delay: 0.3s; }
+.issue-card:nth-child(4) { animation-delay: 0.4s; }
+.issue-card:nth-child(5) { animation-delay: 0.5s; }
 
-.status-pending {
-  background-color: #fef3c7;
-  color: #92400e;
-}
-
-.status-resolved {
-  background-color: #d1fae5;
-  color: #065f46;
-}
-
-@media (max-width: 768px) {
-  .issue-item {
-    padding: 0.75rem 0;
+/* 关键帧 */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
