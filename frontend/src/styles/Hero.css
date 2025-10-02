@@ -1,63 +1,53 @@
-/* Hero.css */
+/* Hero.css - 通用导航栏样式 */
 .dashboard-title {
   font-size: 17px;
   font-weight: bold;
-  color: #ffffff;
-  /* 导航栏颜色优化为磨砂透明浅棕色 */
-  background-color: rgba(189, 169, 137, 0.85); /* 浅棕色，85% 透明度 */
-  backdrop-filter: blur(5px); /* 磨砂效果 */
-  -webkit-backdrop-filter: blur(5px); /* 兼容 Safari */
+  
+  /* 通用颜色：使用您的浅棕色和白色文字，除非被 HomePage.css 覆盖 */
+  color: #FFFFFF; /* 默认设置为白色，避免其他页面文字被浅棕色覆盖后对比度不足 */
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.8);
+  background-color: rgba(189, 169, 137, 0.85); /* 浅棕色，85% 透明度 (默认) */
+  
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
   box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.2);
   height: 65px;
-  /* 建议改为 fixed，以确保它始终紧贴视口顶部，不会被父组件的 flex 影响 */
+  
+  /* 关键修复：从 sticky 改为 fixed，确保在所有页面定位正确 */
   position: fixed; 
   top: 0px;
-  left: 0; /* 确保占据全宽 */
-  right: 0; /* 确保占据全宽 */
-  /* 移除原有的背景图片，只保留颜色 */
-  background-image: none; 
-  background-size: cover;
+  left: 0;
+  right: 0;
   z-index: 1000;
+  
   display: flex;
   align-items: center;
-  /* 保持 space-between 布局：左边用户信息，右边导航栏 */
-  justify-content: space-between; 
+  justify-content: space-between;
   padding: 0 20px;
 }
 
-/* 左侧容器：包含头像和欢迎文本 */
+/* 左侧容器：确保文字颜色能被父级控制 */
 .dashboard-title-content {
   display: flex;
   align-items: center;
-  gap: 12px; /* 增加头像与文本之间的间距 */
-  color: #4a3c28;
+  gap: 12px; 
+  /* 确保这里使用 inherit 或 #FFFFFF，以便它在 HomePage 中可以被覆盖为白色 */
+  color: inherit; 
 }
 
-/* 欢迎文本样式调整：确保它垂直居中对齐 */
-.welcome-text {
-  /* 移除不必要的 margin-left，由父元素 gap 控制 */
-  /* margin-left: 8px; */
-  white-space: nowrap;
-  /* 确保文本能与头像垂直居中对齐 */
-  line-height: 1; /* 重置行高，避免文本被推高或推低 */
-  align-self: center;
-}
-
-/* 保持用户图片样式不变 */
 .userimg {
-  height: 40px;
-  width: 40px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
-  /* 移除 align-self: center; 由父元素 .dashboard-title-content 的 align-items: center; 统一控制 */
-  /* align-self: center; */
-  /* right: 8px; - 移除不必要的定位属性 */
-  transition: transform 0.3s ease;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  border: 1px solid rgba(255,255,255,0.6);
+  box-shadow: 0 0 0 2px rgba(0,0,0,0.1);
+  transition: transform 0.2s ease;
   cursor: pointer;
-  border: 2px solid #c2c2c2;
-  /* 添加 margin-right 或使用 gap 来控制间距，这里使用 gap */
 }
 
 .userimg:hover {
-  transform: scale(1.2);
-  background-color: #000000;
+  transform: scale(1.05);
 }
