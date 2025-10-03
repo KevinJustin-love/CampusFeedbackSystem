@@ -21,14 +21,63 @@
   display: flex;
   flex-direction: column;
   gap: 20px;
-  /* 相对牛皮纸（假设为深色/有纹理）的区分背景 */
-  background-color: #fcf8f0; /* 略微柔和的米白色，比 IssueCard 的 #fffdf5 略深 */
+  background-color: #fcf8f0;
   padding: 30px;
-  border: 4px solid #d1bfa3; /* 浅棕色粗边框，模拟画框 */
+  border: 4px solid #d1bfa3;
   border-radius: 8px;
-  /* 移除原有的背景图片，假设父组件有牛皮纸背景 */
-  /* min-height: calc(100vh - 200px); /* 保持一定高度 */
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.forest-grid {
+  background: linear-gradient(#b7e4c7, #95d5b2);
+  border-color: #74c69d;
+}
+
+.issue-tree {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  width: 220px;
+  margin: 10px auto;
+  cursor: pointer;
+}
+.tree-crown {
+  width: 160px;
+  height: 100px;
+  background: radial-gradient(circle at 50% 40%, #7cc47f 0%, #4caf50 60%, #3e8e41 100%);
+  border-radius: 80px 80px 60px 60px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+}
+.tree-title {
+  font-size: 14px;
+  font-weight: 600;
+  text-align: center;
+  padding: 0 8px;
+}
+.tree-trunk {
+  width: 18px;
+  height: 60px;
+  background: #8d6e63;
+  box-shadow: inset 0 0 4px rgba(0,0,0,0.3);
+}
+.tree-meta {
+  position: absolute;
+  bottom: -18px;
+  font-size: 12px;
+  color: #2d6a4f;
+}
+.tree-ground {
+  margin-top: 10px;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  color: #1b4332;
 }
 
 /* 单条问题：信件卡片 (样式已在 IssueCard.css 中精修) */

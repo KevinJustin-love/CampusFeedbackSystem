@@ -132,6 +132,7 @@ const StudentDashboard = ({ user }) => {
           issues={currentItems}
           loading={loading}
           error={error}
+          renderMode={category !== "all" ? "forest" : undefined}
         />
         {totalPages > 1 && (
           <Pagination
@@ -144,53 +145,32 @@ const StudentDashboard = ({ user }) => {
     );
   };
 
-  return (
-    <div className="dashboard-container">
-      <Hero user={user} onSearch={handleSearch} />
-      <div className="content-wrapper">
-        
-        {/* ========================================================== */}
-        {/* 新增容器：将导航栏和按钮放在同一行，实现水平布局 */}
-        <div className="dashboard-controls-header"> 
-          
-          {/* IssuesNavbar (全部/我的) 放在左侧 */}
-          <IssuesNavbar activeTab={activeTab} onTabChange={setActiveTab} />
-          
-          {/* Top Buttons 放在右侧 */}
-          <div className="top-buttons-container"> 
-            
-            {/* Admin 切换按钮 */}
-            {user && user.username && user.username.includes("admin") && (
-              <button
-                onClick={() => navigate("/admin")}
-                className="btn-primary"
-              >
-                切换
-              </button>
-            )}
+  const isForest = category !== "all";
 
-            {/* 提交新问题按钮 (最右侧) */}
+  return (
+    <div className={isForest ? "dashboard-container forest-container" : "dashboard-container"}>
+      <Hero user={user} onSearch={handleSearch} />
+      <div className={isForest ? "content-wrapper forest-content" : "content-wrapper"}>
+        <div className={isForest ? "dashboard-controls-header forest-controls" : "dashboard-controls-header"}> 
+          <IssuesNavbar activeTab={activeTab} onTabChange={setActiveTab} />
+          <div className="top-buttons-container"> 
+            {user && user.username && user.username.includes("admin") && (
+              <button onClick={() => navigate("/admin")} className={isForest ? "btn-primary forest-btn" : "btn-primary"}>切换</button>
+            )}
             {!showSubmitForm && (
-              <button
-                onClick={() => setShowSubmitForm(true)}
-                className="btn-primary submit-issue-btn"
-              >
-                提交新问题 <span className="icon-pigeon">🕊️</span> {/* 鸽子图标 */}
+              <button onClick={() => setShowSubmitForm(true)} className={isForest ? "btn-primary submit-issue-btn forest-btn" : "btn-primary submit-issue-btn"}>
+                提交新问题 <span className="icon-pigeon">🕊️</span>
               </button>
             )}
           </div>
-          
         </div>
-        {/* ========================================================== */}
-        
+
         {activeTab === "mine" && (!user || !user.username) && (
-          <div className="error-message" style={{ color: "red", margin: "10px 0" }}>
+          <div className="error-message" style={{ color: isForest ? "#2d6a4f" : "red", margin: "10px 0" }}>
             无法显示"我的"问题：用户信息缺失
           </div>
         )}
-        
-        {/* 移除旧的 Admin 按钮 */}
-        
+
         {renderContent()}
       </div>
     </div>

@@ -5,7 +5,7 @@ import api from "../api";
 
 import "../styles/IssueCard.css";
 
-function IssueCard({ issue }) {
+function IssueCard({ issue, renderMode }) {
     const navigate = useNavigate();
     const updatedDateString = issue?.updated;
 
@@ -83,47 +83,46 @@ function IssueCard({ issue }) {
         }
     };
 
+    if (renderMode === 'forest') {
+        return (
+            <div className="issue-tree" onClick={handleViewClick}>
+                <div className="tree-crown">
+                    <span className="tree-title">{issue.title}</span>
+                </div>
+                <div className="tree-trunk">
+                    <span className="tree-meta">{issue.topic} · {issue.status}</span>
+                </div>
+                <div className="tree-ground">
+                    <button className={`interaction-button ${isLiked ? 'liked' : ''}`} onClick={handleLikeClick}>❤️ {likes}</button>
+                    <span className="interaction-views">👁 {views}</span>
+                    {canDelete && (
+                        <button className="btn-delete" onClick={handleDeleteClick}>删除</button>
+                    )}
+                </div>
+            </div>
+        );
+    }
+
     return (
         <div className="issue-card">
-            {/* 邮票装饰 */}
             <div className="issue-stamp">📮</div>
-
-            {/* 信件内容 */}
             <div className="issue-body">
                 <h3 className="issue-title">{issue.title}</h3>
                 <p className="issue-info">分类：{issue.topic}</p>
                 <p className="issue-info">状态：{issue.status}</p>
             </div>
-
-            {/* 卡片底部 */}
             <div className="card-footer">
                 <div className="card-actions">
-                    <button className="btn-link" onClick={handleViewClick}>
-                        查看详情
-                    </button>
-                    {canDelete && (
-                        <button className="btn-delete" onClick={handleDeleteClick}>
-                            删除
-                        </button>
-                    )}
+                    <button className="btn-link" onClick={handleViewClick}>查看详情</button>
+                    {canDelete && (<button className="btn-delete" onClick={handleDeleteClick}>删除</button>)}
                 </div>
-
                 <div className="card-stats">
                     <div className="issue-interactions">
-                        <button 
-                            className={`interaction-button ${isLiked ? 'liked' : ''}`}
-                            onClick={handleLikeClick}
-                        >
-                            ❤️ <span>{likes}</span>
-                        </button>
-                        <span className="interaction-views">
-                            👁 <span>{views}</span>
-                        </span>
+                        <button className={`interaction-button ${isLiked ? 'liked' : ''}`} onClick={handleLikeClick}>❤️ <span>{likes}</span></button>
+                        <span className="interaction-views">👁 <span>{views}</span></span>
                     </div>
                 </div>
             </div>
-
-            {/* 信件落款（时间戳） */}
             <div className="issue-date">更新时间：{formattedDate}</div>
         </div>
     );

@@ -89,6 +89,24 @@
   overflow-x: hidden;
 }
 
+.forest-container {
+  background: url("/assets/forest-bg.jpg") center/cover fixed;
+}
+
+.forest-content {
+  border: 3px solid #74c69d;
+  border-radius: 12px;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+}
+
+.forest-controls {
+  border-bottom: 2px solid #74c69d;
+}
+
+.forest-btn {
+  background-color: #52b788 !important;
+}
+
 
 /* 确保按钮容器在右侧 */
 .content-wrapper {
