@@ -1,10 +1,23 @@
-/* 信件风格：导航栏 */
+/* 新增：包裹 IssuesNavbar 和 top-buttons-container 的容器 */
+.dashboard-controls-header {
+  display: flex;
+  justify-content: space-between; /* 导航栏在左，按钮容器在右 */
+  align-items: center; /* 垂直居中对齐 */
+  padding-top: 12px; 
+  padding-bottom: 12px;
+  margin-bottom: 0px; 
+  border-bottom: 2px dashed #d1bfa3; /* 整个控制区域的分隔线 */
+  font-family: "Georgia", "Times New Roman", serif;
+}
+
+
+/* 信件风格：导航栏 - 关键修正：移除所有可能造成偏移的垂直 padding 和 margin */
 .issues-navbar {
   display: flex;
   gap: 12px;
-  padding: 12px 0;
-  margin-bottom: 0px;
-  border-bottom: 2px dashed #d1bfa3;
+  padding: 0; /* 移除垂直内边距 */
+  margin: 0; /* 移除垂直外边距 */
+  border-bottom: none; /* 移除原来的底部边框 */
   font-family: "Georgia", "Times New Roman", serif;
 }
 
@@ -26,13 +39,13 @@
   color: #4a3c28;
 }
 
-/* 信件风格：筛选框 */
+/* 信件风格：筛选框 - 移除重复的底部边框 */
 .filter-bar {
   display: flex;
   gap: 20px;
   padding: 15px 0;
   margin-bottom: 15px;
-  border-bottom: 2px dashed #d1bfa3;
+  border-bottom: none; /* 移除此处的 border-bottom，已移至 controls-header */
   font-family: "Georgia", "Times New Roman", serif;
 }
 
@@ -62,7 +75,7 @@
   font-size: 14px;
   color: #8a7a5c;
   font-style: italic;
-  border-top: 2px dashed #d1bfa3;
+  border-top: none; /* 移除此处的 border-top，不应与 controls-header 冲突 */
   padding-top: 8px;
 }
 
@@ -85,10 +98,10 @@
   padding: 20px;
 }
 
+/* 调整 top-buttons-container 的样式 */
 .top-buttons-container {
   display: flex;
-  justify-content: flex-end; /* 推到最右侧 */
-  margin-bottom: 20px;
+  margin: 0; /* 确保没有垂直外边距导致偏移 */
   gap: 10px;
 }
 
@@ -131,8 +144,8 @@
   background-color: #a39074;
   color: white;
   border: none;
-  padding: 10px 15px;
-  border-radius: 25px;
+  padding: 8px 16px;
+  border-radius: 4px;
   font-weight: bold;
   cursor: pointer;
   transition: all 0.3s ease;

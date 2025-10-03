@@ -110,7 +110,7 @@ const StudentDashboard = ({ user }) => {
     
     return (
       <>
-        <IssuesNavbar activeTab={activeTab} onTabChange={setActiveTab} />
+        {/* IssuesNavbar 已移到 render() 的 return 部分，与 top-buttons-container 平行 */}
         <FilterBar
           sortBy={sortBy}
           onSortChange={setSortBy}
@@ -118,7 +118,7 @@ const StudentDashboard = ({ user }) => {
           onCategoryChange={setCategory}
         />
         {searchQuery && (
-          <div style={{ margin: '10px 0', fontSize: '14px', color: '#666' }}>
+          <div className="search-result-note">
             搜索结果: "{searchQuery}"
           </div>
         )}
@@ -142,55 +142,49 @@ const StudentDashboard = ({ user }) => {
     <div className="dashboard-container">
       <Hero user={user} onSearch={handleSearch} />
       <div className="content-wrapper">
-<<<<<<< HEAD
-        {!showSubmitForm && (
-          <button
-            onClick={() => setShowSubmitForm(true)}
-            className="btn-primary"
-            style={{ marginRight: "10px" }}
-          >
-            提交新问题
-          </button>
-        )}
+        
+        {/* ========================================================== */}
+        {/* 新增容器：将导航栏和按钮放在同一行，实现水平布局 */}
+        <div className="dashboard-controls-header"> 
+          
+          {/* IssuesNavbar (全部/我的) 放在左侧 */}
+          <IssuesNavbar activeTab={activeTab} onTabChange={setActiveTab} />
+          
+          {/* Top Buttons 放在右侧 */}
+          <div className="top-buttons-container"> 
+            
+            {/* Admin 切换按钮 */}
+            {user && user.username && user.username.includes("admin") && (
+              <button
+                onClick={() => navigate("/admin")}
+                className="btn-primary"
+              >
+                切换
+              </button>
+            )}
+
+            {/* 提交新问题按钮 (最右侧) */}
+            {!showSubmitForm && (
+              <button
+                onClick={() => setShowSubmitForm(true)}
+                className="btn-primary submit-issue-btn"
+              >
+                提交新问题 <span className="icon-pigeon">🕊️</span> {/* 鸽子图标 */}
+              </button>
+            )}
+          </div>
+          
+        </div>
+        {/* ========================================================== */}
+        
         {activeTab === "mine" && (!user || !user.username) && (
           <div className="error-message" style={{ color: "red", margin: "10px 0" }}>
             无法显示"我的"问题：用户信息缺失
           </div>
         )}
-        {user && user.username.includes("admin") && (
-          <button
-            onClick={() => navigate("/admin")}
-            className="btn-primary"
-            style={{ marginRight: "20px" }}
-          >
-            切换
-          </button>
-        )}
-=======
-        {/* 新增顶部的按钮容器，用于将按钮推到右侧 */}
-        <div className="top-buttons-container"> 
-          {/* Admin 切换按钮 */}
-          {user && user.username.includes("admin") && (
-            <button
-              onClick={() => navigate("/admin")}
-              className="btn-primary"
-            >
-              切换
-            </button>
-          )}
-
-          {/* 提交新问题按钮 (最右侧，设计成信箱投递动作) */}
-          {!showSubmitForm && (
-            <button
-              onClick={() => setShowSubmitForm(true)}
-              className="btn-primary submit-issue-btn"
-            >
-              提交新问题 <span className="icon-pigeon">🕊️</span> {/* 鸽子图标 */}
-            </button>
-          )}
-        </div>
         
->>>>>>> 8e17144 (fix:修改Hero引用)
+        {/* 移除旧的 Admin 按钮 */}
+        
         {renderContent()}
       </div>
     </div>
