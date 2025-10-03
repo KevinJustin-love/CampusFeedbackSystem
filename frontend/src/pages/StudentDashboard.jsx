@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import Hero from "../components/Hero";
 import IssuesNavbar from "../components/IssuesNavbar";
 import FilterBar from "../components/FilterBar";
@@ -8,7 +8,7 @@ import IssueGrid from "../components/IssueGrid";
 import SubmitIssuePage from "../pages/SubmitIssuePage";
 
 
-import "../styles/StudentDashboard.css"; // 新按钮样式将在此文件中或 admin&dash.css 中
+import "../styles/StudentDashboard.css";
 
 import { fetchIssues } from "../components/functions/FetchIssues";
 
@@ -17,6 +17,7 @@ const StudentDashboard = ({ user }) => {
     setSearchQuery(query);
   };
   const navigate = useNavigate();
+  const location = useLocation();
   const [activeTab, setActiveTab] = useState("all");
   const [sortBy, setSortBy] = useState("time");
   const [category, setCategory] = useState("all");
@@ -29,7 +30,12 @@ const StudentDashboard = ({ user }) => {
   const [error, setError] = useState(null);
   const [showSubmitForm, setShowSubmitForm] = useState(false);
 
-  // 在 useEffect 中从 API 获取问题列表
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const t = params.get("topic");
+    if (t) setCategory(t);
+  }, [location.search]);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
