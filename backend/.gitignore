@@ -48,3 +48,6 @@ temp/
 # -------------------------
 .DS_Store
 Thumbs.db
+
+# ignore the pictures uploaded
+media/
