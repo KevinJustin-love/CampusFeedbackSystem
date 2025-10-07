@@ -42,11 +42,11 @@ Just **fork or clone** this repository and it will work.
 
 ## Frontend Development
 
-Frontend docs: frontend/README.md
+Frontend docs: [frontend/README.md](https://github.com/KevinJustin-love/CampusFeedbackSystem/blob/main/frontend/README.md)。
 
 ## Backend Development
 
-Backend docs: backend/README.md
+Backend docs: [backend/README.md](https://github.com/KevinJustin-love/CampusFeedbackSystem/blob/main/backend/README.md)
 
 ## Cooperation Guidelines
 
