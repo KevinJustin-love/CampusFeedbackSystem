@@ -10,20 +10,20 @@ export default function HomePage({ user, onSearch }) {
           <Hero user={user} onSearch={onSearch} />
       </div>
       <div className="islandHotspots">
-        <a className="islandHotspot" href="/dashboard?topic=生活" style={{ left: "15%", top: "12%", width: "20%" }}>
-          <span className="hotspotLabel">生活</span>
+        <a className="islandHotspot" href="/dashboard?topic=其他" style={{ left: "10%", top: "14%", width: "20%" }}>
+          <span className="hotspotLabel">其他</span>
         </a>
-        <a className="islandHotspot" href="/dashboard?topic=管理" style={{ left: "50%", top: "20%", width: "10%" }}>
+        <a className="islandHotspot" href="/dashboard?topic=管理" style={{ left: "47%", top: "25%", width: "10%" }}>
           <span className="hotspotLabel">管理</span>
         </a>
-        <a className="islandHotspot" href="/dashboard?topic=学业" style={{ left: "35%", top: "45%", width: "15%" }}>
+        <a className="islandHotspot" href="/dashboard?topic=学业" style={{ left: "25%", top: "43%", width: "15%" }}>
           <span className="hotspotLabel">学业</span>
         </a>
-        <a className="islandHotspot" href="/dashboard?topic=情感" style={{ left: "85%", top: "20%", width: "20%" }}>
+        <a className="islandHotspot" href="/dashboard?topic=情感" style={{ left: "90%", top: "13%", width: "20%" }}>
           <span className="hotspotLabel">情感</span>
         </a>
-        <a className="islandHotspot" href="/dashboard?topic=其他" style={{ left: "65%", top: "65%", width: "35%" }}>
-          <span className="hotspotLabel">其他</span>
+        <a className="islandHotspot" href="/dashboard?topic=生活" style={{ left: "80%", top: "55%", width: "35%" }}>
+          <span className="hotspotLabel">生活</span>
         </a>
       </div>
     </div>
