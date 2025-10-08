@@ -1,50 +1,88 @@
 import React, { useState } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
+import "../styles/ForestIssue.css";
 import "../styles/ForestIssue.css";
 
-// 🌲 单棵树组件（带随机变化）
+// 🌲 精致的单棵树组件（带更多随机变化和分层结构）
 const Tree = ({ username, title, x, y, onClick }) => {
-  // 随机性保持不变
-  const height = 40 + Math.random() * 20;
-  const crownRadius = 18 + Math.random() * 10;
-  const greenShades = ["#2E8B57", "#228B22", "#32CD32", "#006400"];
-  const color = greenShades[Math.floor(Math.random() * greenShades.length)];
+  // 随机性增强：为每棵树生成独一无二的尺寸和颜色
+  const treeHeight = (50 + Math.random() * 30) * 2; // 树干高度加倍
+  const trunkWidth = (6 + Math.random() * 4) * 2;   // 树干宽度加倍
+  const crownScale = (0.8 + Math.random() * 0.4) * 2; // 树冠整体大小加倍
+
+  // 树冠颜色深度变化
+  const greenShades = ["#1E8449", "#28B463", "#2ECC71", "#58D68D"];
+  const baseColor = greenShades[Math.floor(Math.random() * greenShades.length)];
+  
+  // 用于错开树的 Y 轴位置，制造高低错落感
+  const yOffset = -20 + Math.random() * 40; 
+  const finalY = y + yOffset; 
+  
+  // 计算树冠的层级参数
+  const layers = [
+    { radius: 25 * crownScale, offset: 0, color: baseColor }, // 底部最大层
+    { radius: 20 * crownScale, offset: -10, color: baseColor }, // 中间层
+    { radius: 15 * crownScale, offset: -20, color: baseColor }, // 顶部最小层
+  ];
 
   return (
-    // 添加 group 元素以包裹 SVG 元素和文本，便于定位和点击
+    // 使用 g 标签包裹，方便点击和定位
     <g onClick={onClick} className="tree">
-      {/* Framer Motion 动画放在内部 g 标签，使文本不摇晃，更自然 */}
+      
+      {/* 摇晃动效 - 设置旋转中心在树底，更像自然摇曳 */}
       <motion.g
         initial={{ rotate: 0 }}
-        animate={{ rotate: [0, -2, 2, 0] }}
-        transition={{ repeat: Infinity, duration: 4 + Math.random() * 2, ease: "easeInOut" }}
-        style={{ transformOrigin: `${x + 22}px ${y + 50 + height}px` }} // 设置旋转中心在树底
+        animate={{ rotate: [0, -1.5, 1.5, 0] }}
+        transition={{ repeat: Infinity, duration: 5 + Math.random() * 3, ease: "easeInOut" }}
+        // 旋转中心在树底
+        style={{ transformOrigin: `${x + 22}px ${finalY + 50 + treeHeight}px` }}
       >
-        {/* 树干 */}
-        <rect x={x + 18} y={y + 50} width={8} height={height} fill="#8B5A2B" />
-        {/* 树冠 */}
-        <circle cx={x + 22} cy={y + 40} r={crownRadius} fill={color} />
+        {/* 树干 - 调整宽度和高度 */}
+        <rect 
+          x={x + 22 - trunkWidth / 2} 
+          y={finalY + 50} 
+          width={trunkWidth} 
+          height={treeHeight} 
+          fill="#8B5A2B" 
+          rx="2" 
+        />
+        
+        {/* 树冠分层 - 使用多个圆形堆叠模拟自然树冠 */}
+        {layers.map((layer, index) => (
+          <circle
+            key={index}
+            cx={x + 22}
+            cy={finalY + 40 + layer.offset} // 向上堆叠
+            r={layer.radius}
+            fill={layer.color}
+            // 样式留给 CSS 处理，但这里为了快速实现阴影先用 style
+            className={index === 0 ? 'tree-crown-base' : 'tree-crown'}
+          />
+        ))}
+        
       </motion.g>
 
-      {/* 标题 - 调整到树正上方，使用深绿色，以匹配图片效果 */}
-      <text
-        x={x + 22} // X 轴居中
-        y={y + 15} // Y 轴向上移动，给标题留出空间
+      {/* 标题 - 使用 layoutId 方便 Framer Motion 动画过渡 */}
+      <motion.text
+        layoutId={`title-${title}`} // 使用 title 作为唯一的 layoutId
+        x={x + 22}
+        y={finalY + 15}
         fontSize="12"
-        fill="#006400" // 深绿色
-        textAnchor="middle" // 居中对齐
-        className="font-semibold" // 加粗
+        fill="#004d40" // 深色的文字
+        textAnchor="middle"
+        className="tree-title"
       >
         {title}
-      </text>
+      </motion.text>
 
-      {/* 用户名 - 保持在标题下方，更小字体 */}
+      {/* 用户名 */}
       <text
-        x={x + 22} // X 轴居中
-        y={y + 30} // 位于标题下方
+        x={x + 22}
+        y={finalY + 30}
         fontSize="10"
-        fill="#228B22" // 浅绿色
-        textAnchor="middle" // 居中对齐
+        fill="#388e3c"
+        textAnchor="middle"
+        className="tree-username"
       >
         {username}
       </text>
@@ -61,22 +99,34 @@ export default function ForestPanel() {
     { id: 2, username: "Bob", title: "数据清洗策略有哪些？" },
     { id: 3, username: "Cindy", title: "过拟合的解决方案？" },
     { id: 4, username: "David", title: "如何设计可复用组件？" },
+    { id: 5, username: "Eve", title: "React Hooks 最佳实践" },
+    { id: 6, username: "Frank", title: "微服务架构设计" },
+    { id: 7, username: "Grace", title: "Kubernetes 部署流程" },
+    { id: 8, username: "Heidi", title: "Python 异步编程" },
   ];
+  
+  // 网格布局参数
+  const treesPerRow = 4;
+  const colSpacing = 160; 
+  const rowSpacing = 200; 
 
-  // 计算树的位置，使其水平排列在页面左上角，且间距固定
+  // 计算树的位置，采用网格布局并保留随机错落空间
   const getTreePosition = (index) => {
-    // 假设每棵树占 150px 宽度
-    const x = index * 150 + 50; // 水平排列，起始 x 轴偏移 50
-    const y = 50; // Y 轴固定在顶部 50
+    const row = Math.floor(index / treesPerRow);
+    const col = index % treesPerRow;
+    // 增加一个轻微的随机 X 轴偏移，让排列更不规则
+    const x = col * colSpacing + 50 + Math.random() * 20 - 10; 
+    const y = row * rowSpacing + 80; // 从页面顶部 80px 开始
     return { x, y };
   };
 
   return (
     <div className="forest-container">
       
+      {/* 使用 CSS 类进行背景和模糊控制 */}
       <div className={`forest-bg ${selected ? 'blurred' : ''}`}></div>
 
-      {/* SVG 森林容器 - 调整宽度以适应内容 */}
+      {/* SVG 森林容器 */}
       <svg className="svg-forest">
         {questions.map((q, i) => {
           const { x, y } = getTreePosition(i);
@@ -92,26 +142,32 @@ export default function ForestPanel() {
         })}
       </svg>
 
-      {/* 弹出详情框 - 点击后展示，符合 Framer Motion 动效要求 */}
-      {selected && (
-        <motion.div
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0, scale: 0.8 }}
-          className="detail-modal"
-        >
-          <motion.h3 layoutId={`title-${selected.id}`} className="detail-title">
-            {selected.title}
-          </motion.h3>
-          <p className="detail-user">来自：{selected.username}</p>
-          <button
-            onClick={() => setSelected(null)}
-            className="detail-close"
+      {/* 弹出详情框 - 使用 AnimatePresence 确保退出动画执行 */}
+      <AnimatePresence>
+        {selected && (
+          <motion.div
+            key="modal"
+            initial={{ opacity: 0, scale: 0.7, y: 50 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.7, y: 50 }}
+            transition={{ type: "spring", damping: 20, stiffness: 300 }} // 更流畅的弹簧动效
+            className="detail-modal"
           >
-            关闭详情
-          </button>
-        </motion.div>
-      )}
+            {/* 标题 - 使用 layoutId 继承树上的标题动画 */}
+            <motion.h3 layoutId={`title-${selected.title}`} className="detail-title">
+              {selected.title}
+            </motion.h3>
+            <p className="detail-user">来自：{selected.username}</p>
+            <p className="detail-info">这个问题已经被 12 人关注，有 5 个回答。</p>
+            <button
+              onClick={() => setSelected(null)}
+              className="detail-close"
+            >
+              关闭
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

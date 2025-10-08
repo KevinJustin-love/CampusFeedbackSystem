@@ -5,18 +5,20 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  /* 调整为更柔和的背景色，模拟清晨的雾气或光照 */
+  background-color: #f7f9f7; 
   overflow: hidden;
-  /* background: linear-gradient(to bottom, #bbf7d0, #16a34a); */
 }
 
-/* 模糊背景树影 - 方案要求，但与图片不符，故透明度设为 0，您可以调整 opacity 来开启 */
+/* 模糊背景树影 */
 .forest-bg {
   position: absolute;
   inset: 0;
-  background-image: url('/assets/forest-bg.png');
+  /* 请确保路径正确，或使用您想要的背景图 */
+  background-image: url('/assets/forest-bg.png'); 
   background-size: cover;
   background-position: center;
-  opacity: 1;
+  opacity: 0.8; /* 降低透明度，作为轻微的背景纹理 */
   transition: all 0.5s;
   z-index: 0;
 }
@@ -27,7 +29,7 @@
 
 .svg-forest {
   position: relative;
-  width: 90%;
+  width: 45%; /* 限制宽度以便居中显示 */
   height: 80%;
   z-index: 1;
 }
@@ -36,35 +38,74 @@
   cursor: pointer;
 }
 
+.tree-crown-base {
+  filter: drop-shadow(0 4px 2px rgba(0,0,0,0.1));
+}
+
+.tree-crown {
+  filter: none;
+}
+
+/* 树标题和用户名的样式保持清晰 */
+.tree-title {
+  font-weight: bold;
+}
+.tree-username {
+  font-style: italic;
+}
+
+
 .detail-modal {
   position: absolute;
   bottom: 2.5rem;
-  background: #fff;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-  border-radius: 1rem;
-  padding: 1.25rem;
-  width: 18rem;
+  left: 50%; /* 居中 */
+  transform: translateX(-50%);
+  background: rgba(255, 255, 255, 0.95); /* 半透明白底 */
+  box-shadow: 0 15px 35px rgba(0,0,0,0.2); /* 更深的阴影 */
+  border-radius: 1.5rem; /* 更圆润的边角 */
+  padding: 1.5rem;
+  width: 20rem; /* 稍微宽一点 */
   text-align: center;
-  backdrop-filter: blur(6px);
-  border: 1px solid #bbf7d0;
+  backdrop-filter: blur(8px);
+  border-top: 5px solid #10b981; /* 顶部分割线 */
+  z-index: 20; /* 确保在最上层 */
 }
 
 .detail-title {
-  font-size: 1.125rem;
-  font-weight: 600;
-  margin-bottom: 0.5rem;
-  color: #166534;
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+  color: #065f46; /* 更深的绿色标题 */
 }
 
 .detail-user {
-  font-size: 0.875rem;
+  font-size: 0.9rem;
   color: #4b5563;
   margin-bottom: 1rem;
 }
 
+.detail-info {
+  font-size: 0.75rem;
+  color: #9ca3af;
+  margin-bottom: 1.25rem;
+  font-style: italic;
+}
+
 .detail-close {
-  padding: 0.25rem 0.75rem;
-  background: #22c55e;
+  padding: 0.5rem 1.5rem;
+  background: #10b981;
   color: #fff;
-  border-radius: 0.5rem;
+  border: none;
+  border-radius: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.1s;
+}
+
+.detail-close:hover {
+  background-color: #059669;
+}
+
+.detail-close:active {
+  transform: scale(0.98);
 }
