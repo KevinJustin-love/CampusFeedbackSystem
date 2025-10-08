@@ -100,9 +100,8 @@
   text-decoration: none;
   border-radius: 6px;
   padding: 3px 3px;
-  background: rgba(99, 161, 232, 0);
+  background: transparent;
   color: #fff;
-  backdrop-filter: blur(2px);
   transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 .hotspotLabel {
