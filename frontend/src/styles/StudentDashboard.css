@@ -65,7 +65,7 @@
 
 /* 背景与内容容器 */
 .content-wrapper {
-  max-width: 1000px;
+  max-width: 80%;
   margin: 0 auto;
   padding: 16px;
 }
@@ -114,6 +114,7 @@
   /* 添加一个用于包裹按钮的 Flex 容器 */
   position: relative; 
   padding: 20px;
+  width: 80%;
 }
 
 /* 调整 top-buttons-container 的样式 */

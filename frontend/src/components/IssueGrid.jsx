@@ -10,18 +10,18 @@ export default function IssueGrid({ issues, loading, error, renderMode }){
     if (error) return <div>加载失败: {error}</div>;
 
     return(
-          <div className={renderMode === 'forest' ? "issues-grid forest-grid" : "issues-grid"}>
-            {issues.length === 0 ? (
-              <div>暂无问题</div>
-            ) : (
-              issues.map((issue) => (
-                <IssueCard 
-                  key={issue.id}
-                  issue={issue}
-                  renderMode={renderMode}
-                />
-              ))
-            )}
-          </div>
+      <div className="issues-grid">
+        {issues.length === 0 ? (
+          <div>暂无问题</div>
+        ) : (
+          issues.map((issue) => (
+            <IssueCard 
+              key={issue.id}
+              issue={issue}
+              renderMode={renderMode}
+            />
+          ))
+        )}
+      </div>
     );   
 }

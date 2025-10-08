@@ -26,11 +26,15 @@
   border: 4px solid #d1bfa3;
   border-radius: 8px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  width: 80%;
+  margin: 0 auto;
 }
 
 .forest-grid {
   background: linear-gradient(#b7e4c7, #95d5b2);
   border-color: #74c69d;
+  width: 80%;
+  margin: 0 auto;
 }
 
 .issue-tree {

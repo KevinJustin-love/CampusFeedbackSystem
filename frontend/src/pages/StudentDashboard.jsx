@@ -9,6 +9,7 @@ import SubmitIssuePage from "../pages/SubmitIssuePage";
 
 
 import "../styles/StudentDashboard.css";
+import "../styles/ForestIssue.css";
 
 import { fetchIssues } from "../components/functions/FetchIssues";
 
@@ -149,6 +150,7 @@ const StudentDashboard = ({ user }) => {
 
   return (
     <div className={isForest ? "dashboard-container forest-container" : "dashboard-container"}>
+      {isForest && (<div className={`forest-bg ${false ? 'blurred' : ''}`}></div>)}
       <Hero user={user} onSearch={handleSearch} />
       <div className={isForest ? "content-wrapper forest-content" : "content-wrapper"}>
         <div className={isForest ? "dashboard-controls-header forest-controls" : "dashboard-controls-header"}> 
