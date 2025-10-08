@@ -1,0 +1,111 @@
+/* 容器样式，包含背景图和相对定位 */
+.homeContainer {
+    min-height: 100vh;
+    /* 背景图本身 */
+    background-image: url('/assets/home-island.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: relative; /* 必须设置为 relative 以便子元素进行绝对定位 */
+}
+  
+/* 背景覆盖层样式：实现浅绿色透明度控制 */
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* 主页背景覆盖层：浅绿色，30% 不透明度 */
+    background-color: rgba(143, 188, 143, 0.3); /* Pale Green/Dark Sea Green */
+    z-index: 1;
+}
+  
+/* 内容容器样式： */
+.heroContent {
+    position: relative;
+    z-index: 2;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+    padding-top: 65px; 
+}
+
+/* ------------------------------------------- */
+/* **HOME PAGE 专属导航栏样式覆盖 (高优先级)** */
+/* ------------------------------------------- */
+
+/* 导航栏背景：浅绿色透明 */
+.homeContainer .dashboard-title {
+    /* 使用 rgba(143, 188, 143, 0.7) 来设置一个更不透明的浅绿色 */
+    background-color: rgba(143, 188, 143, 0.7); 
+    /* 确保定位是 fixed，且优先级设置得当 */
+    position: fixed; 
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1001; 
+    
+    /* 保持原有的磨砂效果和尺寸 */
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    height: 65px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+}
+
+/* 导航栏文字：白色高亮 */
+.homeContainer .dashboard-title {
+    /* 导航栏顶层文字（例如 Navbar 中的图标）使用白色 */
+    color: #FFFFFF;
+    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.8);
+}
+
+/* 导航栏左侧内容文字：白色高亮 */
+.homeContainer .dashboard-title-content {
+    color: #FFFFFF;
+}
+
+/* 主页头像小尺寸圆形显示 */
+.homeContainer .userimg {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: center;
+    border: 1px solid rgba(255,255,255,0.6);
+    box-shadow: 0 0 0 2px rgba(0,0,0,0.1);
+}
+
+/* 岛屿热点区域容器 */
+.islandHotspots {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 3;
+}
+
+/* 单个热点：可点击 + 小字标签 */
+.islandHotspot {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    border-radius: 6px;
+    padding: 3px 3px;
+    background: rgba(99, 161, 232, 0.25);
+    color: #fff;
+    backdrop-filter: blur(2px);
+}
+.hotspotLabel {
+    font-size: 12px;
+    letter-spacing: 1px;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.6);
+}
