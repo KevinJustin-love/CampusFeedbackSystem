@@ -1,5 +1,8 @@
 .content-wrapper{
   margin-top: 30px;
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 /* 调整按钮容器的位置，使用 flexbox 布局来更好地控制 */

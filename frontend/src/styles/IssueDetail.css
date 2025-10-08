@@ -1,8 +1,9 @@
 .detail-title {
   font-size: 24px;
   font-weight: bold;
-  color: #2563eb;
+  color: #4a3c28;
   margin-bottom: 16px;
+  font-family: "Georgia", "Times New Roman", serif;
 }
 
 .detail-meta {
@@ -10,64 +11,68 @@
   flex-wrap: wrap;
   gap: 16px;
   margin-bottom: 16px;
+  border-bottom: 2px dashed #d1bfa3;
+  padding-bottom: 12px;
 }
 
 .detail-info {
   display: flex;
-  color: #6b7280;
+  color: #8a7a5c;
   font-size: 14px;
   margin-bottom: 8px;
+  font-style: italic;
 }
 
 .detail-description {
-  color: #2e3c51;
+  color: #5a4a36;
   font-size: 16px;
   margin-bottom: 16px;
+  line-height: 1.6;
 }
 
 .label {
-  color: #1f2937;
+  color: #4a3c28;
   font-weight: 600;
 }
 
+<<<<<<< HEAD
 .detail-actions {
   margin-left: auto;
   display: flex;
   gap: 12px;
   align-items: center;
 }
+=======
+.detail-actions { margin-left: auto; }
+>>>>>>> 8e17144 (fix:修改Hero引用)
 
 .favorite-btn {
-  background-color: #f3f4f6;
-  border: 1px solid #d1d5db;
-  border-radius: 6px;
-  padding: 6px 12px;
+  background: #fffdf5;
+  border: 1px solid #d6c6a5;
+  border-radius: 12px;
+  padding: 8px 14px;
   font-size: 14px;
-  color: #374151;
+  color: #4a3c28;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: transform 0.2s ease;
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 6px;
+  box-shadow: 2px 2px 6px rgba(0,0,0,0.1);
 }
 
-.favorite-btn:hover {
-  background-color: #e5e7eb;
-  border-color: #9ca3af;
-}
+.favorite-btn:hover { transform: scale(1.02); }
 
-.favorite-btn:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
+.favorite-btn:disabled { opacity: 0.6; cursor: not-allowed; }
 
 .favorite-btn.favorited {
-  background-color: #fef3c7;
-  border-color: #fbbf24;
-  color: #92400e;
+  background-color: #fff7e6;
+  border-color: #d6c6a5;
+  color: #4a3c28;
 }
 
 .favorite-btn.favorited:hover {
+<<<<<<< HEAD
   background-color: #fde68a;
   border-color: #f59e0b;
 }
@@ -101,4 +106,8 @@
 .like-count {
   font-size: 0.75rem;
   color: inherit;
+=======
+  background-color: #fff1cc;
+  border-color: #c9b992;
+>>>>>>> 8e17144 (fix:修改Hero引用)
 }

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import Home from "../components/Home";
+import { useNavigate, useLocation } from "react-router-dom";
+import Hero from "../components/Hero";
 import IssuesNavbar from "../components/IssuesNavbar";
 import FilterBar from "../components/FilterBar";
 import Pagination from "../components/Pagination";
@@ -8,8 +8,8 @@ import IssueGrid from "../components/IssueGrid";
 import SubmitIssuePage from "../pages/SubmitIssuePage";
 
 
-import "../styles/admin&dash.css";
 import "../styles/StudentDashboard.css";
+import "../styles/ForestIssue.css";
 
 import { fetchIssues } from "../components/functions/FetchIssues";
 
@@ -18,6 +18,7 @@ const StudentDashboard = ({ user }) => {
     setSearchQuery(query);
   };
   const navigate = useNavigate();
+  const location = useLocation();
   const [activeTab, setActiveTab] = useState("all");
   const [sortBy, setSortBy] = useState("time");
   const [category, setCategory] = useState("all");
@@ -30,7 +31,12 @@ const StudentDashboard = ({ user }) => {
   const [error, setError] = useState(null);
   const [showSubmitForm, setShowSubmitForm] = useState(false);
 
-  // 在 useEffect 中从 API 获取问题列表
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const t = params.get("topic");
+    if (t) setCategory(t);
+  }, [location.search]);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -111,7 +117,7 @@ const StudentDashboard = ({ user }) => {
     
     return (
       <>
-        <IssuesNavbar activeTab={activeTab} onTabChange={setActiveTab} />
+        {/* IssuesNavbar 已移到 render() 的 return 部分，与 top-buttons-container 平行 */}
         <FilterBar
           sortBy={sortBy}
           onSortChange={setSortBy}
@@ -119,7 +125,7 @@ const StudentDashboard = ({ user }) => {
           onCategoryChange={setCategory}
         />
         {searchQuery && (
-          <div style={{ margin: '10px 0', fontSize: '14px', color: '#666' }}>
+          <div className="search-result-note">
             搜索结果: "{searchQuery}"
           </div>
         )}
@@ -127,6 +133,7 @@ const StudentDashboard = ({ user }) => {
           issues={currentItems}
           loading={loading}
           error={error}
+          renderMode={category !== "all" ? "forest" : undefined}
         />
         {totalPages > 1 && (
           <Pagination
@@ -139,33 +146,33 @@ const StudentDashboard = ({ user }) => {
     );
   };
 
+  const isForest = category !== "all";
+
   return (
-    <div className="dashboard-container">
-      <Home user={user} onSearch={handleSearch} />
-      <div className="content-wrapper">
-        {!showSubmitForm && (
-          <button
-            onClick={() => setShowSubmitForm(true)}
-            className="btn-primary"
-            style={{ marginRight: "10px" }}
-          >
-            提交新问题
-          </button>
-        )}
+    <div className={isForest ? "dashboard-container forest-container" : "dashboard-container"}>
+      {isForest && (<div className={`forest-bg ${false ? 'blurred' : ''}`}></div>)}
+      <Hero user={user} onSearch={handleSearch} />
+      <div className={isForest ? "content-wrapper forest-content" : "content-wrapper"}>
+        <div className={isForest ? "dashboard-controls-header forest-controls" : "dashboard-controls-header"}> 
+          <IssuesNavbar activeTab={activeTab} onTabChange={setActiveTab} />
+          <div className="top-buttons-container"> 
+            {user && user.username && user.username.includes("admin") && (
+              <button onClick={() => navigate("/admin")} className={isForest ? "btn-primary forest-btn" : "btn-primary"}>切换</button>
+            )}
+            {!showSubmitForm && (
+              <button onClick={() => setShowSubmitForm(true)} className={isForest ? "btn-primary submit-issue-btn forest-btn" : "btn-primary submit-issue-btn"}>
+                提交新问题 <span className="icon-pigeon">🕊️</span>
+              </button>
+            )}
+          </div>
+        </div>
+
         {activeTab === "mine" && (!user || !user.username) && (
-          <div className="error-message" style={{ color: "red", margin: "10px 0" }}>
+          <div className="error-message" style={{ color: isForest ? "#2d6a4f" : "red", margin: "10px 0" }}>
             无法显示"我的"问题：用户信息缺失
           </div>
         )}
-        {user && user.username.includes("admin") && (
-          <button
-            onClick={() => navigate("/admin")}
-            className="btn-primary"
-            style={{ marginRight: "20px" }}
-          >
-            切换
-          </button>
-        )}
+
         {renderContent()}
       </div>
     </div>

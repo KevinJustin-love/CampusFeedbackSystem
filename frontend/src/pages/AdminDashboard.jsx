@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import Home from "../components/Home";
+import Home from "../components/Hero";
 import AdminIssueCard from "../components/AdminIssueCard";
 import { jwtDecode } from "jwt-decode";
 import { ACCESS_TOKEN } from "../constants";

@@ -1,170 +1,143 @@
 /* IssueCard.css */
 
+/* 1. 核心信纸卡片样式 */
 .issue-card {
-  background-color: #ffffff;
-  padding: 16px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  display: flex;
-  flex-direction: column;
+  background: #fffdf5; /* 浅米白色，信纸颜色 */
+  border: 1px solid #d6c6a5; /* 略深的边框 */
+  border-radius: 12px;
+  padding: 20px 25px 40px 25px; /* 留出底部空间给落款 */
+  box-shadow: 2px 2px 6px rgba(0,0,0,0.15);
+  font-family: "Georgia", "Times New Roman", serif;
+  position: relative;
+  transition: transform 0.2s ease;
+  margin-bottom: 20px; 
+  cursor: pointer; /* 增加点击感 */
+  
+  /* ！！！实现信纸边缘效果（不规则撕边效果） */
+  clip-path: polygon(
+    0% 0%, 100% 0%, 
+    100% 90%, 
+    95% 92%, 
+    100% 94%, 
+    95% 96%, 
+    100% 98%, 
+    100% 100%, 
+    0% 100%
+  );
+  /* 注意：clip-path 可能会影响 border-radius 的展示，但它能实现不规则形状 */
 }
 
-.issue-title{
-  margin-left: 30px;
-  margin-bottom: 15px;
-  margin-top: 15px;
+.issue-card:hover {
+  transform: scale(1.02);
+  box-shadow: 4px 4px 10px rgba(0,0,0,0.2); /* 悬停阴影加重 */
+}
+
+/* 2. 顶部装饰：虚线分隔 (原 IssueGrid.css 中样式，移到此处) */
+/* 注意：由于 IssueCard.jsx 的结构没有 issue-description，
+  如果这个虚线是用来分隔 IssueCard 顶部和内容，应该放在 IssueCard 内部。
+  如果您希望它在卡片顶部，可以使用 ::before 伪元素。
+*/
+.issue-card::before {
+  content: "";
+  display: block;
+  width: 100%;
+  border-top: 2px dashed #d1bfa3;
+  margin-bottom: 12px;
+  position: absolute; /* 使其在 padding 内部 */
+  top: 45px; /* 放在邮票下方 */
+  left: 0;
+  padding: 0 25px; /* 调整宽度，使其在左右 padding 之间 */
+  box-sizing: border-box; /* 让 padding 不影响宽度计算 */
+}
+
+/* 3. 邮票（左上角）- 保持不变 */
+.issue-stamp {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  font-size: 22px;
+  transform: rotate(-10deg);
+  opacity: 0.8;
+  z-index: 10; /* 确保在虚线上方 */
+}
+
+/* 4. 标题和信息（调整以配合信纸风格） */
+.issue-title {
+  font-size: 18px;
+  font-weight: bold;
+  color: #4a3c28; /* 深棕色字体 */
+  margin-left: 30px; /* 避开邮票 */
+  margin-bottom: 10px;
+  margin-top: 0;
 }
 .issue-info {
   margin-left: 30px;
-  margin-top: 10px;
-  color: #5f646d;
+  margin-top: 0; /* 调整间距 */
+  color: #5a4a36; /* 略浅的棕色 */
   font-size: 15px;
 }
 
+/* 5. 信件落款（时间戳）- 保持不变 */
 .issue-date {
-  color: #9ca3af;
+  position: absolute;
+  bottom: 8px;
+  right: 12px;
   font-size: 12px;
-  margin-left: auto;
-  margin-bottom: 4px;
-  padding-right: 16px; /* 为日期添加右侧内边距 */
+  color: #8a7a5c;
+  font-style: italic;
+  /* 覆盖 IssueCard.css 中原有的靠右浮动样式 */
+  margin-left: initial;
+  margin-bottom: initial;
+  padding-right: initial;
 }
 
-/* 包含所有底部元素的Flexbox容器 */
+/* 6. 卡片底部 (操作和统计) */
 .card-footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-top: 10px;
-  margin-left: 16px; /* 为左侧元素添加内边距 */
-  margin-right: 16px; /* 为右侧元素添加内边距 */
+  padding: 0 5px; /* 保持与卡片内容对齐 */
+  margin-left: 0;
+  margin-right: 0;
 }
 
-/* 操作按钮容器 */
-.card-actions {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-/* 组合热度和互动区域的容器 */
-.card-stats {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-}
-
-.issue-popularity {
-  color: #ff6b6b;
+/* 7. 操作按钮美化 */
+.btn-link, .btn-delete {
+  font-family: inherit; /* 保持信纸字体 */
   font-weight: bold;
+  border: none;
+  background: none;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 4px;
 }
 
+.btn-link {
+  color: #5a4a36; /* 棕色链接 */
+  text-decoration: underline;
+}
+.btn-link:hover {
+  color: #4a3c28;
+  background-color: #f7f3ed;
+}
+
+.btn-delete {
+  color: #b91c1c;
+}
+
+/* 8. 互动按钮美化 */
 .issue-interactions {
   display: flex;
   align-items: flex-start; /* 改为顶部对齐 */
   gap: 15px;
+  font-size: 15px; /* 减小字体 */
 }
-
 .interaction-button,
 .interaction-views {
-  display: grid;
-  grid-template-rows: auto auto;
-  justify-items: center;
-  align-items: center;
-  min-width: 30px;
-  color: #64748b;
-  font-size: 14px;
+  color: #7a6c5b;
 }
 
-.interaction-button span,
-.interaction-views span {
-  grid-row: 2;
-  text-align: center;
-  font-feature-settings: "tnum";
-  font-variant-numeric: tabular-nums;
-  width: 100%;
-  margin-top: 2px;
-  font-size: 16px;
-}
-
-.interaction-button .icon,
-.interaction-views .icon {
-  grid-row: 1;
-}
-
-.interaction-button {
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 4px;
-  transition: all 0.2s;
-}
-
-.interaction-button:hover {
-  color: #2563eb;
-}
-
-/* 点赞状态样式 */
 .interaction-button.liked {
-  color: #2563eb;
-}
-
-.icon {
-  width: 20px;
-  height: 20px;
-  stroke: currentColor;
-  stroke-width: 2;
-  fill: none;
-}
-
-.interaction-button.liked .icon {
-  fill: currentColor;
-}
-
-.interaction-views {
-  padding: 4px;
-  transition: all 0.2s;
-}
-
-.interaction-views .icon {
-  stroke-width: 2;
-  width: 20px;
-  height: 20px;
-  fill: none;
-}
-
-.interaction-views:hover {
-  color: #2563eb;
-}
-
-/* 查看详情按钮样式 */
-.btn-link {
-  color: #2563eb;
-  background: none;
-  border: none;
-  font-size: 14px;
-  cursor: pointer;
-  text-decoration: underline;
-  /* 确保按钮在 Flexbox 布局中正常工作 */
-  align-self: center;
-}
-
-.btn-link:hover {
-  color: #1e40af;
-}
-
-/* 删除按钮样式 */
-.btn-delete {
-  color: #dc2626;
-  background: none;
-  border: none;
-  font-size: 14px;
-  cursor: pointer;
-  text-decoration: underline;
-  align-self: center;
-}
-
-.btn-delete:hover {
-  color: #b91c1c;
-  background-color: #fef2f2;
-  padding: 2px 6px;
-  border-radius: 4px;
+  color: #e57373; /* 略微柔和的红心 */
 }

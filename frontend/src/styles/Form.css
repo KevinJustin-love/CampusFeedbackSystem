@@ -1,143 +1,182 @@
-/* Form 包含了 Login & Admin */
-/* 本文件按照 Login - Admin - Form 顺序排列 */
+/* Form.css - 最终修正版 */
 
-/* Login Page */
+/* ================== 公共样式 & 容器修正 ================== */
+
+/* 登录页容器 */
 .login-container {
   display: flex;
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  background-color: #f3f4f6;
   position: relative;
   width: 100%;
+  background: linear-gradient(135deg, rgba(0, 150, 150, 0.4), rgba(50, 160, 255, 0.4)), url('../../pictures/login-sea.jpg') center/cover no-repeat fixed;
 }
 
+/* 登录卡片 */
 .login-card {
-  background-color: #ffffff;
-  padding: 20px; 
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  padding: 30px;
+  border-radius: 14px;
+  box-shadow: 0 15px 40px rgba(0, 80, 120, 0.25);
   width: 100%;
   max-width: 400px;
-  min-height: auto;
   position: relative;
-  overflow: visible; /* 改为visible避免内容被裁剪 */
 }
 
-.logo-container {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 24px;
-}
 
-.logo {
-  height: 120px;
-}
-
-.login-title {
-  font-size: 30px;
-  font-weight: bold;
-  color: #2563eb;
+/* --- 品牌标题和 Logo 区域 (保持不变) --- */
+.brand {
   text-align: center;
-  margin-bottom: 24px;
+  margin-bottom: 30px;
+}
+.brand-logo {
+  width: 80px;
+  height: auto;
+  margin-bottom: 5px;
+  opacity: 1;
+  filter: drop-shadow(0 0 5px rgba(0, 206, 201, 0.4));
+}
+.brand-en { 
+  background: linear-gradient(90deg, #00cec9, #0984e3, #00b894); 
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  font-size: 24px;
+  font-weight: 700; 
+  letter-spacing: 0.5px; 
+}
+.brand-zh { 
+  background: linear-gradient(90deg, #0984e3, #00cec9, #5fb4e9);
+  margin-top: 2px; 
+  font-size: 36px;
+  font-weight: 800; 
+  letter-spacing: 1px; 
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 
-/* 确保表单容器正确 */
+
+/* --- 表单容器布局 --- */
 .login-card form {
   position: relative;
   width: 100%;
   display: flex;
   flex-direction: column;
-  min-height: 200px; /* 确保表单有足够高度 */
+  min-height: auto;
 }
 
-/* Form CSS */
+/* --- 输入框图标对齐容器 (核心修正) --- */
+.input-with-icon {
+    display: flex;
+    align-items: center;
+    /* 关键修正：确保输入框容器宽度为 100%，消除可能的外边距溢出 */
+    width: 100%; 
+    box-sizing: border-box; 
+    
+    border: 1px solid rgba(0, 180, 200, 0.2);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.7);
+    padding-right: 0;
+    
+    /* 修复可能来自其他 CSS 的定位问题 */
+    position: static !important; 
+    margin: 0 !important;
+}
 
-.form-container {
+/* 输入框图标样式 */
+.input-icon {
+    font-size: 18px;
+    padding: 0 12px;
+    color: #0984e3;
+}
+
+/* 表单输入框组 */
+.form-group-no-label {
+  margin-bottom: 25px;
+  width: 100%;
+  /* 修复可能来自其他 CSS 的定位问题 */
+  position: static !important; 
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+.form-input-large {
+  flex-grow: 1;
+  width: auto;
+  height: 50px;
+  padding: 12px 0;
+  font-size: 16px;
+  border: none;
+  border-radius: 0;
+  box-sizing: border-box;
+  background: transparent;
+}
+.input-with-icon:focus-within {
+  border-color: #00cec9;
+  box-shadow: 0 0 0 3px rgba(0, 206, 201, 0.2);
+}
+
+
+/* --- 按钮容器和按钮样式 --- */
+
+/* 按钮容器 */
+.button-container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  margin: 50px auto;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  max-width: 400px;
+  gap: 15px;
+  margin-top: 15px;
+  width: 100%;
+  /* 确保按钮容器是正常流式布局 */
+  position: static !important;
+  left: auto !important;
 }
 
-.form-input {
-  width: 90%;
-  padding: 10px;
-  margin: 10px 0;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  box-sizing: border-box;
-}
-
-.form-button {
-  width: 95%;
-  padding: 10px;
-  margin: 20px 0;
-  background-color: #007bff;
+/* 登录按钮样式 (核心修正) */
+.btn-primary1 {
+  width: 100%; /* 关键：强制按钮充满容器宽度 */
+  height: 50px;
+  padding: 12px;
+  
+  background: linear-gradient(90deg, #0984e3, #00cec9, #00b894); 
   color: white;
   border: none;
-  border-radius: 4px;
+  border-radius: 8px;
   cursor: pointer;
-  transition: background-color 0.2s ease-in-out;
+  font-size: 18px;
+  font-weight: 700;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 10px rgba(0, 184, 148, 0.3);
+  
+  /* 关键修正：重置所有可能导致按钮偏移的样式 */
+  position: static !important;
+  margin: 0 !important;
+  transform: none !important;
+  left: auto !important;
+}
+.btn-primary1:hover {
+  opacity: 0.9;
+  transform: none; /* 确保 hover 时没有 transform 影响布局 */
+}
+.btn-primary1:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+    box-shadow: none;
 }
 
-.form-button:hover {
-  background-color: #0056b3;
+/* 注册链接样式 */
+.register-link {
+  background: none;
+  border: none;
+  color: #0984e3;
+  cursor: pointer;
+  font-size: 14px;
+  padding: 0;
+  margin-top: -5px;
 }
-
-/* 输入框和图标容器 */
-.input-with-icon {
-  position: relative;
-  display: flex;
-  align-items: center;
-}
-
-/* 图标样式调整 */
-.input-icon {
-  position: absolute;
-  left: 15px;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 1;
-  font-size: 20px; /* 稍微增大图标 */
-  color: #666;
-}
-
-/* 带图标的输入框 */
-.form-input-with-icon {
-  padding-left: 40px; /* 为图标留出空间 */
-  /* 其他样式继承原有的 form-input */
-}
-
-/* 按钮居中容器 */
-.button-container {
-  display: flex;
-  justify-content: center;
-  gap: 10px; /* 按钮之间的间距 */
-  margin-top: 80px; /* 确保与密码框有足够距离 */
-  margin-bottom: 20px; /* 设置按钮距离login-card底部的距离 */
-  position: relative;
-  width: 100%;
-  padding-top: 10px; /* 额外的顶部内边距 */
-}
-
-/* 无标签的表单组 */
-.form-group-no-label {
-  margin-bottom: 25px; /* 增加底部边距，给输入框更多空间 */
-}
-
-/* 更大的输入框 */
-.form-input-large {
-  width: 100%;
-  height: 50px; /* 增加高度 */
-  padding: 15px 15px 15px 45px; /* 增加内边距，左侧为图标留空间 */
-  font-size: 16px; /* 增大字体 */
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  box-sizing: border-box;
+.register-link:hover {
+  text-decoration: underline;
 }
