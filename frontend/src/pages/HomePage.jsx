@@ -23,17 +23,33 @@ export default function HomePage({ user, onSearch }) {
         <a
           className="islandHotspot"
           href="/dashboard?topic=其他"
-          style={{ left: "10%", top: "14%", width: "20%" }}
+          style={{ left: "7%", top: "18%", width: "20%" }}
+          onMouseEnter={() => handleHotspotEnter("其他")}
+          onMouseLeave={handleHotspotLeave}
         >
           <span
             className={`hotspotLabel ${
               hoveredTopic === "其他" ? "hotspotLabel--hovered" : ""
             }`}
-            onMouseEnter={() => handleHotspotEnter("其他")}
-            onMouseLeave={handleHotspotLeave}
           >
             其他
           </span>
+          <img
+            src="../../public/assets/other.png"
+            alt="Other Island"
+            className="islandHotspotImage-other"
+            style={{
+              width: "250px",
+              top: "75%",
+              left: "40%",
+              transformOrigin: "left center",
+              transform:
+                hoveredTopic === "其他"
+                  ? "translateY(-50%) scale(1.25)"
+                  : "translateY(-50%)",
+              transition: "transform 0.25s ease",
+            }}
+          />
         </a>
         <a
           className="islandHotspot"
