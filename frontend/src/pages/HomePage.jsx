@@ -47,69 +47,140 @@ export default function HomePage({ user, onSearch }) {
                 hoveredTopic === "其他"
                   ? "translateY(-50%) scale(1.25)"
                   : "translateY(-50%)",
-              transition: "transform 0.25s ease",
             }}
           />
         </a>
         <a
           className="islandHotspot"
           href="/dashboard?topic=管理"
-          style={{ left: "47%", top: "25%", width: "10%" }}
+          style={{ left: "55%", top: "27%", width: "12%" }}
+          onMouseEnter={() => handleHotspotEnter("管理")}
+          onMouseLeave={handleHotspotLeave}
         >
           <span
             className={`hotspotLabel ${
               hoveredTopic === "管理" ? "hotspotLabel--hovered" : ""
             }`}
-            onMouseEnter={() => handleHotspotEnter("管理")}
-            onMouseLeave={handleHotspotLeave}
           >
             管理
           </span>
+          <img
+            src="../../public/assets/manage.png"
+            alt="Manage Island"
+            className="islandHotspotImage-manage"
+            style={{
+              width: "250px",
+              top: "75%",
+              left: "50%",
+              transformOrigin: "center",
+              transform:
+                hoveredTopic === "管理"
+                  ? "translate(-50%, -50%) scale(1.2)"
+                  : "translate(-50%, -50%)",
+            }}
+          />
         </a>
         <a
           className="islandHotspot"
           href="/dashboard?topic=学业"
-          style={{ left: "25%", top: "43%", width: "15%" }}
+          style={{ left: "33%", top: "46%", width: "16%" }}
+          onMouseEnter={() => handleHotspotEnter("学业")}
+          onMouseLeave={handleHotspotLeave}
         >
           <span
             className={`hotspotLabel ${
               hoveredTopic === "学业" ? "hotspotLabel--hovered" : ""
             }`}
-            onMouseEnter={() => handleHotspotEnter("学业")}
-            onMouseLeave={handleHotspotLeave}
           >
             学业
           </span>
+          <img
+            src="../../public/assets/study.png"
+            alt="Study Island"
+            className="islandHotspotImage-study"
+            style={{
+              width: "230px",
+              top: "60%",
+              left: "50%",
+              transformOrigin: "center",
+              transform:
+                hoveredTopic === "学业"
+                  ? "translate(-50%, -50%) scale(1.2)"
+                  : "translate(-50%, -50%)",
+            }}
+          />
         </a>
         <a
-          className="islandHotspot"
+          className="islandHotspot islandHotspot--emotion"
           href="/dashboard?topic=情感"
-          style={{ left: "90%", top: "13%", width: "20%" }}
+          style={{
+            right: 0,
+            top: "17%",
+            width: "18%",
+            transform: "translateY(-50%)", // 只在纵向居中
+          }}
+          onMouseEnter={() => handleHotspotEnter("情感")}
+          onMouseLeave={handleHotspotLeave}
         >
           <span
             className={`hotspotLabel ${
               hoveredTopic === "情感" ? "hotspotLabel--hovered" : ""
             }`}
-            onMouseEnter={() => handleHotspotEnter("情感")}
-            onMouseLeave={handleHotspotLeave}
           >
             情感
           </span>
+          <img
+            src="../../public/assets/emotion.png"
+            alt="Emotion Island"
+            className="islandHotspotImage-emotion"
+            style={{
+              width: "320px",
+              top: "80%",
+              right: 0, // 贴紧父元素右边
+              left: "auto",
+              transformOrigin: "right center", // 缩放时保持右边缘不动
+              transform:
+                hoveredTopic === "情感"
+                  ? "translateY(-50%) scale(1.2)"
+                  : "translateY(-50%)",
+            }}
+          />
         </a>
         <a
-          className="islandHotspot"
+          className="islandHotspot islandHotspot--life"
           href="/dashboard?topic=生活"
-          style={{ left: "80%", top: "55%", width: "35%" }}
+          style={{
+            right: "0%",
+            top: "71%",
+            width: "30%",
+            transform: "translateY(-50%)",
+          }}
+          onMouseEnter={() => handleHotspotEnter("生活")}
+          onMouseLeave={handleHotspotLeave}
         >
           <span
             className={`hotspotLabel ${
               hoveredTopic === "生活" ? "hotspotLabel--hovered" : ""
             }`}
-            onMouseEnter={() => handleHotspotEnter("生活")}
-            onMouseLeave={handleHotspotLeave}
           >
             生活
           </span>
+          <img
+            src="../../public/assets/life.png"
+            alt="Life Island"
+            className="islandHotspotImage-life"
+            style={{
+              width: "560px",
+              top: "68%",
+              right: 0,
+              left: "auto",
+              transformOrigin: "right center",
+              transform:
+                hoveredTopic === "生活"
+                  ? "translateY(-50%) scale(1.2)"
+                  : "translateY(-50%)",
+            }}
+          />
         </a>
       </div>
     </div>
