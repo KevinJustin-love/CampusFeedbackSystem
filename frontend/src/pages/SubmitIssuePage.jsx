@@ -98,7 +98,7 @@ const SubmitIssuePage = ({ onIssueSubmitted, onCancel }) => {
               required
             >
               <option value="">选择分类</option>
-              <option value="学习问题">学习问题</option>
+              <option value="学业">学业</option>
               <option value="生活问题">生活问题</option>
               <option value="技术问题">技术问题</option>
             </select>
