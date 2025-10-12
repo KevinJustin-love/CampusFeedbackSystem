@@ -1,0 +1,189 @@
+/* SingleIssueTree.css - 单树多分支样式 */
+
+.single-tree-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  min-height: 500px;
+}
+
+.tree-svg {
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
+}
+
+/* 树桩样式 */
+.tree-stump {
+  cursor: default;
+}
+
+/* 树干样式 */
+.tree-trunk {
+  cursor: default;
+}
+
+/* 分支组样式 */
+.branch-group {
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.branch-group:hover {
+  filter: drop-shadow(0 2px 6px rgba(76, 175, 80, 0.5));
+}
+
+.leaf {
+  transition: all 0.3s ease;
+}
+
+.leaf-shape {
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.leaf-shape:hover {
+  filter: brightness(1.2) drop-shadow(0 0 8px rgba(76, 175, 80, 0.6));
+}
+
+/* 叶脉细节 */
+.branch-group path {
+  transition: stroke-width 0.2s ease;
+}
+
+.branch-group:hover path {
+  stroke-width: 1.2;
+}
+
+/* 树冠叶子层叠效果 */
+.tree-crown-group .leaf-shape {
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+}
+
+/* 问题编号在叶子上的显示 */
+.branch-number {
+  pointer-events: none;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5), 0 0 10px rgba(255, 255, 255, 0.3);
+  transition: all 0.3s ease;
+}
+
+.branch-group:hover .branch-number {
+  font-size: 13px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.7), 0 0 15px rgba(255, 255, 255, 0.5);
+}
+
+/* 更多问题提示 */
+.more-issues-hint {
+  margin-top: 15px;
+  padding: 8px 16px;
+  background: linear-gradient(135deg, #66bb6a, #4caf50);
+  color: white;
+  border-radius: 20px;
+  font-size: 13px;
+  box-shadow: 0 2px 8px rgba(76, 175, 80, 0.3);
+  text-align: center;
+}
+
+/* 分页控制样式 */
+.tree-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 20px;
+  padding: 15px;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 30px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+}
+
+.page-btn {
+  padding: 10px 20px;
+  background: linear-gradient(135deg, #66bb6a, #4caf50);
+  color: white;
+  border: none;
+  border-radius: 20px;
+  font-size: 28px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(76, 175, 80, 0.3);
+}
+
+.page-btn:hover:not(:disabled) {
+  background: linear-gradient(135deg, #4caf50, #388e3c);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.5);
+}
+
+.page-btn:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.page-indicator {
+  font-size: 28px;
+  font-weight: 500;
+  color: #2e7d32;
+}
+
+/* 单树模式容器 */
+.single-tree-mode {
+  background: linear-gradient(to bottom, #e8f5e9, #c8e6c9);
+  min-height: 100vh;
+  padding: 40px 20px;
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+  .tree-svg {
+    width: 100%;
+    height: auto;
+  }
+
+  .single-tree-container {
+    padding: 10px;
+  }
+
+  .tree-pagination {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .page-btn {
+    width: 100%;
+  }
+}
+
+/* 动画增强 */
+@keyframes sway {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(2deg);
+  }
+}
+
+.tree-trunk,
+.tree-stump {
+  animation: sway 6s ease-in-out infinite;
+  transform-origin: center bottom;
+}
+
+/* 添加微妙的光影效果 */
+@keyframes leaf-shimmer {
+  0%,
+  100% {
+    opacity: 0.25;
+  }
+  50% {
+    opacity: 0.4;
+  }
+}
+
+.leaf-shape ellipse:last-child {
+  animation: leaf-shimmer 4s ease-in-out infinite;
+}

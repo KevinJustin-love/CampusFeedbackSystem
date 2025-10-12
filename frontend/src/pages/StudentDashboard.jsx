@@ -6,7 +6,7 @@ import FilterBar from "../components/FilterBar";
 import Pagination from "../components/Pagination";
 import IssueGrid from "../components/IssueGrid";
 import SubmitIssuePage from "../pages/SubmitIssuePage";
-
+import SingleIssueTree from "../components/SingleIssueTree";
 
 import "../styles/StudentDashboard.css";
 import "../styles/ForestIssue.css";
@@ -40,22 +40,23 @@ const StudentDashboard = ({ user }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data = await fetchIssues(setLoading, setIssues, setError, { params: { topic: category, sortBy: sortBy } });
-        console.log('API返回数据:', data);
-        console.log('处理前的问题数据:', issues);
-        console.log('用户对象:', user);
-        
+        const data = await fetchIssues(setLoading, setIssues, setError, {
+          params: { topic: category, sortBy: sortBy },
+        });
+        console.log("API返回数据:", data);
+        console.log("处理前的问题数据:", issues);
+        console.log("用户对象:", user);
+
         if (data && data.length > 0) {
-          console.log('第一个问题的完整数据:', data[0]);
-          console.log('host字段类型:', typeof data[0].host);
+          console.log("第一个问题的完整数据:", data[0]);
+          console.log("host字段类型:", typeof data[0].host);
         }
       } catch (error) {
-        console.error('数据获取失败:', error);
+        console.error("数据获取失败:", error);
       }
     };
     fetchData();
   }, [category, sortBy, user]);
-
 
   //综合过滤和排序逻辑
   const filteredIssues = issues
@@ -65,7 +66,7 @@ const StudentDashboard = ({ user }) => {
         console.error("用户ID缺失，无法过滤'我的'问题", user);
         return false;
       }
-      console.log('比较host:', issue.host, '用户ID:', user.id);
+      console.log("比较host:", issue.host, "用户ID:", user.id);
       return Number(issue.host) === Number(user.id);
     })
     .filter((issue) => category === "all" || issue.topic === category)
@@ -100,7 +101,7 @@ const StudentDashboard = ({ user }) => {
 
   const handleIssueSubmitted = (newIssue) => {
     // 将新问题添加到列表最前面
-    setIssues(prevIssues => [newIssue, ...prevIssues]);
+    setIssues((prevIssues) => [newIssue, ...prevIssues]);
     // 提交成功后隐藏表单，并返回主视图
     setShowSubmitForm(false);
   };
@@ -114,10 +115,38 @@ const StudentDashboard = ({ user }) => {
         />
       );
     }
-    
+
+    // 单树模式：当选择了具体分类时使用
+    const isTreeMode = category !== "all";
+
+    if (isTreeMode) {
+      return (
+        <>
+          <FilterBar
+            sortBy={sortBy}
+            onSortChange={setSortBy}
+            category={category}
+            onCategoryChange={setCategory}
+          />
+          {searchQuery && (
+            <div className="search-result-note">搜索结果: "{searchQuery}"</div>
+          )}
+          {loading ? (
+            <div className="loading-message">加载中...</div>
+          ) : error ? (
+            <div className="error-message">加载失败: {error}</div>
+          ) : (
+            <div className="tree-display-container">
+              <SingleIssueTree issues={filteredIssues} pageSize={5} />
+            </div>
+          )}
+        </>
+      );
+    }
+
+    // 默认列表模式
     return (
       <>
-        {/* IssuesNavbar 已移到 render() 的 return 部分，与 top-buttons-container 平行 */}
         <FilterBar
           sortBy={sortBy}
           onSortChange={setSortBy}
@@ -125,16 +154,9 @@ const StudentDashboard = ({ user }) => {
           onCategoryChange={setCategory}
         />
         {searchQuery && (
-          <div className="search-result-note">
-            搜索结果: "{searchQuery}"
-          </div>
+          <div className="search-result-note">搜索结果: "{searchQuery}"</div>
         )}
-        <IssueGrid
-          issues={currentItems}
-          loading={loading}
-          error={error}
-          renderMode={category !== "all" ? "forest" : undefined}
-        />
+        <IssueGrid issues={currentItems} loading={loading} error={error} />
         {totalPages > 1 && (
           <Pagination
             currentPage={currentPage}
@@ -149,18 +171,48 @@ const StudentDashboard = ({ user }) => {
   const isForest = category !== "all";
 
   return (
-    <div className={isForest ? "dashboard-container forest-container" : "dashboard-container"}>
-      {isForest && (<div className={`forest-bg ${false ? 'blurred' : ''}`}></div>)}
+    <div
+      className={
+        isForest
+          ? "dashboard-container forest-container"
+          : "dashboard-container"
+      }
+    >
+      {isForest && (
+        <div className={`forest-bg ${false ? "blurred" : ""}`}></div>
+      )}
       <Hero user={user} onSearch={handleSearch} />
-      <div className={isForest ? "content-wrapper forest-content" : "content-wrapper"}>
-        <div className={isForest ? "dashboard-controls-header forest-controls" : "dashboard-controls-header"}> 
+      <div
+        className={
+          isForest ? "content-wrapper forest-content" : "content-wrapper"
+        }
+      >
+        <div
+          className={
+            isForest
+              ? "dashboard-controls-header forest-controls"
+              : "dashboard-controls-header"
+          }
+        >
           <IssuesNavbar activeTab={activeTab} onTabChange={setActiveTab} />
-          <div className="top-buttons-container"> 
+          <div className="top-buttons-container">
             {user && user.username && user.username.includes("admin") && (
-              <button onClick={() => navigate("/admin")} className={isForest ? "btn-primary forest-btn" : "btn-primary"}>切换</button>
+              <button
+                onClick={() => navigate("/admin")}
+                className={isForest ? "btn-primary forest-btn" : "btn-primary"}
+              >
+                切换
+              </button>
             )}
             {!showSubmitForm && (
-              <button onClick={() => setShowSubmitForm(true)} className={isForest ? "btn-primary submit-issue-btn forest-btn" : "btn-primary submit-issue-btn"}>
+              <button
+                onClick={() => setShowSubmitForm(true)}
+                className={
+                  isForest
+                    ? "btn-primary submit-issue-btn forest-btn"
+                    : "btn-primary submit-issue-btn"
+                }
+              >
                 提交新问题 <span className="icon-pigeon">🕊️</span>
               </button>
             )}
@@ -168,7 +220,10 @@ const StudentDashboard = ({ user }) => {
         </div>
 
         {activeTab === "mine" && (!user || !user.username) && (
-          <div className="error-message" style={{ color: isForest ? "#2d6a4f" : "red", margin: "10px 0" }}>
+          <div
+            className="error-message"
+            style={{ color: isForest ? "#2d6a4f" : "red", margin: "10px 0" }}
+          >
             无法显示"我的"问题：用户信息缺失
           </div>
         )}
