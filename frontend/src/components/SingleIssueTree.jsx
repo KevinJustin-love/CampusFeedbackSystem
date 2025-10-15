@@ -1,6 +1,6 @@
 // SingleIssueTree.jsx - 单棵树多分支问题展示组件
-import React, { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import React, { useEffect, useState } from "react";
+import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import "../styles/SingleIssueTree.css";
 
@@ -456,10 +456,31 @@ const TreeCrown = ({ x, y, issue, onClick }) => {
 // 主树组件
 export default function SingleIssueTree({ issues = [], pageSize = 5 }) {
   const navigate = useNavigate();
-  const [selectedIssue, setSelectedIssue] = useState(null);
+  const [currentPage, setCurrentPage] = useState(0);
+  const effectivePageSize = Math.max(pageSize, 1);
+  const totalPages = Math.ceil(issues.length / effectivePageSize);
+  const safeCurrentPage =
+    totalPages === 0 ? 0 : Math.min(currentPage, totalPages - 1);
+  const startIndex = safeCurrentPage * effectivePageSize;
+  const displayIssues = issues.slice(
+    startIndex,
+    startIndex + effectivePageSize
+  );
 
-  // 限制显示数量
-  const displayIssues = issues.slice(0, pageSize);
+  useEffect(() => {
+    if (safeCurrentPage !== currentPage) {
+      setCurrentPage(safeCurrentPage);
+    }
+  }, [safeCurrentPage, currentPage]);
+
+  const handlePrevPage = () => {
+    setCurrentPage((prev) => Math.max(prev - 1, 0));
+  };
+
+  const handleNextPage = () => {
+    if (totalPages === 0) return;
+    setCurrentPage((prev) => Math.min(prev + 1, totalPages - 1));
+  };
 
   // SVG 画布参数
   const centerX = 250;
@@ -473,7 +494,7 @@ export default function SingleIssueTree({ issues = [], pageSize = 5 }) {
   };
 
   // 无问题状态
-  if (displayIssues.length === 0) {
+  if (issues.length === 0) {
     return (
       <div className="single-tree-container">
         <svg width={500} height={480} className="tree-svg">
@@ -537,14 +558,37 @@ export default function SingleIssueTree({ issues = [], pageSize = 5 }) {
         />
       </svg>
 
+      {/* 分页控制 */}
+      {totalPages > 1 && (
+        <div className="tree-pagination">
+          <button
+            className="page-btn"
+            onClick={handlePrevPage}
+            disabled={safeCurrentPage === 0}
+          >
+            上一页
+          </button>
+          <span className="page-indicator">
+            第 {safeCurrentPage + 1} / {totalPages} 页
+          </span>
+          <button
+            className="page-btn"
+            onClick={handleNextPage}
+            disabled={safeCurrentPage === totalPages - 1}
+          >
+            下一页
+          </button>
+        </div>
+      )}
+
       {/* 问题总数提示 */}
-      {issues.length > pageSize && (
+      {totalPages > 1 && (
         <motion.div
           className="more-issues-hint"
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
         >
-          还有 {issues.length - pageSize} 个问题，滚动查看更多
+          共 {issues.length} 个问题，使用分页查看更多
         </motion.div>
       )}
     </div>

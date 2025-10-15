@@ -22,7 +22,7 @@ export default function HomePage({ user, onSearch }) {
       <div className="islandHotspots">
         <a
           className="islandHotspot"
-          href="/dashboard?topic=其他"
+          href="/topic-tree/其他"
           style={{ left: "7%", top: "18%", width: "20%" }}
           onMouseEnter={() => handleHotspotEnter("其他")}
           onMouseLeave={handleHotspotLeave}
@@ -52,7 +52,7 @@ export default function HomePage({ user, onSearch }) {
         </a>
         <a
           className="islandHotspot"
-          href="/dashboard?topic=管理"
+          href="/topic-tree/管理"
           style={{ left: "55%", top: "27%", width: "12%" }}
           onMouseEnter={() => handleHotspotEnter("管理")}
           onMouseLeave={handleHotspotLeave}
@@ -82,7 +82,7 @@ export default function HomePage({ user, onSearch }) {
         </a>
         <a
           className="islandHotspot"
-          href="/dashboard?topic=学业"
+          href="/topic-tree/学业"
           style={{ left: "33%", top: "46%", width: "16%" }}
           onMouseEnter={() => handleHotspotEnter("学业")}
           onMouseLeave={handleHotspotLeave}
@@ -112,7 +112,7 @@ export default function HomePage({ user, onSearch }) {
         </a>
         <a
           className="islandHotspot islandHotspot--emotion"
-          href="/dashboard?topic=情感"
+          href="/topic-tree/情感"
           style={{
             right: 0,
             top: "17%",
@@ -148,7 +148,7 @@ export default function HomePage({ user, onSearch }) {
         </a>
         <a
           className="islandHotspot islandHotspot--life"
-          href="/dashboard?topic=生活"
+          href="/topic-tree/生活"
           style={{
             right: "0%",
             top: "71%",

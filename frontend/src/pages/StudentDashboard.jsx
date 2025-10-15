@@ -6,10 +6,8 @@ import FilterBar from "../components/FilterBar";
 import Pagination from "../components/Pagination";
 import IssueGrid from "../components/IssueGrid";
 import SubmitIssuePage from "../pages/SubmitIssuePage";
-import SingleIssueTree from "../components/SingleIssueTree";
 
 import "../styles/StudentDashboard.css";
-import "../styles/ForestIssue.css";
 
 import { fetchIssues } from "../components/functions/FetchIssues";
 
@@ -116,34 +114,6 @@ const StudentDashboard = ({ user }) => {
       );
     }
 
-    // 单树模式：当选择了具体分类时使用
-    const isTreeMode = category !== "all";
-
-    if (isTreeMode) {
-      return (
-        <>
-          <FilterBar
-            sortBy={sortBy}
-            onSortChange={setSortBy}
-            category={category}
-            onCategoryChange={setCategory}
-          />
-          {searchQuery && (
-            <div className="search-result-note">搜索结果: "{searchQuery}"</div>
-          )}
-          {loading ? (
-            <div className="loading-message">加载中...</div>
-          ) : error ? (
-            <div className="error-message">加载失败: {error}</div>
-          ) : (
-            <div className="tree-display-container">
-              <SingleIssueTree issues={filteredIssues} pageSize={5} />
-            </div>
-          )}
-        </>
-      );
-    }
-
     // 默认列表模式
     return (
       <>
@@ -168,38 +138,17 @@ const StudentDashboard = ({ user }) => {
     );
   };
 
-  const isForest = category !== "all";
-
   return (
-    <div
-      className={
-        isForest
-          ? "dashboard-container forest-container"
-          : "dashboard-container"
-      }
-    >
-      {isForest && (
-        <div className={`forest-bg ${false ? "blurred" : ""}`}></div>
-      )}
+    <div className="dashboard-container">
       <Hero user={user} onSearch={handleSearch} />
-      <div
-        className={
-          isForest ? "content-wrapper forest-content" : "content-wrapper"
-        }
-      >
-        <div
-          className={
-            isForest
-              ? "dashboard-controls-header forest-controls"
-              : "dashboard-controls-header"
-          }
-        >
+      <div className="content-wrapper">
+        <div className="dashboard-controls-header">
           <IssuesNavbar activeTab={activeTab} onTabChange={setActiveTab} />
           <div className="top-buttons-container">
             {user && user.username && user.username.includes("admin") && (
               <button
                 onClick={() => navigate("/admin")}
-                className={isForest ? "btn-primary forest-btn" : "btn-primary"}
+                className="btn-primary"
               >
                 切换
               </button>
@@ -207,11 +156,7 @@ const StudentDashboard = ({ user }) => {
             {!showSubmitForm && (
               <button
                 onClick={() => setShowSubmitForm(true)}
-                className={
-                  isForest
-                    ? "btn-primary submit-issue-btn forest-btn"
-                    : "btn-primary submit-issue-btn"
-                }
+                className="btn-primary submit-issue-btn"
               >
                 提交新问题 <span className="icon-pigeon">🕊️</span>
               </button>
@@ -222,7 +167,7 @@ const StudentDashboard = ({ user }) => {
         {activeTab === "mine" && (!user || !user.username) && (
           <div
             className="error-message"
-            style={{ color: isForest ? "#2d6a4f" : "red", margin: "10px 0" }}
+            style={{ color: "red", margin: "10px 0" }}
           >
             无法显示"我的"问题：用户信息缺失
           </div>
