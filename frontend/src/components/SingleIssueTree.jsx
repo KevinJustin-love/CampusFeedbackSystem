@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import "../styles/SingleIssueTree.css";
 
 // 树桩组件
-const TreeStump = ({ x, y, width = 50, height = 35 }) => (
+const TreeStump = ({ x, y, width = 200, height = 35 }) => (
   <g className="tree-stump">
     <defs>
       <linearGradient id="stumpGradient" x1="0%" y1="0%" x2="0%" y2="100%">
@@ -211,7 +211,7 @@ const RealisticLeaf = ({
 // 更新 Branch 组件使用真实叶子
 const Branch = ({ x, y, side, issue, onClick, index }) => {
   const [isHovered, setIsHovered] = useState(false);
-  const branchLength = 65; // 🔧 树枝长度：45 → 65（延长约45%）
+  const branchLength = 100; // 🔧 树枝长度：45 → 65（延长约45%）
   const endX = x + side * branchLength;
   const endY = y - 12; // 向上倾斜角度也加大（-8 → -12）
 
@@ -233,7 +233,7 @@ const Branch = ({ x, y, side, issue, onClick, index }) => {
         x2={endX}
         y2={endY}
         stroke="#8B5A2B"
-        strokeWidth={isHovered ? 7 : 5} // 🔧 树枝粗细：3/4 → 5/7（加粗约67%）
+        strokeWidth={isHovered ? 14 : 12} // 树枝粗细
         strokeLinecap="round"
       />
 
@@ -252,7 +252,7 @@ const Branch = ({ x, y, side, issue, onClick, index }) => {
           cx={endX}
           cy={endY}
           rotation={side * 45}
-          scale={isHovered ? 1.5 : 1.3} // 🔧 叶子大小：1/1.15 → 1.3/1.5（放大30%）
+          scale={isHovered ? 1.8 : 1.5} // 🔧 叶子大小
           isHovered={isHovered}
           index={index}
         />
@@ -466,7 +466,7 @@ export default function SingleIssueTree({ issues = [], pageSize = 5 }) {
   const stumpY = 420;
   const stumpHeight = 35;
   const trunkHeight =
-    displayIssues.length === 0 ? 0 : 220 + (displayIssues.length - 1) * 25; // 🔧 树干高度：200→220，增量：20→25（整体增高10-25%）
+    displayIssues.length === 0 ? 0 : 200 + (displayIssues.length - 1) * 25; // 🔧 树干高度
 
   const handleIssueClick = (issue) => {
     navigate(`/detail/${issue.id}`);
