@@ -25,9 +25,9 @@ function FilterBar({ sortBy, onSortChange, category, onCategoryChange }) {
           className="filter-select"
         >
           <option value="all">全部</option>
-          <option value="学习问题">学习问题</option>
-          <option value="生活问题">生活问题</option>
-          <option value="技术问题">技术问题</option>
+          <option value="学业">学业</option>
+          <option value="生活">生活</option>
+          <option value="管理">管理</option>
         </select>
       </div>
     </div>
