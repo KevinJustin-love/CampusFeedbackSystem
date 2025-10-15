@@ -1,26 +1,162 @@
-.btn-primary {
-  background-color: #2563eb;
-  color: #ffffff;
-  padding: 8px 16px;
-  border: none;
-  border-radius: 4px;
-  font-size: 14px;
-  cursor: pointer;
-  width: 120px;
-  transition: transform 0.2s ease;
-  position: relative;
-  left: 848px;
-  top: 45px;
+/* 新增：包裹 IssuesNavbar 和 top-buttons-container 的容器 */
+.dashboard-controls-header {
+  display: flex;
+  justify-content: space-between; /* 导航栏在左，按钮容器在右 */
+  align-items: center; /* 垂直居中对齐 */
+  padding-top: 12px;
+  padding-bottom: 12px;
+  margin-bottom: 0px;
+  border-bottom: 2px dashed #d1bfa3; /* 整个控制区域的分隔线 */
+  font-family: "Georgia", "Times New Roman", serif;
 }
 
-.btn-primary:hover {
-  background-color: #1e40af;
+/* 信件风格：导航栏 - 关键修正：移除所有可能造成偏移的垂直 padding 和 margin */
+.issues-navbar {
+  display: flex;
+  gap: 12px;
+  padding: 0; /* 移除垂直内边距 */
+  margin: 0; /* 移除垂直外边距 */
+  border-bottom: none; /* 移除原来的底部边框 */
+  font-family: "Georgia", "Times New Roman", serif;
+}
+
+.nav-button {
+  padding: 10px 16px;
+  border: 1px solid #d6c6a5;
+  background: #fffdf5;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  color: #4a3c28;
+  box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.nav-button:hover {
+  transform: scale(1.02);
+}
+
+.nav-button.active {
+  background: #fff7e6;
+  color: #4a3c28;
+}
+
+/* 信件风格：筛选框 - 移除重复的底部边框 */
+.filter-bar {
+  display: flex;
+  gap: 20px;
+  padding: 15px 0;
+  margin-bottom: 15px;
+  border-bottom: none; /* 移除此处的 border-bottom，已移至 controls-header */
+  font-family: "Georgia", "Times New Roman", serif;
+}
+
+.filter-group {
+  display: flex;
+  align-items: center;
+}
+
+.filter-label {
+  margin-right: 8px;
+  font-weight: bold;
+  color: #4a3c28;
+}
+
+.filter-select {
+  padding: 8px 12px;
+  border: 1px solid #d6c6a5;
+  border-radius: 12px;
+  background-color: #fffdf5;
+  cursor: pointer;
+  color: #4a3c28;
+  box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* 背景与内容容器 */
+.content-wrapper {
+  max-width: 80%;
+  margin: 0 auto;
+  padding: 16px;
+}
+
+/* 搜索结果提示为信件脚注 */
+.search-result-note {
+  font-size: 14px;
+  color: #8a7a5c;
+  font-style: italic;
+  border-top: none; /* 移除此处的 border-top，不应与 controls-header 冲突 */
+  padding-top: 8px;
 }
 
 .dashboard-container {
   min-height: 100vh;
-  background-color: #f1f1f1;
+  background: url("/assets/paper-bg.jpg") repeat;
+  background-size: cover;
   padding: 0px;
   overflow-x: hidden;
-  background-color: #f7f7f7;
+}
+
+/* 确保按钮容器在右侧 */
+.content-wrapper {
+  /* 确保按钮和内容可以并排，或根据需要调整布局 */
+  /* 添加一个用于包裹按钮的 Flex 容器 */
+  position: relative;
+  padding: 20px;
+  width: 80%;
+}
+
+/* 调整 top-buttons-container 的样式 */
+.top-buttons-container {
+  display: flex;
+  margin: 0; /* 确保没有垂直外边距导致偏移 */
+  gap: 10px;
+}
+
+/* 新问题提交按钮：信箱/鸽子投递效果 */
+.dashboard-container .btn-primary.submit-issue-btn {
+  background-color: #d1bfa3; /* 浅棕色背景 */
+  color: #4a3c28; /* 深棕色文字 */
+  border: 1px solid #a39074;
+  padding: 10px 15px;
+  border-radius: 25px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.25, 0.1, 0.25, 1.5); /* 弹跳动画 */
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+}
+
+.dashboard-container .btn-primary.submit-issue-btn:hover {
+  background-color: #bfa58a;
+  transform: scale(1.05); /* 放大一点，增加点击感 */
+  box-shadow: 0 5px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* 鸽子图标 (使用 Emoji 模拟) */
+.submit-issue-btn .icon-pigeon {
+  font-size: 20px;
+  line-height: 1; /* 确保不影响高度 */
+  transition: transform 0.5s ease-in-out;
+}
+
+.submit-issue-btn:hover .icon-pigeon {
+  /* 模拟鸽子/信件飞走的动作 */
+  transform: translateX(5px) translateY(-5px) rotate(10deg) scale(1.1);
+}
+
+/* 切换按钮 (Admin) 保持原样或略作调整 */
+.dashboard-container .btn-primary {
+  background-color: #a39074;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.dashboard-container .btn-primary:hover {
+  background-color: #8a7a5c;
 }

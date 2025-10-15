@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import Home from "../components/Home";
+import { useNavigate, useLocation } from "react-router-dom";
+import Hero from "../components/Hero";
 import IssuesNavbar from "../components/IssuesNavbar";
 import FilterBar from "../components/FilterBar";
 import Pagination from "../components/Pagination";
 import IssueGrid from "../components/IssueGrid";
 import SubmitIssuePage from "../pages/SubmitIssuePage";
 
-
-import "../styles/admin&dash.css";
 import "../styles/StudentDashboard.css";
 
 import { fetchIssues } from "../components/functions/FetchIssues";
@@ -18,6 +16,7 @@ const StudentDashboard = ({ user }) => {
     setSearchQuery(query);
   };
   const navigate = useNavigate();
+  const location = useLocation();
   const [activeTab, setActiveTab] = useState("all");
   const [sortBy, setSortBy] = useState("time");
   const [category, setCategory] = useState("all");
@@ -30,26 +29,32 @@ const StudentDashboard = ({ user }) => {
   const [error, setError] = useState(null);
   const [showSubmitForm, setShowSubmitForm] = useState(false);
 
-  // 在 useEffect 中从 API 获取问题列表
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const t = params.get("topic");
+    if (t) setCategory(t);
+  }, [location.search]);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data = await fetchIssues(setLoading, setIssues, setError, { params: { topic: category, sortBy: sortBy } });
-        console.log('API返回数据:', data);
-        console.log('处理前的问题数据:', issues);
-        console.log('用户对象:', user);
-        
+        const data = await fetchIssues(setLoading, setIssues, setError, {
+          params: { topic: category, sortBy: sortBy },
+        });
+        console.log("API返回数据:", data);
+        console.log("处理前的问题数据:", issues);
+        console.log("用户对象:", user);
+
         if (data && data.length > 0) {
-          console.log('第一个问题的完整数据:', data[0]);
-          console.log('host字段类型:', typeof data[0].host);
+          console.log("第一个问题的完整数据:", data[0]);
+          console.log("host字段类型:", typeof data[0].host);
         }
       } catch (error) {
-        console.error('数据获取失败:', error);
+        console.error("数据获取失败:", error);
       }
     };
     fetchData();
   }, [category, sortBy, user]);
-
 
   //综合过滤和排序逻辑
   const filteredIssues = issues
@@ -59,8 +64,16 @@ const StudentDashboard = ({ user }) => {
         console.error("用户ID缺失，无法过滤'我的'问题", user);
         return false;
       }
-      console.log('比较host:', issue.host, '用户ID:', user.id);
-      return Number(issue.host) === Number(user.id);
+      console.log("比较host:", issue.host, "用户ID:", user.id);
+      const hostId =
+        issue.host && typeof issue.host === "object"
+          ? issue.host.id ?? issue.host.user_id ?? issue.host.userId
+          : issue.host;
+      if (hostId == null) {
+        console.warn("无法识别问题所属用户", issue);
+        return false;
+      }
+      return String(hostId) === String(user.id);
     })
     .filter((issue) => category === "all" || issue.topic === category)
     .filter((issue) => {
@@ -94,7 +107,7 @@ const StudentDashboard = ({ user }) => {
 
   const handleIssueSubmitted = (newIssue) => {
     // 将新问题添加到列表最前面
-    setIssues(prevIssues => [newIssue, ...prevIssues]);
+    setIssues((prevIssues) => [newIssue, ...prevIssues]);
     // 提交成功后隐藏表单，并返回主视图
     setShowSubmitForm(false);
   };
@@ -108,10 +121,10 @@ const StudentDashboard = ({ user }) => {
         />
       );
     }
-    
+
+    // 默认列表模式
     return (
       <>
-        <IssuesNavbar activeTab={activeTab} onTabChange={setActiveTab} />
         <FilterBar
           sortBy={sortBy}
           onSortChange={setSortBy}
@@ -119,15 +132,9 @@ const StudentDashboard = ({ user }) => {
           onCategoryChange={setCategory}
         />
         {searchQuery && (
-          <div style={{ margin: '10px 0', fontSize: '14px', color: '#666' }}>
-            搜索结果: "{searchQuery}"
-          </div>
+          <div className="search-result-note">搜索结果: "{searchQuery}"</div>
         )}
-        <IssueGrid
-          issues={currentItems}
-          loading={loading}
-          error={error}
-        />
+        <IssueGrid issues={currentItems} loading={loading} error={error} />
         {totalPages > 1 && (
           <Pagination
             currentPage={currentPage}
@@ -141,31 +148,39 @@ const StudentDashboard = ({ user }) => {
 
   return (
     <div className="dashboard-container">
-      <Home user={user} onSearch={handleSearch} />
+      <Hero user={user} onSearch={handleSearch} />
       <div className="content-wrapper">
-        {!showSubmitForm && (
-          <button
-            onClick={() => setShowSubmitForm(true)}
-            className="btn-primary"
-            style={{ marginRight: "10px" }}
-          >
-            提交新问题
-          </button>
-        )}
+        <div className="dashboard-controls-header">
+          <IssuesNavbar activeTab={activeTab} onTabChange={setActiveTab} />
+          <div className="top-buttons-container">
+            {user && user.username && user.username.includes("admin") && (
+              <button
+                onClick={() => navigate("/admin")}
+                className="btn-primary"
+              >
+                切换
+              </button>
+            )}
+            {!showSubmitForm && (
+              <button
+                onClick={() => setShowSubmitForm(true)}
+                className="btn-primary submit-issue-btn"
+              >
+                提交新问题 <span className="icon-pigeon">🕊️</span>
+              </button>
+            )}
+          </div>
+        </div>
+
         {activeTab === "mine" && (!user || !user.username) && (
-          <div className="error-message" style={{ color: "red", margin: "10px 0" }}>
+          <div
+            className="error-message"
+            style={{ color: "red", margin: "10px 0" }}
+          >
             无法显示"我的"问题：用户信息缺失
           </div>
         )}
-        {user && user.username.includes("admin") && (
-          <button
-            onClick={() => navigate("/admin")}
-            className="btn-primary"
-            style={{ marginRight: "20px" }}
-          >
-            切换
-          </button>
-        )}
+
         {renderContent()}
       </div>
     </div>
