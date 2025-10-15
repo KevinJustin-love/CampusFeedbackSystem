@@ -50,8 +50,8 @@ const TopicTreePage = ({ user }) => {
     all: "全部问题树",
   };
 
-  const handleBackToDashboard = () => {
-    navigate("/dashboard");
+  const handleBackToHome = () => {
+    navigate("/");
   };
 
   return (
@@ -59,8 +59,8 @@ const TopicTreePage = ({ user }) => {
       <Hero user={user} onSearch={() => {}} />
 
       <div className="topic-tree-header">
-        <button className="back-btn" onClick={handleBackToDashboard}>
-          ← 返回看板
+        <button className="back-btn" onClick={handleBackToHome}>
+          ← 返回主页
         </button>
         <h1 className="topic-title">{topicNames[topic] || "问题树"}</h1>
         <div className="topic-stats">共 {issues.length} 个问题</div>

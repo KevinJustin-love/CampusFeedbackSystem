@@ -89,7 +89,9 @@ const SubmitIssuePage = ({ onIssueSubmitted, onCancel }) => {
         {error && <div className="error-message">{error}</div>}
         <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <label htmlFor="topic" className="form-label">问题分类</label>
+            <label htmlFor="topic" className="form-label">
+              问题分类
+            </label>
             <select
               id="topic"
               value={topic}
@@ -99,18 +101,15 @@ const SubmitIssuePage = ({ onIssueSubmitted, onCancel }) => {
             >
               <option value="">选择分类</option>
               <option value="学业">学业</option>
-              <option value="生活问题">生活问题</option>
-              <option value="技术问题">技术问题</option>
+              <option value="生活">生活</option>
+              <option value="管理">管理</option>
             </select>
           </div>
 
-
           <div className="form-group">
-            <label 
-              htmlFor="title" 
-              className="form-label">
-                标题
-              </label>
+            <label htmlFor="title" className="form-label">
+              标题
+            </label>
             <input
               type="text"
               id="title"
@@ -121,12 +120,9 @@ const SubmitIssuePage = ({ onIssueSubmitted, onCancel }) => {
             />
           </div>
 
-
           <div className="form-group">
-            <label 
-              htmlFor="date" 
-              className="form-label">
-                问题发生时间
+            <label htmlFor="date" className="form-label">
+              问题发生时间
             </label>
             <input
               type="date"
@@ -138,13 +134,10 @@ const SubmitIssuePage = ({ onIssueSubmitted, onCancel }) => {
             />
           </div>
 
-
           <div className="form-group">
-            <label 
-              htmlFor="description" 
-              className="form-label">
-                描述
-              </label>
+            <label htmlFor="description" className="form-label">
+              描述
+            </label>
             <textarea
               id="description"
               value={description}
@@ -155,11 +148,9 @@ const SubmitIssuePage = ({ onIssueSubmitted, onCancel }) => {
             ></textarea>
           </div>
           <div className="form-group">
-            <label
-              htmlFor="attachment" 
-              className="form-label">
-                附件
-              </label>
+            <label htmlFor="attachment" className="form-label">
+              附件
+            </label>
             <input
               type="file"
               id="attachment"
@@ -167,7 +158,6 @@ const SubmitIssuePage = ({ onIssueSubmitted, onCancel }) => {
               className="form-input"
             />
           </div>
-
 
           <div className="form-group form-checkbox">
             <input
@@ -179,11 +169,15 @@ const SubmitIssuePage = ({ onIssueSubmitted, onCancel }) => {
             <label htmlFor="isPublic">公开问题</label>
           </div>
 
-
           <button type="submit" className="btn-primary1" disabled={loading}>
-            {loading ? '提交中...' : '提交'}
+            {loading ? "提交中..." : "提交"}
           </button>
-          <button type="button" onClick={onCancel} className="btn-primary1" style={{marginLeft: '10px'}}>
+          <button
+            type="button"
+            onClick={onCancel}
+            className="btn-primary1"
+            style={{ marginLeft: "10px" }}
+          >
             取消
           </button>
         </form>

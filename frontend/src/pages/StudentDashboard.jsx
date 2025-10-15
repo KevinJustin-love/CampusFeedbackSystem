@@ -65,7 +65,15 @@ const StudentDashboard = ({ user }) => {
         return false;
       }
       console.log("比较host:", issue.host, "用户ID:", user.id);
-      return Number(issue.host) === Number(user.id);
+      const hostId =
+        issue.host && typeof issue.host === "object"
+          ? issue.host.id ?? issue.host.user_id ?? issue.host.userId
+          : issue.host;
+      if (hostId == null) {
+        console.warn("无法识别问题所属用户", issue);
+        return false;
+      }
+      return String(hostId) === String(user.id);
     })
     .filter((issue) => category === "all" || issue.topic === category)
     .filter((issue) => {

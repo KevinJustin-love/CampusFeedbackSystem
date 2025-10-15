@@ -95,33 +95,6 @@
   overflow-x: hidden;
 }
 
-.dashboard-container.forest-container {
-  display: block;
-  height: auto;
-  min-height: 100vh;
-  overflow-y: auto;
-  align-items: initial;
-  justify-content: initial;
-}
-
-.forest-container {
-  background: url("/assets/forest-bg.jpg") center/cover fixed;
-}
-
-.forest-content {
-  border: 3px solid #74c69d;
-  border-radius: 12px;
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
-}
-
-.forest-controls {
-  border-bottom: 2px solid #74c69d;
-}
-
-.forest-btn {
-  background-color: #52b788 !important;
-}
-
 /* 确保按钮容器在右侧 */
 .content-wrapper {
   /* 确保按钮和内容可以并排，或根据需要调整布局 */
@@ -186,49 +159,4 @@
 
 .dashboard-container .btn-primary:hover {
   background-color: #8a7a5c;
-}
-
-/* 单树展示容器样式 */
-.tree-display-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 500px;
-  padding: 20px;
-  background: linear-gradient(
-    to bottom,
-    rgba(232, 245, 233, 0.3),
-    rgba(200, 230, 201, 0.3)
-  );
-  border-radius: 12px;
-  margin-top: 20px;
-}
-
-/* 森林模式下的加载和错误信息样式 */
-.tree-display-container .loading-message,
-.tree-display-container .error-message {
-  font-size: 18px;
-  color: #2e7d32;
-  text-align: center;
-  padding: 40px;
-  font-family: "Georgia", "Times New Roman", serif;
-}
-
-.tree-display-container .error-message {
-  color: #c62828;
-}
-
-/* 森林模式下的按钮样式调整 */
-.forest-btn {
-  background: linear-gradient(135deg, #66bb6a, #4caf50) !important;
-  color: white !important;
-  border: none !important;
-  box-shadow: 0 2px 8px rgba(76, 175, 80, 0.3) !important;
-}
-
-.forest-btn:hover {
-  background: linear-gradient(135deg, #4caf50, #388e3c) !important;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.5) !important;
 }
