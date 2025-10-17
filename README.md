@@ -10,7 +10,7 @@
 
 - React + Vite for the frontend
 
-- JWT (JSON Web Token) authentication.
+- :trollface: JWT (JSON Web Token) authentication.
 
 ### Register Page
 
