@@ -385,3 +385,46 @@ def check_favorite_status(request, issue_id):
     issue = get_object_or_404(Issue, pk=issue_id)
     favorited = Favorite.objects.filter(user=request.user, issue=issue).exists()
     return Response({'favorited': favorited})
+
+# 智能客服聊天API
+@api_view(['POST'])
+@permission_classes([AllowAny])  # 允许任何人使用智能客服
+def chat(request):
+    """
+    智能客服聊天接口
+    接收用户消息，返回AI回复
+    """
+    from .chat_service import chat_service
+    
+    try:
+        # 获取用户消息
+        user_message = request.data.get('message', '').strip()
+        
+        if not user_message:
+            return Response(
+                {'error': '消息不能为空'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        # 获取对话历史（可选）
+        conversation_history = request.data.get('history', [])
+        
+        # 调用聊天服务
+        result = chat_service.get_response(user_message, conversation_history)
+        
+        if result['success']:
+            return Response({
+                'message': result['message'],
+                'usage': result.get('usage', {})
+            })
+        else:
+            return Response(
+                {'error': result['message']},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+            
+    except Exception as e:
+        return Response(
+            {'error': f'服务器错误: {str(e)}'},
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR
+        )

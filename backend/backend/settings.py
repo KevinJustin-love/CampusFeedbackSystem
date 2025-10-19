@@ -14,6 +14,7 @@ from pathlib import Path
 from datetime import timedelta
 from dotenv import load_dotenv
 import os
+from django.core.exceptions import ImproperlyConfigured
 
 load_dotenv()
 
@@ -156,3 +157,7 @@ CORS_TRUSTED_ORIGINS = [
     "http://localhost:5173",
     "http://127.0.0.1:5173",
 ]
+
+# OpenAI Configuration for Smart Agent (must be provided via environment variables)
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+OPENAI_BASE_URL = os.getenv("OPENAI_BASE_URL")
