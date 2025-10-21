@@ -8,7 +8,8 @@
   background-color: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start; /* 改为从顶部开始对齐 */
+  padding-top: 60px; /* 添加顶部内边距 */
   z-index: 1000;
   animation: fadeIn 0.3s ease;
 }
@@ -58,47 +59,33 @@
   background-clip: text;
 }
 
-.favorites-modal-close {
-  background: none;
-  border: none;
-  font-size: 1.5rem;
+/* 关闭按钮 */
+.close-button {
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid #e5e7eb;
   cursor: pointer;
-  color: #64748b;
   padding: 0;
-  width: 32px;
-  height: 32px;
+  width: 2.5rem;
+  height: 2.5rem;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  position: relative;
-  overflow: hidden;
+  color: #64748b;
+  backdrop-filter: blur(10px);
+  z-index: 10;
 }
 
-.favorites-modal-close::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(135deg, #f59e0b, #d97706);
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  border-radius: 50%;
-}
-
-.favorites-modal-close:hover::before {
-  opacity: 0.1;
-}
-
-.favorites-modal-close:hover {
-  color: #ef4444;
+.close-button:hover {
+  background: #ef4444;
+  color: white;
+  border-color: #ef4444;
   transform: rotate(90deg) scale(1.1);
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
 }
 
-.favorites-modal-close:active {
+.close-button:active {
   transform: rotate(90deg) scale(0.95);
 }
 

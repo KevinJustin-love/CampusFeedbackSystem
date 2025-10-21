@@ -2,6 +2,13 @@
   display: flex;
   align-items: center;
   gap: 20px;
+  position: relative;
+  z-index: 1000;
+}
+
+/* 确保所有可点击元素都能接收事件 */
+.navbar-container > div {
+  pointer-events: auto;
 }
 
 .message-bar {

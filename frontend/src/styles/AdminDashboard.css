@@ -6,13 +6,33 @@
 }
 
 /* 调整按钮容器的位置，使用 flexbox 布局来更好地控制 */
+/* 确保可见的按钮容器 */
 .button-container {
-  position: absolute; /* 继续使用绝对定位，但调整参数 */
-  top: 55px; /* 调整到顶部，与页面顶部有一定间距 */
-  right: 45px; /* 保持在右侧 */
+  position: fixed;
+  top: 80px;
+  right: 45px;
   display: flex;
   gap: 10px;
-  z-index: 100; /* 确保按钮在其他元素之上 */
+  z-index: 1001;
+}
+
+/* 专业但高可见性的按钮样式 */
+.btn-switch {
+  width: 100px;
+  height: 40px;
+  background-color: #667eea;
+  color: white;
+  border: 2px solid white;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+.btn-switch:hover {
+  background-color: #764ba2;
+  transform: scale(1.05);
 }
 
 /* 调整切换按钮的样式，使其与页面风格更统一 */
