@@ -18,12 +18,17 @@
   top: 0px;
   left: 0;
   right: 0;
-  z-index: 1000;
+  z-index: 999; /* 降低层级，让Navbar位于上方 */
+  pointer-events: none;
   
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0 20px;
+}
+
+.dashboard-title > * {
+  pointer-events: auto;
 }
 
 /* 左侧容器：确保文字颜色能被父级控制 */

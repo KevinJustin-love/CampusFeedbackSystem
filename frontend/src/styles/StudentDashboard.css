@@ -93,6 +93,7 @@
   background-size: cover;
   padding: 0px;
   overflow-x: hidden;
+  position: relative;
 }
 
 /* 确保按钮容器在右侧 */
