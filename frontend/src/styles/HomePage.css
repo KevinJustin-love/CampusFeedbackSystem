@@ -19,17 +19,23 @@
   /* 主页背景覆盖层：浅绿色，30% 不透明度 */
   background-color: rgba(143, 188, 143, 0.3); /* Pale Green/Dark Sea Green */
   z-index: 1;
+  pointer-events: none; /* 确保不阻挡点击事件 */
 }
 
 /* 内容容器样式： */
 .heroContent {
   position: relative;
-  z-index: 2;
+  z-index: 1; /* 降低层级，确保导航栏在最上层 */
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   padding-top: 65px;
+  pointer-events: none; /* 防止阻挡点击事件 */
+}
+
+.heroContent > * {
+  pointer-events: auto; /* 允许内容接收点击 */
 }
 
 /* ------------------------------------------- */
@@ -87,7 +93,12 @@
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: 3;
+  z-index: 0; /* 降低层级，确保导航栏在最上层 */
+  pointer-events: none; /* 防止阻挡点击 */
+}
+
+.islandHotspots > * {
+  pointer-events: auto; /* 允许热点接收点击 */
 }
 
 /* 单个热点：可点击 + 小字标签 */

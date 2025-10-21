@@ -91,14 +91,44 @@ const AdminDashboard = ({ user }) => {
     navigate("/admin/restore");
   };
 
+  console.log('Rendering AdminDashboard - isAdmin:', isAdmin);
   return (
-    <div className="admin-container" style={{ padding: 0 }}>
+    <div className="admin-container" style={{ padding: 0, position: 'relative' }}>
       <Home user={user} onSearch={handleSearch} adminUnreadCount={unreadCount} adminFilter={true} />
-      <div className="button-container">
-        <button className="btn-switch" onClick={handleSwitchToStudent}>
-          切换
-        </button>
-      </div>
+      {isAdmin && (
+        <div 
+          style={{
+            position: 'fixed',
+            top: '80px',
+            right: '45px',
+            zIndex: 1001,
+            display: 'flex',
+            gap: '10px',
+            opacity: '1 !important',
+            visibility: 'visible !important',
+            pointerEvents: 'auto !important'
+          }}
+        >
+          <button 
+            style={{
+              width: '100px',
+              height: '40px',
+              backgroundColor: '#667eea',
+              color: 'white',
+              border: '2px solid white',
+              borderRadius: '8px',
+              boxShadow: '0 4px 10px rgba(0,0,0,0.2)',
+              cursor: 'pointer',
+              fontWeight: 'bold',
+              transition: 'all 0.3s ease',
+              outline: 'none'
+            }}
+            onClick={handleSwitchToStudent}
+          >
+            切换
+          </button>
+        </div>
+      )}
 
       <div className="content-wrapper">
         {loading && <div className="loading-container">加载中...</div>}
