@@ -35,6 +35,12 @@ const App = () => {
     checkUserAuth(setIsLoading, setUser);
   }, [location.pathname]); // 监听路由变化
 
+  // 判断是否应该显示客服组件（排除登录、注册页面）
+  const shouldShowChatWidget = () => {
+    const publicPaths = ["/login", "/register"];
+    return !publicPaths.includes(location.pathname) && user !== null;
+  };
+
   if (isLoading) {
     return <div>加载中...</div>;
   }
@@ -119,8 +125,8 @@ const App = () => {
 
         <Route path="*" element={<NotFound />} />
       </Routes>
-      {/* 悬浮客服组件，挂在全局 */}
-      <ChatWidget />
+      {/* 悬浮客服组件，仅在登录后显示 */}
+      {shouldShowChatWidget() && <ChatWidget />}
     </>
   );
 };

@@ -54,12 +54,17 @@ const Form = ({ route, method }) => {
     navigate("/register");
   };
 
+  // 处理登录按钮点击
+  const handleLoginClick = () => {
+    navigate("/login");
+  };
+
   return (
     <div className="login-container">
       <div className="login-card">
         <div className="brand">
           <div className="brand-zh">多闻林</div>
-          <div className="brand-en">DoveLink</div> 
+          <div className="brand-en">DoveLink</div>
         </div>
         <form onSubmit={handleSubmit}>
           <div className="form-group-no-label">
@@ -91,13 +96,25 @@ const Form = ({ route, method }) => {
             </div>
           </div>
           <div className="button-container vertical">
-            {/* 只在登录页面显示Register按钮 */}
             <button type="submit" className="btn-primary1" disabled={loading}>
-              {loading ? "处理中..." : (method === "login" ? "登录" : "注册")}
+              {loading ? "处理中..." : method === "login" ? "登录" : "注册"}
             </button>
             {method === "login" && (
-              <button type="button" className="register-link" onClick={handleRegisterClick}>
+              <button
+                type="button"
+                className="register-link"
+                onClick={handleRegisterClick}
+              >
                 还没有账户？立即注册
+              </button>
+            )}
+            {method === "register" && (
+              <button
+                type="button"
+                className="register-link"
+                onClick={handleLoginClick}
+              >
+                已经有账户？点击登录
               </button>
             )}
           </div>
