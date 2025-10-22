@@ -6,6 +6,33 @@
   z-index: 1000;
 }
 
+/* 将用户区域推到最右侧 */
+.navbar-spacer {
+  flex: 1 1 auto;
+}
+
+.logout-btn {
+  padding: 6px 12px;
+  border: 1px solid #bfbfbf; /* 更浅的灰色边框 */
+  border-radius: 16px;
+  background: #d9d9d9; /* 更浅的灰色背景 */
+  color: #333; /* 提升对比度，避免过浅背景配白字 */
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  box-shadow: 0 2px 6px rgba(33, 150, 243, 0.25);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.2s ease;
+}
+
+.logout-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(33, 150, 243, 0.35);
+}
+
+.logout-btn:active {
+  transform: translateY(0);
+}
+
 /* 确保所有可点击元素都能接收事件 */
 .navbar-container > div {
   pointer-events: auto;
@@ -72,7 +99,7 @@
   position: relative;
 }
 
-.search-container:hover, 
+.search-container:hover,
 .search-container:focus-within {
   border-color: rgb(151, 151, 151);
 }
@@ -107,7 +134,7 @@
   .search-container {
     width: 200px;
   }
-  
+
   .navbar-container {
     gap: 15px;
   }
@@ -119,17 +146,17 @@
     height: auto;
     padding: 10px;
   }
-  
+
   .dashboard-title-content {
     margin-bottom: 10px;
   }
-  
+
   .search-container {
     width: 100%;
     max-width: 300px;
     margin: 10px 0;
   }
-  
+
   .navbar-container {
     justify-content: center;
     width: 100%;
@@ -140,7 +167,7 @@
   .navbar-container {
     gap: 10px;
   }
-  
+
   .search-container {
     width: 100%;
   }
