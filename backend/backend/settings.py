@@ -158,6 +158,5 @@ CORS_TRUSTED_ORIGINS = [
     "http://127.0.0.1:5173",
 ]
 
-# OpenAI Configuration for Smart Agent (must be provided via environment variables)
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 OPENAI_BASE_URL = os.getenv("OPENAI_BASE_URL")
