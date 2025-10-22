@@ -1,0 +1,327 @@
+/* ChatWidget 样式 */
+
+/* 浮动动画 */
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+/* 可拖拽的悬浮按钮 */
+.chat-widget-fab {
+  position: fixed;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  border: 3px solid rgba(106, 170, 200, 0.6);
+  background: linear-gradient(
+    135deg,
+    rgba(173, 216, 230, 0.9) 0%,
+    rgba(135, 206, 250, 0.8) 100%
+  );
+  box-shadow: 0 8px 24px rgba(70, 130, 180, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: visible;
+  transition: left 0.2s ease, top 0.2s ease, box-shadow 0.2s ease,
+    transform 0.12s ease-out;
+  touch-action: none;
+  cursor: grab;
+}
+
+.chat-widget-fab:hover {
+  transform: scale(1.06);
+  box-shadow: 0 14px 32px rgba(70, 130, 180, 0.5),
+    inset 0 2px 0 rgba(255, 255, 255, 0.8);
+}
+
+.chat-widget-fab.grabbing {
+  cursor: grabbing;
+  transform: scale(1);
+}
+
+.chat-widget-fab-mobile {
+  width: 80px;
+  height: 80px;
+}
+
+/* 鸽子图标 */
+.chat-widget-icon {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+  user-select: none;
+  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.25));
+  animation: float 3s ease-in-out infinite;
+}
+
+/* 右上角关闭提示标记 */
+.chat-widget-badge {
+  position: absolute;
+  right: -6px;
+  top: -6px;
+  background-color: #4682b4;
+  color: #fff;
+  width: 20px;
+  height: 20px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  box-shadow: 0 2px 6px rgba(70, 130, 180, 0.5);
+  border: 2px solid #f0f8ff;
+}
+
+/* 背景遮罩 */
+.chat-widget-backdrop {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(70, 130, 180, 0.2);
+  backdrop-filter: blur(2px);
+  z-index: 9997;
+}
+
+/* 聊天面板 */
+.chat-widget-panel {
+  position: fixed;
+  width: 380px;
+  height: 460px;
+  background: radial-gradient(
+      circle at 20% 20%,
+      rgba(255, 255, 255, 0.3) 1px,
+      transparent 1px
+    ),
+    radial-gradient(
+      circle at 80% 80%,
+      rgba(70, 130, 180, 0.1) 1px,
+      transparent 1px
+    ),
+    linear-gradient(135deg, #f0f8ff 0%, #e6f2ff 100%),
+    repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 24px,
+      rgba(70, 130, 180, 0.05) 24px,
+      rgba(70, 130, 180, 0.05) 26px
+    );
+  background-size: 20px 20px, 15px 15px, 100% 100%, 100% 100%;
+  border: 2px solid #4682b4;
+  border-radius: 16px;
+  box-shadow: 0 22px 40px rgba(70, 130, 180, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8),
+    inset 0 0 0 1px rgba(70, 130, 180, 0.15);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  z-index: 10000;
+  transition: left 0.2s ease, top 0.2s ease;
+}
+
+.chat-widget-panel-mobile {
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  border-radius: 0;
+  border: none;
+}
+
+/* 面板头部 */
+.chat-widget-header {
+  padding: 16px 20px;
+  background: linear-gradient(135deg, #4682b4 0%, #1e5f94 100%);
+  color: #f7f1e8;
+  font-weight: 600;
+  font-size: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid #87ceeb;
+  position: relative;
+  font-family: "Georgia", "Times New Roman", serif;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.chat-widget-header-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.chat-widget-header-button {
+  background: rgba(247, 241, 232, 0.1);
+  border: 1px solid rgba(247, 241, 232, 0.2);
+  color: #f7f1e8;
+  font-size: 14px;
+  cursor: pointer;
+  padding: 6px 10px;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  font-weight: 500;
+}
+
+.chat-widget-header-button:hover {
+  background: rgba(247, 241, 232, 0.2);
+}
+
+/* 消息列表 */
+.chat-widget-list {
+  flex: 1;
+  padding: 20px 16px 20px 40px;
+  overflow-y: auto;
+  background: linear-gradient(
+      90deg,
+      transparent 30px,
+      rgba(70, 130, 180, 0.7) 30px,
+      rgba(70, 130, 180, 0.7) 32px,
+      transparent 32px
+    ),
+    radial-gradient(
+      circle at 10% 10%,
+      rgba(255, 255, 255, 0.2) 1px,
+      transparent 1px
+    ),
+    radial-gradient(
+      circle at 90% 90%,
+      rgba(135, 206, 235, 0.08) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      135deg,
+      rgba(240, 248, 255, 0.9) 0%,
+      rgba(230, 242, 255, 0.9) 100%
+    ),
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 24px,
+      rgba(70, 130, 180, 0.06) 24px,
+      rgba(70, 130, 180, 0.06) 26px
+    );
+  background-size: 100% 100%, 18px 18px, 12px 12px, 100% 100%, 100% 100%;
+  position: relative;
+}
+
+.chat-widget-msg {
+  display: flex;
+  margin-bottom: 16px;
+  position: relative;
+}
+
+.chat-widget-msg-user {
+  justify-content: flex-end;
+}
+
+.chat-widget-msg-bot {
+  justify-content: flex-start;
+}
+
+.chat-widget-msg-bubble {
+  max-width: 78%;
+  padding: 12px 16px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #ffffff 0%, #fdfcfa 100%);
+  border: 1px solid #d4a574;
+  color: #4a3728;
+  white-space: pre-wrap;
+  box-shadow: 0 2px 8px rgba(212, 165, 116, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  font-family: "Georgia", "Times New Roman", serif;
+  font-size: 14px;
+  line-height: 1.5;
+  position: relative;
+}
+
+.chat-widget-msg-bubble-user {
+  background: linear-gradient(135deg, #b0e0e6 0%, #87ceeb 100%);
+  color: #1a3a5f;
+  border: 1px solid #4682b4;
+  box-shadow: 0 2px 8px rgba(70, 130, 180, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  margin-left: 20px;
+}
+
+.chat-widget-msg-bubble-bot {
+  background: linear-gradient(135deg, #ffffff 0%, #f0f8ff 100%);
+  color: #1a3a5f;
+  border: 1px solid #87ceeb;
+  margin-right: 20px;
+}
+
+/* 加载状态 */
+.chat-widget-loading {
+  text-align: center;
+  color: #4682b4;
+  font-size: 14px;
+  margin: 12px 0;
+  font-family: "Georgia", "Times New Roman", serif;
+  font-style: italic;
+}
+
+/* 输入区域 */
+.chat-widget-input-row {
+  display: flex;
+  gap: 12px;
+  padding: 16px 20px;
+  border-top: 2px solid #4682b4;
+  background: linear-gradient(135deg, #e6f2ff 0%, #f0f8ff 100%);
+}
+
+.chat-widget-textarea {
+  flex: 1;
+  resize: none;
+  padding: 12px 16px;
+  border: 2px solid #4682b4;
+  border-radius: 12px;
+  outline: none;
+  background: linear-gradient(135deg, #ffffff 0%, #f8fcff 100%);
+  color: #1a3a5f;
+  font-family: "Georgia", "Times New Roman", serif;
+  font-size: 14px;
+  line-height: 1.4;
+  box-shadow: inset 0 2px 4px rgba(70, 130, 180, 0.1);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.chat-widget-textarea:focus {
+  border-color: #1e5f94;
+  box-shadow: inset 0 2px 4px rgba(70, 130, 180, 0.2),
+    0 0 0 3px rgba(70, 130, 180, 0.15);
+}
+
+.chat-widget-send-btn {
+  background: linear-gradient(135deg, #4682b4 0%, #1e5f94 100%);
+  color: #f7f1e8;
+  border: 2px solid #87ceeb;
+  border-radius: 12px;
+  padding: 12px 20px;
+  cursor: pointer;
+  font-weight: 600;
+  font-family: "Georgia", "Times New Roman", serif;
+  font-size: 14px;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(70, 130, 180, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.chat-widget-send-btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(70, 130, 180, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.chat-widget-send-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}

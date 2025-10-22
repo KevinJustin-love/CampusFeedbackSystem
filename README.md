@@ -1,36 +1,44 @@
 # DoveLink - 多闻林
 
-![logo](./img/logo.jpg)
+<img src="./img/logo.jpg" alt="logo" width="300">
 
 **Our slogan:** "`Unite, Share, Trust, Connect` —— `Dovelink` 让心声相聚"
 
 ## Technology Stack and Features
 
-- Django for the Python backend、sqlite3 for the Python SQL database
+- 🐍 Django for the Python backend、🗄️ sqlite3 for the Python SQL database
 
-- React + Vite for the frontend
+-  ⚛️ React + ⚡ Vite for the frontend
 
-- JWT (JSON Web Token) authentication.
+- 🔐 JWT (JSON Web Token) authentication.
 
 ### Register Page
 
-![RegisterPage](./img/register.png)
+![RegisterPage](./img/register.jpg)
 
 ### Login Page
 
-![LoginPage](./img/login.png)
+![LoginPage](./img/login.jpg)
+
+### Home Page
+
+![Home](./img/home.jpg)
+
+### Topic-tree
+
+![Topic-tree](./img/topic-tree.jpg)
 
 ### StudentDashboard
 
-![Dashboard](./img/dashboard.png)
+![Dashboard](./img/dashboard.jpg)
 
 ### IssueDetail
 
-![IssueDetail](./img/issueDetail.png)
+![IssueDetail](./img/issueDetail.jpg)
 
 ### IssueSubmit
 
-![IssueSubmit](./img/issueSubmit.png)
+![IssueSubmit](./img/issueSubmit.jpg)
 
 ### AdminDashboard
 

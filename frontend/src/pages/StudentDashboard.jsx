@@ -148,8 +148,10 @@ const StudentDashboard = ({ user }) => {
 
   return (
     <div className="dashboard-container">
-      <Hero user={user} onSearch={handleSearch} />
-      <div className="content-wrapper">
+      <div style={{position: 'relative', zIndex: 1000}}>
+        <Hero user={user} onSearch={handleSearch} />
+      </div>
+      <div className="content-wrapper" style={{position: 'relative', zIndex: 100}}>
         <div className="dashboard-controls-header">
           <IssuesNavbar activeTab={activeTab} onTabChange={setActiveTab} />
           <div className="top-buttons-container">

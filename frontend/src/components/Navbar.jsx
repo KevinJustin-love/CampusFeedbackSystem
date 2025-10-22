@@ -177,6 +177,7 @@ export default function Navbar({ onSearch, adminUnreadCount, adminFilter = false
   const [isNotificationModalOpen, setIsNotificationModalOpen] = useState(false);
 
   const handleClockIconClick = () => {
+    console.log('点击历史记录图标');
     setIsHistoryModalOpen(true);
   };
 
@@ -185,6 +186,7 @@ export default function Navbar({ onSearch, adminUnreadCount, adminFilter = false
   };
 
   const handleStarIconClick = () => {
+    console.log('点击收藏夹图标');
     setIsFavoritesModalOpen(true);
   };
 
@@ -193,6 +195,7 @@ export default function Navbar({ onSearch, adminUnreadCount, adminFilter = false
   };
 
   const handleMessageBarClick = () => {
+    console.log('点击消息图标');
     setIsNotificationModalOpen(true);
     // 移除对原有 onMessageBarClick 的调用，避免冲突
   };
@@ -203,11 +206,24 @@ export default function Navbar({ onSearch, adminUnreadCount, adminFilter = false
 
   return (
     <div className="navbar-container">
-      <ClockIcon onClick={handleClockIconClick} />
-      <div onClick={handleMessageBarClick}>
+      <div 
+        onClick={handleClockIconClick}
+        style={{cursor: 'pointer', zIndex: 1000}}
+      >
+        <ClockIcon />
+      </div>
+      <div 
+        onClick={handleMessageBarClick}
+        style={{cursor: 'pointer', zIndex: 1000}}
+      >
         <MessageBar />
       </div>
-      <StarIcon onClick={handleStarIconClick} />
+      <div 
+        onClick={handleStarIconClick}
+        style={{cursor: 'pointer', zIndex: 1000}}
+      >
+        <StarIcon />
+      </div>
       <SearchBar />
       <HistoryModal
         isOpen={isHistoryModalOpen}

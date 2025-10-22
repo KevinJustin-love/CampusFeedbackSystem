@@ -1,6 +1,6 @@
 # DoveLink - Frontend
 
-The frontend is built with `vite、React`.
+The frontend is built with `Vite、React`.
 
 ## Frontend Development
 
@@ -24,7 +24,7 @@ npm run start
 
 Then open your browser at http://localhost:5173/.
 
-When the backend is started, go to http://localhost:5173/login, where you can choose `Register` button to register as a `student`, and choose `Login` button to login.
+When the backend is started, go to http://localhost:5173/login, where you can choose to to register as a `student`, and click `Login` button to login.
 
 ## Code Structure
 

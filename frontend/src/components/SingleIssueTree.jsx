@@ -275,23 +275,43 @@ const Branch = ({ x, y, side, issue, onClick, index }) => {
       {/* Hover 时显示标题预览 */}
       {isHovered && (
         <motion.g initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+          <defs>
+            <linearGradient
+              id={`previewGradient-${index}`}
+              x1="0%"
+              y1="0%"
+              x2="0%"
+              y2="100%"
+            >
+              <stop offset="0%" stopColor="#4CAF50" />
+              <stop offset="100%" stopColor="#2E7D32" />
+            </linearGradient>
+            <filter id={`previewShadow-${index}`}>
+              <feDropShadow dx="0" dy="2" stdDeviation="3" floodOpacity="0.3" />
+            </filter>
+          </defs>
           <rect
-            x={endX - 60}
+            x={endX - 90}
             y={endY + 25}
-            width={120}
-            height={30}
-            fill="rgba(0,0,0,0.85)"
-            rx={4}
+            width={180}
+            height={50}
+            fill={`url(#previewGradient-${index})`}
+            stroke="#81C784"
+            strokeWidth={2}
+            rx={8}
+            filter={`url(#previewShadow-${index})`}
           />
           <text
             x={endX}
-            y={endY + 42}
-            fontSize={10}
-            fill="#fff"
+            y={endY + 55}
+            fontSize={16}
+            fill="#B3E5FC"
             textAnchor="middle"
+            fontWeight="600"
+            fontFamily="'Georgia', 'Times New Roman', serif"
           >
-            {issue.title.length > 15
-              ? issue.title.slice(0, 15) + "..."
+            {issue.title.length > 18
+              ? issue.title.slice(0, 18) + "..."
               : issue.title}
           </text>
         </motion.g>
@@ -436,18 +456,33 @@ const TreeCrown = ({ x, y, issue, onClick }) => {
       )}
       {/* Hover 提示 */}
       {isHovered && (
-        <motion.text
-          x={x}
-          y={y + 55}
-          fontSize={10}
-          fill="#FFD700"
-          textAnchor="middle"
-          fontWeight="600"
+        <motion.g
           initial={{ opacity: 0, y: -5 }}
           animate={{ opacity: 1, y: 0 }}
         >
-          📖 点击查看详情
-        </motion.text>
+          <rect
+            x={x - 70}
+            y={y + 42}
+            width={140}
+            height={28}
+            fill="#4CAF50"
+            stroke="#81C784"
+            strokeWidth={2}
+            rx={6}
+            opacity={0.95}
+          />
+          <text
+            x={x}
+            y={y + 61}
+            fontSize={13}
+            fill="#B3E5FC"
+            textAnchor="middle"
+            fontWeight="600"
+            fontFamily="'Georgia', 'Times New Roman', serif"
+          >
+            📖 点击查看详情
+          </text>
+        </motion.g>
       )}
     </motion.g>
   );

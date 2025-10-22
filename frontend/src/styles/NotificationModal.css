@@ -1,4 +1,4 @@
-/* 通知模态框样式 */
+/* 通知模态框样式 - 统一设计风格 */
 .notification-modal-overlay {
   position: fixed;
   top: 0;
@@ -8,19 +8,23 @@
   background-color: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
+  padding-top: 60px;
   z-index: 1000;
+  animation: fadeIn 0.3s ease;
 }
 
 .notification-modal {
-  background: white;
-  border-radius: 12px;
+  background: linear-gradient(135deg, #ffffff 0%, #f0f9ff 100%);
+  border-radius: 16px;
   width: 90%;
   max-width: 500px;
   max-height: 80vh;
-  display: flex;
-  flex-direction: column;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(0, 0, 0, 0.05);
+  animation: modalSlideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
 }
 
 /* 头部 */
@@ -28,30 +32,61 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px;
-  border-bottom: 1px solid #e5e7eb;
+  padding: 24px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+  position: relative;
+}
+
+.notification-header::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(0, 0, 0, 0.1), transparent);
 }
 
 .notification-header h3 {
   margin: 0;
-  font-size: 18px;
-  font-weight: 600;
-  color: #1f2937;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1e293b;
+  letter-spacing: -0.5px;
+  background: linear-gradient(135deg, #3b82f6, #10b981);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .close-button {
-  background: none;
-  border: none;
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid #e5e7eb;
   cursor: pointer;
-  padding: 4px;
-  border-radius: 4px;
-  color: #6b7280;
-  transition: all 0.2s;
+  padding: 0;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  color: #64748b;
+  backdrop-filter: blur(10px);
+  z-index: 10;
 }
 
 .close-button:hover {
-  background-color: #f3f4f6;
-  color: #374151;
+  background: #ef4444;
+  color: white;
+  border-color: #ef4444;
+  transform: rotate(90deg) scale(1.1);
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+}
+
+.close-button:active {
+  transform: rotate(90deg) scale(0.95);
 }
 
 /* 控制区域 */
@@ -59,8 +94,9 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 16px 20px;
-  border-bottom: 1px solid #e5e7eb;
+  padding: 16px 24px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  background: rgba(248, 250, 252, 0.8);
 }
 
 .filter-buttons {
@@ -69,38 +105,45 @@
 }
 
 .filter-buttons button {
-  padding: 6px 12px;
+  padding: 8px 16px;
   border: 1px solid #d1d5db;
   background: white;
-  border-radius: 6px;
+  border-radius: 8px;
   cursor: pointer;
-  font-size: 14px;
-  transition: all 0.2s;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  color: #64748b;
 }
 
 .filter-buttons button:hover {
   background-color: #f9fafb;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .filter-buttons button.active {
-  background-color: #3b82f6;
+  background: linear-gradient(135deg, #3b82f6, #10b981);
   color: white;
-  border-color: #3b82f6;
+  border-color: transparent;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
 }
 
 .mark-all-read-button {
-  padding: 6px 12px;
-  background-color: #10b981;
+  padding: 8px 16px;
+  background: linear-gradient(135deg, #10b981, #059669);
   color: white;
   border: none;
-  border-radius: 6px;
+  border-radius: 8px;
   cursor: pointer;
-  font-size: 14px;
-  transition: all 0.2s;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .mark-all-read-button:hover {
-  background-color: #059669;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
 }
 
 /* 内容区域 */
@@ -117,18 +160,18 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 40px;
-  color: #6b7280;
+  padding: 60px 40px;
+  color: #64748b;
 }
 
 .loading-spinner {
-  width: 24px;
-  height: 24px;
-  border: 2px solid #e5e7eb;
-  border-top: 2px solid #3b82f6;
+  width: 32px;
+  height: 32px;
+  border: 3px solid #e5e7eb;
+  border-top: 3px solid #3b82f6;
   border-radius: 50%;
   animation: spin 1s linear infinite;
-  margin-bottom: 12px;
+  margin-bottom: 16px;
 }
 
 @keyframes spin {
@@ -138,12 +181,12 @@
 
 /* 错误状态 */
 .error-message {
-  padding: 20px;
+  padding: 24px;
   text-align: center;
   color: #ef4444;
-  background-color: #fef2f2;
+  background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
   margin: 16px;
-  border-radius: 8px;
+  border-radius: 12px;
   border: 1px solid #fecaca;
 }
 
@@ -153,18 +196,20 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 40px;
-  color: #6b7280;
+  padding: 60px 40px;
+  color: #64748b;
 }
 
 .empty-icon {
-  font-size: 48px;
-  margin-bottom: 16px;
+  font-size: 4rem;
+  margin-bottom: 20px;
+  opacity: 0.6;
 }
 
 .empty-state p {
   margin: 0;
-  font-size: 16px;
+  font-size: 1rem;
+  text-align: center;
 }
 
 /* 通知列表 */
@@ -175,17 +220,34 @@
 .notification-item {
   display: flex;
   align-items: flex-start;
-  padding: 16px 20px;
-  border-bottom: 1px solid #f3f4f6;
+  padding: 20px 24px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.04);
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
+  background: white;
+}
+
+.notification-item::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: linear-gradient(to bottom, #3b82f6, #10b981);
+  opacity: 0;
+  transition: opacity 0.3s ease;
 }
 
 .notification-item:hover {
-  background-color: #f9fafb;
-  transform: translateY(-1px);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+  transform: translateX(4px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.notification-item:hover::before {
+  opacity: 1;
 }
 
 .notification-item:last-child {
@@ -193,17 +255,17 @@
 }
 
 .notification-item.unread {
-  background-color: #eff6ff;
+  background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
 }
 
 .notification-item.unread:hover {
-  background-color: #dbeafe;
+  background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
 }
 
 /* 通知图标 */
 .notification-icon {
-  font-size: 20px;
-  margin-right: 12px;
+  font-size: 1.25rem;
+  margin-right: 16px;
   margin-top: 2px;
   flex-shrink: 0;
 }
@@ -216,24 +278,25 @@
 
 .notification-title {
   font-weight: 600;
-  color: #1f2937;
-  margin-bottom: 4px;
-  font-size: 14px;
+  color: #1e293b;
+  margin-bottom: 6px;
+  font-size: 0.95rem;
+  line-height: 1.4;
 }
 
 .notification-message {
-  color: #4b5563;
-  font-size: 13px;
-  line-height: 1.4;
+  color: #475569;
+  font-size: 0.875rem;
+  line-height: 1.5;
   margin-bottom: 8px;
   word-wrap: break-word;
 }
 
 .notification-meta {
   display: flex;
-  gap: 12px;
-  font-size: 12px;
-  color: #6b7280;
+  gap: 16px;
+  font-size: 0.75rem;
+  color: #64748b;
 }
 
 .notification-time {
@@ -248,11 +311,12 @@
 .unread-indicator {
   width: 8px;
   height: 8px;
-  background-color: #3b82f6;
+  background: linear-gradient(135deg, #3b82f6, #10b981);
   border-radius: 50%;
-  margin-left: 8px;
+  margin-left: 12px;
   margin-top: 6px;
   flex-shrink: 0;
+  box-shadow: 0 2px 4px rgba(59, 130, 246, 0.3);
 }
 
 /* 导航栏通知徽章样式 */
@@ -260,11 +324,11 @@
   position: absolute;
   top: -6px;
   right: -6px;
-  background-color: #ef4444;
+  background: linear-gradient(135deg, #ef4444, #dc2626);
   color: white;
   border-radius: 10px;
   padding: 2px 6px;
-  font-size: 11px;
+  font-size: 0.7rem;
   font-weight: 600;
   min-width: 18px;
   height: 18px;
@@ -272,21 +336,57 @@
   align-items: center;
   justify-content: center;
   line-height: 1;
+  box-shadow: 0 2px 4px rgba(239, 68, 68, 0.3);
+}
+
+/* 动画效果 */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes modalSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-30px) scale(0.95);
+    filter: blur(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
 }
 
 /* 响应式设计 */
 @media (max-width: 640px) {
+  .notification-modal-overlay {
+    padding-top: 40px;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  
   .notification-modal {
-    width: 95%;
-    max-height: 90vh;
+    width: 100%;
+    margin: 0;
+    max-height: 85vh;
+    border-radius: 20px;
   }
   
   .notification-header {
-    padding: 16px;
+    padding: 20px;
+  }
+  
+  .notification-header h3 {
+    font-size: 1.25rem;
   }
   
   .notification-controls {
-    padding: 12px 16px;
+    padding: 12px 20px;
     flex-direction: column;
     gap: 12px;
     align-items: stretch;
@@ -297,11 +397,33 @@
   }
   
   .notification-item {
-    padding: 12px 16px;
+    padding: 16px 20px;
   }
   
   .notification-meta {
     flex-direction: column;
     gap: 4px;
+  }
+  
+  .notification-icon {
+    margin-right: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .notification-modal {
+    border-radius: 16px;
+  }
+  
+  .notification-header {
+    padding: 16px;
+  }
+  
+  .notification-controls {
+    padding: 12px 16px;
+  }
+  
+  .notification-item {
+    padding: 14px 16px;
   }
 }

@@ -30,4 +30,7 @@ urlpatterns = [
     path('favorites/', views.FavoriteListView.as_view(), name='favorite-list'),
     path('issues/<int:issue_id>/favorite/', views.toggle_favorite, name='toggle-favorite'),
     path('issues/<int:issue_id>/favorite-status/', views.check_favorite_status, name='check-favorite-status'),
+    
+    # 智能客服聊天路由
+    path('chat/', views.chat, name='chat'),
 ]
