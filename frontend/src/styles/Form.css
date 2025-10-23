@@ -10,7 +10,12 @@
   min-height: 100vh;
   position: relative;
   width: 100%;
-  background: linear-gradient(135deg, rgba(0, 150, 150, 0.4), rgba(50, 160, 255, 0.4)), url('../../pictures/login-sea.jpg') center/cover no-repeat fixed;
+  background: linear-gradient(
+      135deg,
+      rgba(0, 150, 150, 0.4),
+      rgba(50, 160, 255, 0.4)
+    ),
+    url("../../pictures/login-sea.jpg") center/cover no-repeat fixed;
 }
 
 /* 登录卡片 */
@@ -26,7 +31,6 @@
   position: relative;
 }
 
-
 /* --- 品牌标题和 Logo 区域 (保持不变) --- */
 .brand {
   text-align: center;
@@ -39,26 +43,25 @@
   opacity: 1;
   filter: drop-shadow(0 0 5px rgba(0, 206, 201, 0.4));
 }
-.brand-en { 
-  background: linear-gradient(90deg, #00cec9, #0984e3, #00b894); 
+.brand-en {
+  background: linear-gradient(90deg, #00cec9, #0984e3, #00b894);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
   font-size: 24px;
-  font-weight: 700; 
-  letter-spacing: 0.5px; 
+  font-weight: 700;
+  letter-spacing: 0.5px;
 }
-.brand-zh { 
+.brand-zh {
   background: linear-gradient(90deg, #0984e3, #00cec9, #5fb4e9);
-  margin-top: 2px; 
+  margin-top: 2px;
   font-size: 36px;
-  font-weight: 800; 
-  letter-spacing: 1px; 
+  font-weight: 800;
+  letter-spacing: 1px;
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
 }
-
 
 /* --- 表单容器布局 --- */
 .login-card form {
@@ -71,27 +74,27 @@
 
 /* --- 输入框图标对齐容器 (核心修正) --- */
 .input-with-icon {
-    display: flex;
-    align-items: center;
-    /* 关键修正：确保输入框容器宽度为 100%，消除可能的外边距溢出 */
-    width: 100%; 
-    box-sizing: border-box; 
-    
-    border: 1px solid rgba(0, 180, 200, 0.2);
-    border-radius: 8px;
-    background: rgba(255, 255, 255, 0.7);
-    padding-right: 0;
-    
-    /* 修复可能来自其他 CSS 的定位问题 */
-    position: static !important; 
-    margin: 0 !important;
+  display: flex;
+  align-items: center;
+  /* 关键修正：确保输入框容器宽度为 100%，消除可能的外边距溢出 */
+  width: 100%;
+  box-sizing: border-box;
+
+  border: 1px solid rgba(0, 180, 200, 0.2);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.7);
+  padding-right: 0;
+
+  /* 修复可能来自其他 CSS 的定位问题 */
+  position: static !important;
+  margin: 0 !important;
 }
 
 /* 输入框图标样式 */
 .input-icon {
-    font-size: 18px;
-    padding: 0 12px;
-    color: #0984e3;
+  font-size: 18px;
+  padding: 0 12px;
+  color: #0984e3;
 }
 
 /* 表单输入框组 */
@@ -99,7 +102,7 @@
   margin-bottom: 25px;
   width: 100%;
   /* 修复可能来自其他 CSS 的定位问题 */
-  position: static !important; 
+  position: static !important;
   margin-left: 0 !important;
   margin-right: 0 !important;
 }
@@ -114,11 +117,31 @@
   box-sizing: border-box;
   background: transparent;
 }
+.form-input-large:focus,
+.form-input-large:focus-visible {
+  /* 移除浏览器默认的黑色聚焦外框 */
+  outline: none !important;
+  box-shadow: none !important;
+}
+/* 在容器聚焦时也确保输入框内部没有额外描边 */
+.input-with-icon:focus-within .form-input-large {
+  outline: none !important;
+  box-shadow: none !important;
+}
 .input-with-icon:focus-within {
   border-color: #00cec9;
   box-shadow: 0 0 0 3px rgba(0, 206, 201, 0.2);
 }
 
+/* 兼容 Firefox/强制高对比模式，避免出现黑色轮廓 */
+.form-input-large:-moz-focusring {
+  outline: none !important;
+}
+@media (forced-colors: active) {
+  .form-input-large {
+    outline: none !important;
+  }
+}
 
 /* --- 按钮容器和按钮样式 --- */
 
@@ -140,8 +163,8 @@
   width: 100%; /* 关键：强制按钮充满容器宽度 */
   height: 50px;
   padding: 12px;
-  
-  background: linear-gradient(90deg, #0984e3, #00cec9, #00b894); 
+
+  background: linear-gradient(90deg, #0984e3, #00cec9, #00b894);
   color: white;
   border: none;
   border-radius: 8px;
@@ -150,7 +173,7 @@
   font-weight: 700;
   transition: all 0.3s ease;
   box-shadow: 0 4px 10px rgba(0, 184, 148, 0.3);
-  
+
   /* 关键修正：重置所有可能导致按钮偏移的样式 */
   position: static !important;
   margin: 0 !important;
@@ -162,9 +185,9 @@
   transform: none; /* 确保 hover 时没有 transform 影响布局 */
 }
 .btn-primary1:disabled {
-    background: #ccc;
-    cursor: not-allowed;
-    box-shadow: none;
+  background: #ccc;
+  cursor: not-allowed;
+  box-shadow: none;
 }
 
 /* 注册链接样式 */

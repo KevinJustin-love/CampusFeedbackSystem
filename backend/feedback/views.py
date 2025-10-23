@@ -7,12 +7,13 @@ from django.middleware.csrf import get_token
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 from django.views.decorators.csrf import csrf_exempt
-from rest_framework.decorators import api_view, permission_classes
+from rest_framework.decorators import api_view, permission_classes, authentication_classes
 from rest_framework.response import Response
 from rest_framework import status
 from .models import Issue, Reply, Message, Topic, IssueLike, Notification, ViewHistory, Favorite
 from .serializers import IssueSerializer, ReplySerializer, MessageSerializer, TopicSerializer, NotificationSerializer, ViewHistorySerializer, FavoriteSerializer
 from .notification_service import NotificationService
+from .classify_service import classify_service
 import json
 
 
@@ -426,5 +427,49 @@ def chat(request):
     except Exception as e:
         return Response(
             {'error': f'服务器错误: {str(e)}'},
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR
+        )
+
+
+@api_view(['POST'])
+@authentication_classes([])  # 跳过认证
+@permission_classes([AllowAny])  # 允许所有用户
+def classify_issue_view(request):
+    """
+    智能分类问题接口
+    接收标题和描述，返回建议的分类
+    允许未登录用户访问
+    """
+    try:
+        title = request.data.get('title', '')
+        description = request.data.get('description', '')
+        
+        if not title:
+            return Response(
+                {'error': '标题不能为空'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        # 调用分类服务
+        result = classify_service.classify_issue(title, description)
+        
+        if result['success']:
+            return Response({
+                'category': result['category'],
+                'confidence': result['confidence'],
+                'reason': result['reason']
+            })
+        else:
+            # 分类失败时仍返回默认分类
+            return Response({
+                'category': result['category'],
+                'confidence': result['confidence'],
+                'reason': result['reason'],
+                'warning': '智能分类服务暂时不可用，返回默认分类'
+            })
+            
+    except Exception as e:
+        return Response(
+            {'error': f'分类服务错误: {str(e)}', 'category': '生活'},
             status=status.HTTP_500_INTERNAL_SERVER_ERROR
         )

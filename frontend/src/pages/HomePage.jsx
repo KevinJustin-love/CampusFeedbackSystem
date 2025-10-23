@@ -1,9 +1,17 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Hero from "../components/Hero";
 import "../styles/HomePage.css";
 
 export default function HomePage({ user, onSearch }) {
+  const navigate = useNavigate();
   const [hoveredTopic, setHoveredTopic] = useState(null);
+
+  // 信鸽拖拽相关状态
+  const [pigeonPosition, setPigeonPosition] = useState({ x: 35, y: 10 }); // 使用百分比
+  const [isDragging, setIsDragging] = useState(false);
+  const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
+  const [hasDragged, setHasDragged] = useState(false); // 标记是否发生了拖拽
 
   const handleHotspotEnter = (topic) => {
     setHoveredTopic(topic);
@@ -12,6 +20,62 @@ export default function HomePage({ user, onSearch }) {
   const handleHotspotLeave = () => {
     setHoveredTopic(null);
   };
+
+  // 信鸽拖拽处理函数
+  const handlePigeonMouseDown = (e) => {
+    e.preventDefault();
+    setIsDragging(true);
+    setHasDragged(false); // 重置拖拽标记
+
+    const rect = e.currentTarget.getBoundingClientRect();
+    setDragOffset({
+      x: e.clientX - rect.left,
+      y: e.clientY - rect.top,
+    });
+  };
+
+  const handleMouseMove = (e) => {
+    if (!isDragging) return;
+
+    setHasDragged(true); // 标记发生了拖拽
+
+    const container = document.querySelector(".homeContainer");
+    if (!container) return;
+
+    const containerRect = container.getBoundingClientRect();
+
+    // 计算新位置（百分比）
+    const newX =
+      ((e.clientX - containerRect.left - dragOffset.x) / containerRect.width) *
+      100;
+    const newY =
+      ((containerRect.bottom - e.clientY - dragOffset.y) /
+        containerRect.height) *
+      100;
+
+    // 限制在容器范围内
+    const clampedX = Math.max(0, Math.min(95, newX));
+    const clampedY = Math.max(0, Math.min(95, newY));
+
+    setPigeonPosition({ x: clampedX, y: clampedY });
+  };
+
+  const handleMouseUp = () => {
+    setIsDragging(false);
+  };
+
+  // 添加全局鼠标事件监听
+  React.useEffect(() => {
+    if (isDragging) {
+      window.addEventListener("mousemove", handleMouseMove);
+      window.addEventListener("mouseup", handleMouseUp);
+
+      return () => {
+        window.removeEventListener("mousemove", handleMouseMove);
+        window.removeEventListener("mouseup", handleMouseUp);
+      };
+    }
+  }, [isDragging, dragOffset]);
 
   return (
     <div className="homeContainer">
@@ -182,6 +246,68 @@ export default function HomePage({ user, onSearch }) {
             }}
           />
         </a>
+      </div>
+
+      {/* 邮箱图标 - 链接到 Dashboard */}
+      <a
+        href="/dashboard"
+        className="mailbox-icon"
+        style={{
+          position: "absolute",
+          left: "18%", // 调整左右位置：增大值向右移动
+          bottom: "11%", // 调整上下位置：增大值向上移动
+          textDecoration: "none",
+          zIndex: 10,
+          cursor: "pointer",
+          transition: "transform 0.3s ease, filter 0.3s ease",
+        }}
+        onMouseEnter={(e) => {
+          e.currentTarget.style.transform = "scale(1.15)";
+          e.currentTarget.querySelector("img").style.filter =
+            "brightness(1.1) drop-shadow(0 4px 8px rgba(0,0,0,0.3))";
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.transform = "scale(1)";
+          e.currentTarget.querySelector("img").style.filter =
+            "drop-shadow(0 2px 4px rgba(0,0,0,0.2))";
+        }}
+      >
+        <img
+          src="../../public/assets/mailRed.png"
+          alt="Mailbox"
+          style={{
+            width: "80px", // 调整邮箱图片宽度
+            height: "auto", // 自动高度保持比例
+            filter: "drop-shadow(0 2px 4px rgba(0,0,0,0.2))",
+            transition: "filter 0.3s ease",
+          }}
+        />
+      </a>
+
+      {/* 信鸽图标 - 可拖拽，点击链接到提交问题页面 */}
+      <div
+        className="pigeon-icon"
+        style={{
+          position: "absolute",
+          left: `${pigeonPosition.x}%`,
+          bottom: `${pigeonPosition.y}%`,
+          fontSize: "70px",
+          zIndex: 1000,
+          cursor: isDragging ? "grabbing" : "grab",
+          transition: isDragging ? "none" : "transform 0.3s ease",
+          transform: isDragging ? "scale(1.1)" : "scale(1)",
+          userSelect: "none",
+        }}
+        onMouseDown={handlePigeonMouseDown}
+        onClick={(e) => {
+          // 只有在没有拖拽时才触发导航
+          if (!hasDragged) {
+            navigate("/submit", { state: { from: "/" } });
+          }
+        }}
+        title="拖拽移动 | 点击提交新问题"
+      >
+        🕊️
       </div>
     </div>
   );

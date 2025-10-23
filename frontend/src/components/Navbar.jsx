@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import HistoryModal from "../pages/HistoryModal";
 import FavoritesModal from "../pages/FavoritesModal";
 import NotificationModal from "./NotificationModal";
@@ -6,18 +7,21 @@ import { useNotifications } from "../hooks/useNotifications";
 
 import "../styles/Navbar.css";
 
-export default function Navbar({ onSearch, adminUnreadCount, adminFilter = false }) {
+export default function Navbar({
+  onSearch,
+  adminUnreadCount,
+  adminFilter = false,
+}) {
   const { unreadCount } = useNotifications();
-  
+  const navigate = useNavigate();
+
   // 如果传入了管理员未读数量，优先使用管理员的过滤结果
-  const displayUnreadCount = adminUnreadCount !== undefined ? adminUnreadCount : unreadCount;
+  const displayUnreadCount =
+    adminUnreadCount !== undefined ? adminUnreadCount : unreadCount;
   //消息栏图标
   function MessageBar() {
     return (
-      <span
-        className="message-bar"
-        style={{ cursor: "pointer" }}
-      >
+      <span className="message-bar" style={{ cursor: "pointer" }}>
         <svg
           className="envelope-icon"
           xmlns="http://www.w3.org/2000/svg"
@@ -42,7 +46,12 @@ export default function Navbar({ onSearch, adminUnreadCount, adminFilter = false
   }
 
   //历史记录图标
-  function ClockIcon({ size = 24, stroke = "currentColor", className = "", onClick }) {
+  function ClockIcon({
+    size = 24,
+    stroke = "currentColor",
+    className = "",
+    onClick,
+  }) {
     return (
       <span
         className="clock-icon-container"
@@ -92,7 +101,7 @@ export default function Navbar({ onSearch, adminUnreadCount, adminFilter = false
 
   //搜索栏
   function SearchBar() {
-    const [searchQuery, setSearchQuery] = useState('');
+    const [searchQuery, setSearchQuery] = useState("");
 
     const handleSearch = () => {
       if (searchQuery.trim()) {
@@ -104,15 +113,15 @@ export default function Navbar({ onSearch, adminUnreadCount, adminFilter = false
     };
 
     const handleClearSearch = () => {
-      setSearchQuery('');
+      setSearchQuery("");
       // 清除搜索，回到显示全部问题状态
       if (onSearch) {
-        onSearch('');
+        onSearch("");
       }
     };
 
     const handleKeyPress = (e) => {
-      if (e.key === 'Enter') {
+      if (e.key === "Enter") {
         handleSearch();
       }
     };
@@ -128,22 +137,22 @@ export default function Navbar({ onSearch, adminUnreadCount, adminFilter = false
           onKeyPress={handleKeyPress}
         />
         {searchQuery && (
-          <button 
-            className="clear-button" 
+          <button
+            className="clear-button"
             onClick={handleClearSearch}
             style={{
-              background: 'none',
-              border: 'none',
-              cursor: 'pointer',
-              padding: '4px',
-              marginRight: '8px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              position: 'absolute',
-              right: '40px',
-              top: '50%',
-              transform: 'translateY(-50%)'
+              background: "none",
+              border: "none",
+              cursor: "pointer",
+              padding: "4px",
+              marginRight: "8px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              position: "absolute",
+              right: "40px",
+              top: "50%",
+              transform: "translateY(-50%)",
             }}
           >
             <svg
@@ -177,7 +186,7 @@ export default function Navbar({ onSearch, adminUnreadCount, adminFilter = false
   const [isNotificationModalOpen, setIsNotificationModalOpen] = useState(false);
 
   const handleClockIconClick = () => {
-    console.log('点击历史记录图标');
+    console.log("点击历史记录图标");
     setIsHistoryModalOpen(true);
   };
 
@@ -186,7 +195,7 @@ export default function Navbar({ onSearch, adminUnreadCount, adminFilter = false
   };
 
   const handleStarIconClick = () => {
-    console.log('点击收藏夹图标');
+    console.log("点击收藏夹图标");
     setIsFavoritesModalOpen(true);
   };
 
@@ -195,7 +204,7 @@ export default function Navbar({ onSearch, adminUnreadCount, adminFilter = false
   };
 
   const handleMessageBarClick = () => {
-    console.log('点击消息图标');
+    console.log("点击消息图标");
     setIsNotificationModalOpen(true);
     // 移除对原有 onMessageBarClick 的调用，避免冲突
   };
@@ -204,27 +213,41 @@ export default function Navbar({ onSearch, adminUnreadCount, adminFilter = false
     setIsNotificationModalOpen(false);
   };
 
+  const handleLogout = () => {
+    navigate("/logout");
+  };
+
   return (
     <div className="navbar-container">
-      <div 
+      <div
         onClick={handleClockIconClick}
-        style={{cursor: 'pointer', zIndex: 1000}}
+        style={{ cursor: "pointer", zIndex: 1000 }}
       >
         <ClockIcon />
       </div>
-      <div 
+      <div
         onClick={handleMessageBarClick}
-        style={{cursor: 'pointer', zIndex: 1000}}
+        style={{ cursor: "pointer", zIndex: 1000 }}
       >
         <MessageBar />
       </div>
-      <div 
+      <div
         onClick={handleStarIconClick}
-        style={{cursor: 'pointer', zIndex: 1000}}
+        style={{ cursor: "pointer", zIndex: 1000 }}
       >
         <StarIcon />
       </div>
       <SearchBar />
+
+      {/* 占位将用户区域推至最右侧 */}
+      <div className="navbar-spacer" />
+
+      {/* 退出按钮 */}
+      <div>
+        <button className="logout-btn" onClick={handleLogout}>
+          退出
+        </button>
+      </div>
       <HistoryModal
         isOpen={isHistoryModalOpen}
         onClose={handleCloseHistoryModal}
