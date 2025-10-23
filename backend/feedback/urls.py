@@ -33,4 +33,7 @@ urlpatterns = [
     
     # 智能客服聊天路由
     path('chat/', views.chat, name='chat'),
+    
+    # 智能分类路由
+    path('classify/', views.classify_issue_view, name='classify-issue'),
 ]

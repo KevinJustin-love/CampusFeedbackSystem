@@ -122,6 +122,12 @@ export const chatAPI = {
     api.post("/feedback/chat/", { message, history }),
 };
 
+export const classifyAPI = {
+  // 智能分类接口
+  classifyIssue: ({ title, description = "" }) =>
+    api.post("/feedback/classify/", { title, description }),
+};
+
 export const authAPI = {
   register: (data) => api.post("/api/auth/register/", data),
 };

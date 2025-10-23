@@ -18,7 +18,7 @@
   font-size: 14px;
   background: #fffdf5;
   color: #4a3c28;
-  box-shadow: 2px 2px 6px rgba(0,0,0,0.1);
+  box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.1);
 }
 
 .form-textarea {
@@ -30,7 +30,7 @@
   resize: vertical;
   background: #fffdf5;
   color: #4a3c28;
-  box-shadow: 2px 2px 6px rgba(0,0,0,0.1);
+  box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.1);
 }
 
 /* 信件风格背景 */
@@ -78,11 +78,14 @@
   border-radius: 12px;
   font-size: 14px;
   cursor: pointer;
-  box-shadow: 2px 2px 6px rgba(0,0,0,0.15);
+  box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.15);
   transition: transform 0.2s ease;
 }
 
-.submit-container .btn-primary1:hover { transform: scale(1.02); background: #fff7e6; }
+.submit-container .btn-primary1:hover {
+  transform: scale(1.02);
+  background: #fff7e6;
+}
 
 /* 复选框组 */
 .form-checkbox {
@@ -101,4 +104,215 @@
   border-top: 2px dashed #d1bfa3;
   padding-top: 8px;
   margin-bottom: 12px;
+}
+
+/* AI 智能分类建议样式 */
+.classifying-indicator {
+  font-size: 12px;
+  color: #667eea;
+  margin-left: 8px;
+  font-weight: normal;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.ai-suggestion-box {
+  margin-top: 12px;
+  padding: 16px;
+  background: linear-gradient(135deg, #fffef8 0%, #fffdf5 100%);
+  border: 2px solid #b4a77c;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(245, 230, 200, 0.3);
+  animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.ai-suggestion-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.ai-icon {
+  font-size: 20px;
+}
+
+.ai-title {
+  font-weight: 600;
+  color: #b8956a;
+  font-size: 14px;
+}
+
+.ai-confidence {
+  margin-left: auto;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 2px 8px;
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 12px;
+}
+
+.ai-suggestion-content {
+  margin-bottom: 12px;
+}
+
+.ai-category {
+  font-size: 14px;
+  color: #4a3c28;
+  margin-bottom: 6px;
+}
+
+.ai-category strong {
+  color: #b8956a;
+  font-size: 16px;
+}
+
+.ai-reason {
+  font-size: 13px;
+  color: #666;
+  font-style: italic;
+  margin: 0;
+}
+
+.ai-accept-btn {
+  background: linear-gradient(135deg, #fef9f0 0%, #f9edd9 100%);
+  color: #4a3c28;
+  border: 1px solid #e8d7b8;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(232, 215, 184, 0.3);
+}
+
+.ai-accept-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(232, 215, 184, 0.4);
+  background: linear-gradient(135deg, #fff 0%, #fef5e7 100%);
+}
+
+.ai-accept-btn:active {
+  transform: translateY(0);
+}
+
+/* AI 智能分类按钮样式 */
+.ai-classify-btn {
+  background: linear-gradient(135deg, #fef9f0 0%, #f9edd9 100%);
+  color: #4a3c28;
+  border: 1px solid #e8d7b8;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(232, 215, 184, 0.3);
+  white-space: nowrap;
+  min-width: 120px;
+  position: relative;
+}
+
+.ai-classify-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(232, 215, 184, 0.4);
+  background: linear-gradient(135deg, #fff 0%, #fef5e7 100%);
+}
+
+.ai-classify-btn:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.ai-classify-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  background: linear-gradient(135deg, #9e9e9e 0%, #757575 100%);
+}
+
+/* AI 智能分类按钮悬停提示框（启用状态） */
+.ai-classify-btn::after {
+  content: "根据标题、描述的内容进行问题的智能分类";
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-8px);
+  background: linear-gradient(135deg, #fef9f0 0%, #f9edd9 100%);
+  color: #4a3c28;
+  padding: 10px 16px;
+  border-radius: 8px;
+  border: 2px solid #e8d7b8;
+  font-size: 14px;
+  font-weight: normal;
+  white-space: nowrap;
+  box-shadow: 0 4px 12px rgba(232, 215, 184, 0.4);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  z-index: 1000;
+}
+
+.ai-classify-btn::before {
+  content: "";
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%) translateY(6px);
+  border: 8px solid transparent;
+  border-top-color: #e8d7b8;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  z-index: 1000;
+}
+
+.ai-classify-btn:hover:not(:disabled)::after {
+  opacity: 1;
+  transform: translateX(-50%) translateY(-12px);
+}
+
+.ai-classify-btn:hover:not(:disabled)::before {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* AI 智能分类按钮悬停提示框（禁用状态） */
+.ai-classify-btn:disabled::after {
+  content: "填写标题、描述内容触发智能分类";
+  background: linear-gradient(135deg, #fef9f0 0%, #f9edd9 100%);
+  border-color: #e8d7b8;
+}
+
+.ai-classify-btn:disabled::before {
+  border-top-color: #e8d7b8;
+}
+
+.ai-classify-btn:disabled:hover::after {
+  opacity: 1;
+  transform: translateX(-50%) translateY(-12px);
+}
+
+.ai-classify-btn:disabled:hover::before {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
 }
