@@ -284,7 +284,7 @@ const ChatWidget = () => {
         onMouseLeave={() => setHoverFab(false)}
       >
         {/* 始终显示 emoji 鸽子图标 */}
-        <div className="chat-widget-icon">🕊️</div>
+        <div className="chat-widget-icon">🤖</div>
         {/* 右上角关闭标记提示（打开时可见） */}
         {isOpen && <div className="chat-widget-badge">×</div>}
       </div>

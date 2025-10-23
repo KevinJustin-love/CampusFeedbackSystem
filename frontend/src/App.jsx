@@ -11,6 +11,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import HomePage from "./pages/HomePage";
 import ForestIssue from "./pages/ForestIssue";
 import TopicTreePage from "./pages/TopicTreePage";
+import SubmitIssuePage from "./pages/SubmitIssuePage";
 
 import { checkUserAuth } from "./components/functions/checkUserAuth";
 import ChatWidget from "./components/ChatWidget";
@@ -112,6 +113,24 @@ const App = () => {
             <ProtectedRoute>
               {user ? (
                 <TopicTreePage user={user} />
+              ) : (
+                <div>加载用户信息中...</div>
+              )}
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/submit"
+          element={
+            <ProtectedRoute>
+              {user ? (
+                <SubmitIssuePage
+                  onIssueSubmitted={(newIssue) => {
+                    // 提交成功后跳转到问题详情页
+                    window.location.href = `/detail/${newIssue.id}`;
+                  }}
+                />
               ) : (
                 <div>加载用户信息中...</div>
               )}

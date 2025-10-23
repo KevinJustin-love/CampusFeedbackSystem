@@ -5,7 +5,6 @@ import IssuesNavbar from "../components/IssuesNavbar";
 import FilterBar from "../components/FilterBar";
 import Pagination from "../components/Pagination";
 import IssueGrid from "../components/IssueGrid";
-import SubmitIssuePage from "../pages/SubmitIssuePage";
 
 import "../styles/StudentDashboard.css";
 
@@ -27,7 +26,6 @@ const StudentDashboard = ({ user }) => {
   const [issues, setIssues] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [showSubmitForm, setShowSubmitForm] = useState(false);
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);
@@ -105,26 +103,44 @@ const StudentDashboard = ({ user }) => {
     setCurrentPage(1);
   }, [activeTab, category, sortBy, searchQuery]);
 
-  const handleIssueSubmitted = (newIssue) => {
-    // 将新问题添加到列表最前面
-    setIssues((prevIssues) => [newIssue, ...prevIssues]);
-    // 提交成功后隐藏表单，并返回主视图
-    setShowSubmitForm(false);
-  };
+  return (
+    <div className="dashboard-container">
+      <div style={{ position: "relative", zIndex: 1000 }}>
+        <Hero user={user} onSearch={handleSearch} />
+      </div>
+      <div
+        className="content-wrapper"
+        style={{ position: "relative", zIndex: 100 }}
+      >
+        <div className="dashboard-controls-header">
+          <IssuesNavbar activeTab={activeTab} onTabChange={setActiveTab} />
+          <div className="top-buttons-container">
+            {user && user.username && user.username.includes("admin") && (
+              <button
+                onClick={() => navigate("/admin")}
+                className="btn-primary"
+              >
+                切换
+              </button>
+            )}
+            <button
+              onClick={() => navigate("/submit")}
+              className="btn-primary submit-issue-btn"
+            >
+              提交新问题 <span className="icon-pigeon">🕊️</span>
+            </button>
+          </div>
+        </div>
 
-  const renderContent = () => {
-    if (showSubmitForm) {
-      return (
-        <SubmitIssuePage
-          onIssueSubmitted={handleIssueSubmitted}
-          onCancel={() => setShowSubmitForm(false)}
-        />
-      );
-    }
+        {activeTab === "mine" && (!user || !user.username) && (
+          <div
+            className="error-message"
+            style={{ color: "red", margin: "10px 0" }}
+          >
+            无法显示"我的"问题：用户信息缺失
+          </div>
+        )}
 
-    // 默认列表模式
-    return (
-      <>
         <FilterBar
           sortBy={sortBy}
           onSortChange={setSortBy}
@@ -142,48 +158,6 @@ const StudentDashboard = ({ user }) => {
             onPageChange={setCurrentPage}
           />
         )}
-      </>
-    );
-  };
-
-  return (
-    <div className="dashboard-container">
-      <div style={{position: 'relative', zIndex: 1000}}>
-        <Hero user={user} onSearch={handleSearch} />
-      </div>
-      <div className="content-wrapper" style={{position: 'relative', zIndex: 100}}>
-        <div className="dashboard-controls-header">
-          <IssuesNavbar activeTab={activeTab} onTabChange={setActiveTab} />
-          <div className="top-buttons-container">
-            {user && user.username && user.username.includes("admin") && (
-              <button
-                onClick={() => navigate("/admin")}
-                className="btn-primary"
-              >
-                切换
-              </button>
-            )}
-            {!showSubmitForm && (
-              <button
-                onClick={() => setShowSubmitForm(true)}
-                className="btn-primary submit-issue-btn"
-              >
-                提交新问题 <span className="icon-pigeon">🕊️</span>
-              </button>
-            )}
-          </div>
-        </div>
-
-        {activeTab === "mine" && (!user || !user.username) && (
-          <div
-            className="error-message"
-            style={{ color: "red", margin: "10px 0" }}
-          >
-            无法显示"我的"问题：用户信息缺失
-          </div>
-        )}
-
-        {renderContent()}
       </div>
     </div>
   );

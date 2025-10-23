@@ -7,7 +7,7 @@ from django.middleware.csrf import get_token
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 from django.views.decorators.csrf import csrf_exempt
-from rest_framework.decorators import api_view, permission_classes
+from rest_framework.decorators import api_view, permission_classes, authentication_classes
 from rest_framework.response import Response
 from rest_framework import status
 from .models import Issue, Reply, Message, Topic, IssueLike, Notification, ViewHistory, Favorite
@@ -432,11 +432,13 @@ def chat(request):
 
 
 @api_view(['POST'])
-@permission_classes([AllowAny])  # 允许未登录用户使用分类功能
+@authentication_classes([])  # 跳过认证
+@permission_classes([AllowAny])  # 允许所有用户
 def classify_issue_view(request):
     """
     智能分类问题接口
     接收标题和描述，返回建议的分类
+    允许未登录用户访问
     """
     try:
         title = request.data.get('title', '')

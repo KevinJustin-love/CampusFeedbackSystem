@@ -1,10 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { feedbackAPI, classifyAPI } from "../api";
 
 import "../styles/SubmitIssuePage.css";
 
 const SubmitIssuePage = ({ onIssueSubmitted, onCancel }) => {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  // 获取来源页面信息，默认为 /dashboard
+  const fromPage = location.state?.from || "/dashboard";
   const [topic, setTopic] = useState("");
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -19,11 +24,19 @@ const SubmitIssuePage = ({ onIssueSubmitted, onCancel }) => {
   const [classifyConfidence, setClassifyConfidence] = useState(0);
   const [classifyReason, setClassifyReason] = useState("");
 
-  const navigate = useNavigate();
-
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
+
+  // 取消按钮的处理函数
+  const handleCancel = () => {
+    if (onCancel) {
+      onCancel();
+    } else {
+      // 返回到来源页面
+      navigate(fromPage);
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -121,7 +134,7 @@ const SubmitIssuePage = ({ onIssueSubmitted, onCancel }) => {
       <div className="submit-card">
         <h2 className="submit-title">提交成功！</h2>
         <p>您的问题已成功提交，感谢您的反馈。</p>
-        <button onClick={onCancel} className="btn-primary1">
+        <button onClick={handleCancel} className="btn-primary1">
           返回
         </button>
       </div>
@@ -269,7 +282,7 @@ const SubmitIssuePage = ({ onIssueSubmitted, onCancel }) => {
           </button>
           <button
             type="button"
-            onClick={onCancel}
+            onClick={handleCancel}
             className="btn-primary1"
             style={{ marginLeft: "10px" }}
           >
