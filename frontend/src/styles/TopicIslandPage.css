@@ -91,13 +91,17 @@
   flex-grow: 1;
 }
 
+
 .topic-island .island-image {
   width: 100%;
   height: 100%;
   object-fit: contain;
   display: block;
   border-radius: 0;
+  transition: transform 0.32s cubic-bezier(.4,2,.6,1), box-shadow 0.32s cubic-bezier(.4,2,.6,1);
 }
+
+
 
 .topic-island .island-overlay {
   position: absolute;

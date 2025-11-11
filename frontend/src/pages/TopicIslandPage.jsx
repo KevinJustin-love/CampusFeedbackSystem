@@ -114,20 +114,41 @@ const TopicIslandPage = ({ user }) => {
         </button>
       </div>
 
+
       <div className="island-image-wrapper" style={{ position: "relative" }}>
-        <img
-          src="/assets/island.png"
-          alt="小岛背景"
-          className="island-image"
-        />
-        {/* 森林 SVG 叠加在小岛上 */}
+        {/* 森林 SVG 叠加在小岛上，zIndex更高 */}
         <ForestOnIsland mode={devMode !== null ? devMode : getForestMode(issueCount)} />
+        <IslandImageWithHover />
       </div>
+
 
       <button className="island-back-btn" onClick={handleBackToHome}>
         ← 返回主页
       </button>
     </div>
+  );
+}
+
+// 浮动动画+发光效果组件
+function IslandImageWithHover() {
+  const [hovered, setHovered] = React.useState(false);
+  return (
+    <img
+      src="/assets/island.png"
+      alt="小岛背景"
+      className="island-image"
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      draggable={false}
+      style={{
+        transition: "transform 0.5s cubic-bezier(.4,2,.6,1)",
+        transform: hovered ? "scale(1.06)" : "scale(1)",
+        zIndex: 2,
+        position: "relative",
+        cursor: "pointer",
+        pointerEvents: "auto",
+      }}
+    />
   );
 }
 
