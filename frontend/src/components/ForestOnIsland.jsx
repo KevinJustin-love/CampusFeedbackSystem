@@ -58,12 +58,11 @@ function ForestOnIsland({ mode = 0 }) {
   const centerY = 285;
 
   // 不同模式下的层数、每层树数、半径和缩放
-  // 我们将稀疏模式的层数和树数配置改为更合理的错落分布
   const modeConfig = [
     // mode 0: 稀疏 (引入更大的随机扰动)
     { 
         rings: 3, 
-        treesPerRing: [6, 8, 10], // 总共 18 棵
+        treesPerRing: [6, 8, 10], 
         radii: [60, 120, 180], 
         scale: [1.18, 1.18, 1.18],
         radialJitter: 20, // 半径扰动范围（最大 ±20）
@@ -90,7 +89,7 @@ function ForestOnIsland({ mode = 0 }) {
     // mode 3: 非常茂盛
     { 
         rings: 5, 
-        treesPerRing: [5, 20, 30, 40, 50], // 调整为 50 棵 (3+12+17+18)
+        treesPerRing: [5, 20, 30, 40, 50], 
         radii: [30, 80, 140, 200, 240], 
         scale: [0.8, 0.65, 0.6, 0.55, 0.5],
         radialJitter: 15,

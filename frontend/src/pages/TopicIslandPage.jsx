@@ -1,9 +1,11 @@
+
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Hero from "../components/Hero";
 import SingleIssueTree from "../components/SingleIssueTree";
 import "../styles/TopicIslandPage.css";
 import ForestOnIsland from "../components/ForestOnIsland";
+import { feedbackAPI } from "../api";
 
 const TopicIslandPage = ({ user }) => {
 
@@ -17,16 +19,32 @@ const TopicIslandPage = ({ user }) => {
     管理: "管理小岛",
     其他: "未知小岛",
   };
-  // TODO: 替换为真实后端数据
-  // 假设每个 topic 问题数量如下
-  const topicIssueCount = {
-    "学业": 3,
-    "生活": 8,
-    "情感": 18,
-    "管理": 28,
-    "其他": 40,
-  };
-  const issueCount = topicIssueCount[topic] || 0;
+  // 真实后端数据：每次加载时获取该topic的问题数量
+  const [issueCount, setIssueCount] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    let isMounted = true;
+    setLoading(true);
+    setError(null);
+    feedbackAPI.getIssueList({ params: { topic } })
+      .then((res) => {
+        if (isMounted) {
+          setIssueCount(Array.isArray(res.data) ? res.data.length : (res.data?.results?.length || 0));
+        }
+      })
+      .catch((err) => {
+        if (isMounted) {
+          setError("获取问题数量失败");
+          setIssueCount(0);
+        }
+      })
+      .finally(() => {
+        if (isMounted) setLoading(false);
+      });
+    return () => { isMounted = false; };
+  }, [topic]);
   function getForestMode(issueCount) {
     if (issueCount < 5) return 0; // 稀疏
     if (issueCount < 15) return 1; // 较茂盛
@@ -45,7 +63,17 @@ const TopicIslandPage = ({ user }) => {
       <Hero user={user} onSearch={() => {}} />
 
       <div className="island-header">
-        <h1 className="island-title">{topicNames[topic] || "未知小岛"}</h1>
+        <h1 className="island-title">
+          {topicNames[topic] || "未知小岛"}
+          {loading ? (
+            <span style={{ fontSize: 18, color: '#888', marginLeft: 16 }}>(加载中...)</span>
+          ) : (
+            <span style={{ fontSize: 18, color: '#388e3c', marginLeft: 16 }}>
+              共 {issueCount} 个问题
+            </span>
+          )}
+        </h1>
+        {error && <div style={{ color: 'red', fontSize: 14 }}>{error}</div>}
       </div>
 
       {/* 开发测试：森林模式切换按钮 */}
