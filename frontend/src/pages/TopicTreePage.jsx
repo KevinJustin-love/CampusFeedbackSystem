@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Hero from "../components/Hero";
 import SingleIssueTree from "../components/SingleIssueTree";
@@ -19,6 +19,8 @@ const TopicTreePage = ({ user }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [currentPage, setCurrentPage] = useState(0);
+  const [isAnimating, setIsAnimating] = useState(false);
+  const containerRef = useRef(null);
 
   const issuesPerPage = 5; // 每棵树显示5个问题
 
@@ -54,6 +56,21 @@ const TopicTreePage = ({ user }) => {
     navigate("/");
   };
 
+  // 切换页面函数
+  const changePage = (newPage) => {
+    if (isAnimating || newPage === currentPage || newPage < 0 || newPage >= totalPages) {
+      return;
+    }
+    
+    setIsAnimating(true);
+    setCurrentPage(newPage);
+    
+    // 动画结束后重置状态
+    setTimeout(() => {
+      setIsAnimating(false);
+    }, 500);
+  };
+
   return (
     <div className="topic-tree-page">
       <Hero user={user} onSearch={() => {}} />
@@ -84,14 +101,30 @@ const TopicTreePage = ({ user }) => {
           </div>
         ) : (
           <>
-            <SingleIssueTree issues={currentIssues} pageSize={issuesPerPage} />
+            {/* 滑动树容器 */}
+            <div className="slider-container">
+              <div 
+                ref={containerRef}
+                className={`tree-slider ${isAnimating ? 'animating' : ''}`}
+                style={{ transform: `translateX(-${currentPage * 100}%)` }}
+              >
+                {Array.from({ length: totalPages }).map((_, pageIndex) => (
+                  <div key={pageIndex} className="tree-slide">
+                    <SingleIssueTree 
+                      issues={issues.slice(pageIndex * issuesPerPage, (pageIndex + 1) * issuesPerPage)} 
+                      pageSize={issuesPerPage} 
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
 
             {totalPages > 1 && (
               <div className="tree-pagination">
                 <button
                   className="page-btn prev-btn"
-                  onClick={() => setCurrentPage((p) => Math.max(0, p - 1))}
-                  disabled={currentPage === 0}
+                  onClick={() => changePage(currentPage - 1)}
+                  disabled={currentPage === 0 || isAnimating}
                 >
                   ← 上一棵树
                 </button>
@@ -103,10 +136,8 @@ const TopicTreePage = ({ user }) => {
                 </div>
                 <button
                   className="page-btn next-btn"
-                  onClick={() =>
-                    setCurrentPage((p) => Math.min(totalPages - 1, p + 1))
-                  }
-                  disabled={currentPage === totalPages - 1}
+                  onClick={() => changePage(currentPage + 1)}
+                  disabled={currentPage === totalPages - 1 || isAnimating}
                 >
                   下一棵树 →
                 </button>

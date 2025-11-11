@@ -2,8 +2,29 @@
 
 .topic-tree-page {
   min-height: 100vh;
-  background: linear-gradient(to bottom, #e8f5e9, #f1f8e9, #e8f5e9);
+  background: 
+    linear-gradient(rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.4)),
+    url('https://images.unsplash.com/photo-1448375240586-882707db888b?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
   padding-bottom: 40px;
+  position: relative;
+}
+
+.topic-tree-page::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, 
+    rgba(232, 245, 233, 0.2) 0%, 
+    rgba(241, 248, 233, 0.3) 50%, 
+    rgba(232, 245, 233, 0.2) 100%);
+  z-index: -1;
 }
 
 /* 页面头部 */
@@ -65,6 +86,36 @@
   justify-content: center;
   min-height: 500px;
   padding: 20px;
+}
+
+/* 滑动树容器 */
+.slider-container {
+  position: relative;
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  overflow: hidden;
+  min-height: 500px;
+}
+
+/* 树滑动器 */
+.tree-slider {
+  display: flex;
+  width: 100%;
+  transition: transform 0.5s ease-in-out;
+}
+
+.tree-slider.animating {
+  transition: transform 0.5s ease-in-out;
+}
+
+/* 单个树幻灯片 */
+.tree-slide {
+  flex: 0 0 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 500px;
 }
 
 /* 加载状态 */

@@ -14,10 +14,15 @@ class ChatService:
     
     def __init__(self):
         """初始化 OpenAI 客户端"""
-        self.client = OpenAI(
-            api_key=settings.OPENAI_API_KEY,
-            base_url=settings.OPENAI_BASE_URL
-        )
+        # 检查API密钥是否存在
+        if not settings.OPENAI_API_KEY or settings.OPENAI_API_KEY == "your_openai_api_key_here":
+            self.client = None
+            logger.warning("OpenAI API密钥未配置，智能客服功能将不可用")
+        else:
+            self.client = OpenAI(
+                api_key=settings.OPENAI_API_KEY,
+                base_url=settings.OPENAI_BASE_URL
+            )
         
         # 定义系统角色 Prompt
         self.system_prompt = (
@@ -42,6 +47,14 @@ class ChatService:
         Returns:
             dict: 包含回复内容和状态的字典
         """
+        # 检查客户端是否已初始化
+        if self.client is None:
+            return {
+                "success": False,
+                "message": "智能客服功能暂未启用，请配置OpenAI API密钥后使用。",
+                "error": "OpenAI API密钥未配置"
+            }
+        
         try:
             # 构建消息列表
             messages = [{"role": "system", "content": self.system_prompt}]
