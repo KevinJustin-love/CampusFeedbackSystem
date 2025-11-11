@@ -9,5 +9,4 @@ sqlparse
 psycopg2-binary
 python-dotenv
 Pillow
-framer-motion
 openai

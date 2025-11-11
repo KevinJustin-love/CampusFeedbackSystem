@@ -111,8 +111,8 @@ const RealisticLeaf = ({
       <ellipse
         cx={2}
         cy={3}
-        rx={isHovered ? 30 : 26}
-        ry={isHovered ? 18 : 15}
+        rx={isHovered ? 40 : 35}
+        ry={isHovered ? 24 : 20}
         fill="rgba(0,0,0,0.2)"
         filter="blur(3px)"
       />
@@ -120,13 +120,13 @@ const RealisticLeaf = ({
       {/* 叶片主体 - 使用path绘制真实形状 */}
       <path
         d={`
-          M 0,-15
-          C 8,-15 15,-12 20,-5
-          C 22,0 22,5 18,10
-          C 12,14 5,16 0,16
-          C -5,16 -12,14 -18,10
-          C -22,5 -22,0 -20,-5
-          C -15,-12 -8,-15 0,-15
+          M 0,-20
+          C 12,-20 20,-16 26,-8
+          C 28,0 28,8 24,14
+          C 16,20 8,22 0,22
+          C -8,22 -16,20 -24,14
+          C -28,8 -28,0 -26,-8
+          C -20,-16 -12,-20 0,-20
         `}
         fill={`url(#leafGradient-${index})`}
         stroke={colorSet.vein}
@@ -137,7 +137,7 @@ const RealisticLeaf = ({
 
       {/* 主叶脉（中间） */}
       <path
-        d="M 0,-14 Q 0,0 0,15"
+        d="M 0,-18 Q 0,0 0,20"
         stroke={colorSet.vein}
         strokeWidth={1.5}
         fill="none"
@@ -146,14 +146,14 @@ const RealisticLeaf = ({
 
       {/* 侧叶脉（左侧） */}
       <path
-        d="M 0,-8 Q -8,-5 -12,0"
+        d="M 0,-12 Q -10,-8 -16,0"
         stroke={colorSet.vein}
         strokeWidth={0.8}
         fill="none"
         opacity={0.5}
       />
       <path
-        d="M 0,0 Q -10,3 -14,8"
+        d="M 0,0 Q -12,4 -18,10"
         stroke={colorSet.vein}
         strokeWidth={0.8}
         fill="none"
@@ -162,14 +162,14 @@ const RealisticLeaf = ({
 
       {/* 侧叶脉（右侧） */}
       <path
-        d="M 0,-8 Q 8,-5 12,0"
+        d="M 0,-12 Q 10,-8 16,0"
         stroke={colorSet.vein}
         strokeWidth={0.8}
         fill="none"
         opacity={0.5}
       />
       <path
-        d="M 0,0 Q 10,3 14,8"
+        d="M 0,0 Q 12,4 18,10"
         stroke={colorSet.vein}
         strokeWidth={0.8}
         fill="none"
@@ -180,8 +180,8 @@ const RealisticLeaf = ({
       <ellipse
         cx={-5}
         cy={-5}
-        rx={8}
-        ry={5}
+        rx={10}
+        ry={6}
         fill="#fff"
         opacity={isHovered ? 0.4 : 0.25}
         transform="rotate(-20)"
@@ -190,7 +190,7 @@ const RealisticLeaf = ({
       {/* 边缘锯齿（模拟真实叶边） */}
       {[0, 45, 90, 135, 180, 225, 270, 315].map((angle) => {
         const rad = (angle * Math.PI) / 180;
-        const distance = 18;
+        const distance = 24;
         const x = Math.cos(rad) * distance;
         const y = Math.sin(rad) * distance;
         return (
@@ -198,7 +198,7 @@ const RealisticLeaf = ({
             key={angle}
             cx={x}
             cy={y}
-            r={0.8}
+            r={1.0}
             fill={colorSet.vein}
             opacity={0.3}
           />
@@ -214,6 +214,10 @@ const Branch = ({ x, y, side, issue, onClick, index }) => {
   const branchLength = 100; // 🔧 树枝长度：45 → 65（延长约45%）
   const endX = x + side * branchLength;
   const endY = y - 12; // 向上倾斜角度也加大（-8 → -12）
+
+  // 根据分枝方向调整叶子位置（向内扩大）
+  const leafOffset = -side * 30; // 向右的分枝向左扩大，向左的分枝向右扩大
+  const leafX = endX + leafOffset;
 
   return (
     <motion.g
@@ -237,7 +241,7 @@ const Branch = ({ x, y, side, issue, onClick, index }) => {
         strokeLinecap="round"
       />
 
-      {/* 真实叶子 */}
+      {/* 真实叶子 - 向内扩大 */}
       <motion.g
         animate={{
           rotate: [side * -5, side * 5, side * -5],
@@ -249,10 +253,10 @@ const Branch = ({ x, y, side, issue, onClick, index }) => {
         }}
       >
         <RealisticLeaf
-          cx={endX}
+          cx={leafX}
           cy={endY}
           rotation={side * 45}
-          scale={isHovered ? 1.8 : 1.5} // 🔧 叶子大小
+          scale={isHovered ? 2.3 : 1.8} // 🔧 再缩小0.2倍叶子大小
           isHovered={isHovered}
           index={index}
         />
@@ -260,7 +264,7 @@ const Branch = ({ x, y, side, issue, onClick, index }) => {
 
       {/* 问题编号 */}
       <text
-        x={endX}
+        x={leafX}
         y={endY}
         fontSize={11}
         fill="#fff"
@@ -272,7 +276,20 @@ const Branch = ({ x, y, side, issue, onClick, index }) => {
         #{index + 2}
       </text>
 
-      {/* Hover 时显示标题预览 */}
+      {/* 问题标题 - 直接显示在叶子上 */}
+      <text
+        x={leafX}
+        y={endY + 8}
+        fontSize={10}
+        fill="#fff"
+        textAnchor="middle"
+        fontWeight="500"
+        style={{ pointerEvents: "none" }}
+      >
+        {issue.title.length > 12 ? issue.title.slice(0, 12) + "..." : issue.title}
+      </text>
+
+      {/* Hover 时显示完整标题预览 */}
       {isHovered && (
         <motion.g initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
           <defs>
@@ -291,8 +308,8 @@ const Branch = ({ x, y, side, issue, onClick, index }) => {
             </filter>
           </defs>
           <rect
-            x={endX - 90}
-            y={endY + 25}
+            x={leafX - 90}
+            y={endY + 35}
             width={180}
             height={50}
             fill={`url(#previewGradient-${index})`}
@@ -302,8 +319,8 @@ const Branch = ({ x, y, side, issue, onClick, index }) => {
             filter={`url(#previewShadow-${index})`}
           />
           <text
-            x={endX}
-            y={endY + 55}
+            x={leafX}
+            y={endY + 65}
             fontSize={16}
             fill="#B3E5FC"
             textAnchor="middle"

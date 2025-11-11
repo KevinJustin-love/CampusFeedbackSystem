@@ -167,11 +167,7 @@
   }
 }
 
-.tree-trunk,
-.tree-stump {
-  animation: sway 6s ease-in-out infinite;
-  transform-origin: center bottom;
-}
+/* 移除树干和树桩的摇摆动画，保持静态 */
 
 /* 添加微妙的光影效果 */
 @keyframes leaf-shimmer {

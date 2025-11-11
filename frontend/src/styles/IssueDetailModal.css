@@ -1,12 +1,32 @@
 /* 问题详情模态框样式 */
-.issue-detail-modal {
+.issue-detail-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(8px);
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding-top: 80px;
+  z-index: 1000;
+  animation: fadeIn 0.3s ease;
+}
+
+.issue-detail-modal-content {
   max-width: 900px;
   max-height: 90vh;
   width: 90%;
   overflow-y: auto;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+  position: relative;
 }
 
-.modal-header {
+.issue-detail-modal-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -15,12 +35,12 @@
   background-color: #f8f9fa;
 }
 
-.modal-header h2 {
+.issue-detail-modal-header h2 {
   margin: 0;
   color: #333;
 }
 
-.close-button {
+.issue-detail-close-button {
   background: none;
   border: none;
   font-size: 24px;
@@ -36,35 +56,41 @@
   transition: background-color 0.2s;
 }
 
-.close-button:hover {
+.issue-detail-close-button:hover {
   background-color: #e9ecef;
   color: #333;
 }
 
-.modal-body {
+.issue-detail-modal-body {
   padding: 20px;
 }
 
-.loading, .error {
+.issue-detail-loading, .issue-detail-error {
   text-align: center;
   padding: 40px;
   font-size: 16px;
 }
 
-.error {
+.issue-detail-error {
   color: #dc3545;
 }
 
 /* 问题信息样式 */
 .issue-info {
   margin-bottom: 30px;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  background-color: #fff;
+  overflow: hidden;
 }
 
 .issue-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 15px;
+  padding: 20px;
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #dee2e6;
 }
 
 .issue-header h3 {
@@ -85,10 +111,8 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 10px;
-  margin-bottom: 20px;
-  padding: 15px;
-  background-color: #f8f9fa;
-  border-radius: 8px;
+  padding: 20px;
+  border-bottom: 1px solid #dee2e6;
 }
 
 .issue-meta span {
@@ -97,33 +121,36 @@
 }
 
 .issue-description {
-  margin-bottom: 20px;
+  padding: 20px;
+  border-bottom: 1px solid #dee2e6;
 }
 
 .issue-description h4 {
-  margin: 0 0 10px 0;
+  margin: 0 0 15px 0;
   color: #333;
-  font-size: 16px;
+  font-size: 18px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid #007bff;
 }
 
 .issue-description p {
   margin: 0;
   line-height: 1.6;
   color: #555;
-  padding: 15px;
-  background-color: #f8f9fa;
-  border-radius: 8px;
   white-space: pre-wrap;
 }
 
 .issue-attachment {
-  margin-bottom: 20px;
+  padding: 20px;
+  border-bottom: 1px solid #dee2e6;
 }
 
 .issue-attachment h4 {
-  margin: 0 0 10px 0;
+  margin: 0 0 15px 0;
   color: #333;
-  font-size: 16px;
+  font-size: 18px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid #007bff;
 }
 
 .issue-attachment a {
@@ -144,10 +171,8 @@
 .issue-stats {
   display: flex;
   gap: 20px;
-  padding: 15px;
+  padding: 20px;
   background-color: #f8f9fa;
-  border-radius: 8px;
-  margin-bottom: 20px;
 }
 
 .issue-stats span {
@@ -231,14 +256,14 @@
 }
 
 /* 模态框底部 */
-.modal-footer {
+.issue-detail-modal-footer {
   padding: 20px;
   border-top: 1px solid #eee;
   background-color: #f8f9fa;
   text-align: right;
 }
 
-.btn-close {
+.issue-detail-btn-close {
   background-color: #6c757d;
   color: white;
   border: none;
@@ -249,13 +274,38 @@
   transition: background-color 0.2s;
 }
 
-.btn-close:hover {
+.issue-detail-btn-close:hover {
   background-color: #5a6268;
+}
+
+/* 动画定义 */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes modalSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-50px) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.issue-detail-modal-content {
+  animation: modalSlideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* 响应式设计 */
 @media (max-width: 768px) {
-  .issue-detail-modal {
+  .issue-detail-modal-content {
     width: 95%;
     margin: 10px;
   }
