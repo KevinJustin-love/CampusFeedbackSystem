@@ -132,6 +132,8 @@ const TopicIslandPage = ({ user }) => {
 // 浮动动画+发光效果组件
 function IslandImageWithHover() {
   const [hovered, setHovered] = React.useState(false);
+  const { topic } = useParams();
+  const navigate = useNavigate();
   return (
     <img
       src="/assets/island.png"
@@ -139,6 +141,7 @@ function IslandImageWithHover() {
       className="island-image"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
+      onClick={() => navigate(`/topic-tree/${topic}`)}
       draggable={false}
       style={{
         transition: "transform 0.5s cubic-bezier(.4,2,.6,1)",
