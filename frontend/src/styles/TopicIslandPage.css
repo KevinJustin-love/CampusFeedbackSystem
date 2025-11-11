@@ -1,3 +1,4 @@
+/* Global container used across pages */
 .container {
   min-height: 100vh;
   display: flex;
@@ -11,9 +12,8 @@
   position: relative;
 }
 
-
-/* 返回主页按钮 - 固定在左下角，蓝色风格框 */
-.back-btn {
+/* === TopicIsland scoped styles === */
+.topic-island .island-back-btn {
   position: fixed;
   bottom: 32px;
   left: 32px;
@@ -30,13 +30,12 @@
   z-index: 100;
 }
 
-.back-btn:hover {
+.topic-island .island-back-btn:hover {
   transform: translateY(-2px);
   box-shadow: 0 12px 32px rgba(70, 130, 180, 0.5), inset 0 2px 0 rgba(255, 255, 255, 0.8);
 }
 
-/* 页面头部 - topic title 容器 */
-.topic-tree-header {
+.topic-island .island-header {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -44,12 +43,12 @@
   background: transparent;
   backdrop-filter: none;
   box-shadow: none;
-  margin: 70px 20px 12px 20px; /* push title down a bit, keep some space below */
+  margin: 40px 20px 12px 20px; /* island title slightly different spacing */
   border-radius: 0;
   min-height: auto;
 }
 
-.topic-title {
+.topic-island .island-title {
   font-size: 32px;
   font-weight: 600;
   color: #1b5e20;
@@ -67,12 +66,12 @@
   transition: all 0.3s ease;
 }
 
-.topic-title:hover {
+.topic-island .island-title:hover {
   background: rgba(255, 255, 255, 0.9);
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
 }
 
-.topic-stats {
+.topic-island .topic-stats {
   font-size: 28px;
   color: #558b2f;
   background: rgba(139, 195, 74, 0.2);
@@ -82,18 +81,17 @@
 }
 
 /* 新的图片小岛容器和叠加层样式 */
-
-.island-image-wrapper {
+.topic-island .island-image-wrapper {
   position: relative;
-  width: min(700px, 98vw); /* 更宽更大 */
-  aspect-ratio: 2/1;      /* 更宽的比例 */
+  width: min(700px, 98vw);
+  aspect-ratio: 2/1;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-grow: 1;
 }
 
-.island-image {
+.topic-island .island-image {
   width: 100%;
   height: 100%;
   object-fit: contain;
@@ -101,7 +99,7 @@
   border-radius: 0;
 }
 
-.island-overlay {
+.topic-island .island-overlay {
   position: absolute;
   left: 0;
   top: 0;
@@ -112,7 +110,7 @@
 }
 
 /* 嵌入式单棵树样式（在小岛上） */
-.embedded-tree {
+.topic-island .embedded-tree {
   position: absolute;
   left: 50%;
   top: 62%;
@@ -127,21 +125,21 @@
   background: rgba(255,255,255,0.05);
 }
 
-.embedded-tree .single-tree-container {
+.topic-island .embedded-tree .single-tree-container {
   width: 100%;
   height: 100%;
 }
 
-.embedded-tree .tree-svg {
+.topic-island .embedded-tree .tree-svg {
   width: 100% !important;
   height: 100% !important;
 }
 
 /* 让树木和格子可交互 */
-.island-overlay circle {
+.topic-island .island-overlay circle {
   pointer-events: all;
   transition: filter 0.2s;
 }
-.island-overlay circle:hover {
+.topic-island .island-overlay circle:hover {
   filter: drop-shadow(0 0 6px #228b22cc);
 }

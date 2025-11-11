@@ -22,13 +22,13 @@ const TopicIslandPage = ({ user }) => {
   };
 
   return (
-    <div className="container">
+    <div className="container topic-island">
       <Hero user={user} onSearch={() => {}} />
 
       
 
-      <div className="topic-tree-header">
-        <h1 className="topic-title">{topicNames[topic] || "未知小岛"}</h1>
+      <div className="island-header">
+        <h1 className="island-title">{topicNames[topic] || "未知小岛"}</h1>
       </div>
 
       <div className="island-image-wrapper">
@@ -37,13 +37,9 @@ const TopicIslandPage = ({ user }) => {
           alt="小岛背景"
           className="island-image"
         />
-        {/* 嵌入式单树组件，缩小并定位在小岛上 */}
-        <div className="embedded-tree">
-          <SingleIssueTree issues={[]} pageSize={3} compact={true} />
-        </div>
       </div>
 
-      <button className="back-btn" onClick={handleBackToHome}>
+      <button className="island-back-btn" onClick={handleBackToHome}>
           ← 返回主页
       </button>
     </div>
