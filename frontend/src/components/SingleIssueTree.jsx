@@ -489,7 +489,7 @@ const TreeCrown = ({ x, y, issue, onClick }) => {
 };
 
 // 主树组件
-export default function SingleIssueTree({ issues = [], pageSize = 5 }) {
+export default function SingleIssueTree({ issues = [], pageSize = 5, compact = false }) {
   const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(0);
   const effectivePageSize = Math.max(pageSize, 1);
@@ -529,23 +529,39 @@ export default function SingleIssueTree({ issues = [], pageSize = 5 }) {
   };
 
   // 无问题状态
-  if (issues.length === 0) {
+  // 如果 compact 模式，只绘制简化的树干和分支（不需要后端数据）
+  if (compact) {
+    const cCenterX = 180;
+    const cStumpY = 200;
+    const cTrunkHeight = 120;
+    const branchCount = 4;
+    const branchSpacing = cTrunkHeight / (branchCount + 1);
+
     return (
-      <div className="single-tree-container">
-        <svg width={500} height={480} className="tree-svg">
-          <TreeStump x={centerX} y={stumpY} />
-          <motion.text
-            x={centerX}
-            y={stumpY + 60}
-            fontSize={16}
-            fill="#999"
-            textAnchor="middle"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.3 }}
-          >
-            🌱 暂无问题
-          </motion.text>
+      <div className="single-tree-container compact-tree">
+        <svg width={360} height={260} className="tree-svg">
+          <TreeStump x={cCenterX} y={cStumpY} width={120} height={20} />
+          <TreeTrunk x={cCenterX} y={cStumpY} height={cTrunkHeight} width={18} />
+
+          {/* 简化分支：仅线条表示 */}
+          {Array.from({ length: branchCount }).map((_, i) => {
+            const y = cStumpY - branchSpacing * (i + 1);
+            const side = i % 2 === 0 ? 1 : -1;
+            const endX = cCenterX + side * (80 + i * 8);
+            const endY = y - 6;
+            return (
+              <line
+                key={i}
+                x1={cCenterX}
+                y1={y}
+                x2={endX}
+                y2={endY}
+                stroke="#8B5A2B"
+                strokeWidth={6}
+                strokeLinecap="round"
+              />
+            );
+          })}
         </svg>
       </div>
     );

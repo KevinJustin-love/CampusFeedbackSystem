@@ -12,6 +12,7 @@ import HomePage from "./pages/HomePage";
 import ForestIssue from "./pages/ForestIssue";
 import TopicTreePage from "./pages/TopicTreePage";
 import SubmitIssuePage from "./pages/SubmitIssuePage";
+import TopicIslandPage from "./pages/TopicIslandPage";
 
 import { checkUserAuth } from "./components/functions/checkUserAuth";
 import ChatWidget from "./components/ChatWidget";
@@ -103,6 +104,19 @@ const App = () => {
           element={
             <ProtectedRoute>
               <ForestIssue />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/topic-island/:topic"
+          element={
+            <ProtectedRoute>
+              {user ? (
+                <TopicIslandPage user={user} />
+              ) : (
+                <div>加载用户信息中...</div>
+              )}
             </ProtectedRoute>
           }
         />

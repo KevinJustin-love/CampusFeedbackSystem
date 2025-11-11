@@ -1,0 +1,121 @@
+.container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 50px;
+  padding-bottom: 20px;
+  margin: 0;
+  background: radial-gradient(circle at 50% 10%, #d8f0ff 0%, #b2e4ff 40%, #8acfff 80%, #a2d7ff 100%);
+  position: relative;
+}
+
+
+/* 返回主页按钮 - 固定在左下角，蓝色风格框 */
+.back-btn {
+  position: fixed;
+  bottom: 32px;
+  left: 32px;
+  padding: 12px 24px;
+  background: linear-gradient(135deg, rgba(173, 216, 230, 0.9) 0%, rgba(135, 206, 250, 0.8) 100%);
+  color: #1a3a5f;
+  border: 3px solid rgba(106, 170, 200, 0.6);
+  border-radius: 24px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 24px rgba(70, 130, 180, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  z-index: 100;
+}
+
+.back-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px rgba(70, 130, 180, 0.5), inset 0 2px 0 rgba(255, 255, 255, 0.8);
+}
+
+/* 页面头部 - topic title 容器 */
+.topic-tree-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  background: transparent;
+  backdrop-filter: none;
+  box-shadow: none;
+  margin: 0 20px 0 20px;
+  border-radius: 0;
+  min-height: auto;
+}
+
+.topic-title {
+  font-size: 32px;
+  font-weight: 600;
+  color: #1b5e20;
+  margin: 0;
+  text-align: center;
+  font-family: "Georgia", "Times New Roman", serif;
+  letter-spacing: 1px;
+  padding: 12px 32px;
+  border: 2px solid rgba(255, 255, 255, 0.9);
+  border-radius: 24px;
+  display: inline-block;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.topic-title:hover {
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+}
+
+.topic-stats {
+  font-size: 28px;
+  color: #558b2f;
+  background: rgba(139, 195, 74, 0.2);
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-weight: 500;
+}
+
+/* 新的图片小岛容器和叠加层样式 */
+
+.island-image-wrapper {
+  position: relative;
+  width: min(700px, 98vw); /* 更宽更大 */
+  aspect-ratio: 2/1;      /* 更宽的比例 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-grow: 1;
+}
+
+.island-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  border-radius: 0;
+}
+
+.island-overlay {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none; /* 让事件穿透到图片，后续可根据需要调整 */
+  z-index: 2;
+}
+
+/* 让树木和格子可交互 */
+.island-overlay circle {
+  pointer-events: all;
+  transition: filter 0.2s;
+}
+.island-overlay circle:hover {
+  filter: drop-shadow(0 0 6px #228b22cc);
+}
