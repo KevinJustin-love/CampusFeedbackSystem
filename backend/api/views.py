@@ -9,10 +9,12 @@ from .serializers import (
     RegisterSerializer, 
     UserUpdateSerializer, 
     UserSerializer, 
-    UserAdminUpdateSerializer
+    UserAdminUpdateSerializer,
+    InvitationCodeSerializer,
+    CreateInvitationCodeSerializer
 )
 from .permissions import IsSuperAdmin, IsAnyAdmin, IsContentAdmin # 确保你已经创建了这些权限类
-from .models import CustomUser
+from .models import CustomUser, InvitationCode
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     @classmethod
@@ -143,3 +145,39 @@ def admin_reply_issue(request, issue_id):
         return Response({'error': '问题不存在'}, status=status.HTTP_404_NOT_FOUND)
     except Exception as e:
         return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+# 邀请码相关视图
+from .models import Role
+
+class InvitationCodeViewSet(viewsets.ModelViewSet):
+    """邀请码管理视图集"""
+    queryset = InvitationCode.objects.all()
+    permission_classes = [IsAuthenticated, IsSuperAdmin]
+    
+    def get_serializer_class(self):
+        if self.action == 'create':
+            return CreateInvitationCodeSerializer
+        return InvitationCodeSerializer
+
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def validate_invitation_code(request):
+    """验证邀请码接口"""
+    code = request.data.get('code', '').strip().upper()
+    
+    if not code:
+        return Response({'valid': False, 'message': '邀请码不能为空'}, status=status.HTTP_400_BAD_REQUEST)
+    
+    try:
+        invitation = InvitationCode.objects.get(code=code)
+        if invitation.is_used:
+            return Response({'valid': False, 'message': '邀请码已被使用'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        # 返回邀请码对应的角色信息
+        return Response({
+            'valid': True, 
+            'role': invitation.role_to_assign.name,
+            'message': '邀请码验证成功'
+        })
+    except InvitationCode.DoesNotExist:
+        return Response({'valid': False, 'message': '邀请码无效'}, status=status.HTTP_400_BAD_REQUEST)
