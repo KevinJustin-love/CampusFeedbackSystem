@@ -164,6 +164,8 @@ const SubmitIssuePage = ({ onIssueSubmitted, onCancel }) => {
                 <option value="学业">学业</option>
                 <option value="生活">生活</option>
                 <option value="管理">管理</option>
+                <option value="情感">情感</option>
+                <option value="其他">其他</option>
               </select>
               <button
                 type="button"
