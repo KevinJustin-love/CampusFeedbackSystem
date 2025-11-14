@@ -14,15 +14,26 @@ class ChatService:
     
     def __init__(self):
         """初始化 OpenAI 客户端"""
-        # 检查API密钥是否存在
-        if not settings.OPENAI_API_KEY or settings.OPENAI_API_KEY == "your_openai_api_key_here":
+        try:
+            api_key = settings.OPENAI_API_KEY
+            base_url = settings.OPENAI_BASE_URL
+            
+            if not api_key or api_key == "your_openai_api_key_here":
+                logger.error("OPENAI_API_KEY is not set in settings")
+                self.client = None
+                logger.warning("OpenAI API密钥未配置，智能客服功能将不可用")
+            else:
+                self.client = OpenAI(
+                    api_key=api_key,
+                    base_url=base_url,
+                    timeout=60.0,  # 设置60秒超时
+                    max_retries=2   # 失败后重试2次
+                )
+                logger.info("ChatService OpenAI client initialized successfully")
+                
+        except Exception as e:
+            logger.error(f"Failed to initialize ChatService OpenAI client: {str(e)}")
             self.client = None
-            logger.warning("OpenAI API密钥未配置，智能客服功能将不可用")
-        else:
-            self.client = OpenAI(
-                api_key=settings.OPENAI_API_KEY,
-                base_url=settings.OPENAI_BASE_URL
-            )
         
         # 定义系统角色 Prompt
         self.system_prompt = (
@@ -33,6 +44,12 @@ class ChatService:
             "3. 解释系统的各项功能，如问题分类、状态追踪、点赞评论等\n"
             "4. 提供友好、专业、温和的服务态度\n"
             "5. 当遇到无法解答的问题时，建议用户联系管理员或提交具体的反馈问题\n\n"
+            "关于问题分类，DoveLink 支持五个分类：\n"
+            "• 学业：课程、教学、作业考试、学习资源、学术活动等\n"
+            "• 生活：住宿、饮食、设施服务、健康安全、文体活动等\n"
+            "• 管理：行政服务、规章制度、组织活动、就业服务、财务相关等\n"
+            "• 情感：心理健康、人际关系、心理咨询、情绪表达、成长困惑等\n"
+            "• 其他：系统建议、未分类问题、综合性问题、特殊情况等\n\n"
             "请用简洁、清晰的语言回答问题，必要时可以分点说明。"
         )
     
@@ -49,6 +66,7 @@ class ChatService:
         """
         # 检查客户端是否已初始化
         if self.client is None:
+            logger.warning("ChatService client is None, cannot process request")
             return {
                 "success": False,
                 "message": "智能客服功能暂未启用，请配置OpenAI API密钥后使用。",
@@ -65,6 +83,8 @@ class ChatService:
             
             # 添加当前用户消息
             messages.append({"role": "user", "content": user_message})
+            
+            logger.info(f"ChatService preparing API call - messages: {len(messages)}, user_message_length: {len(user_message)}")
             
             # 调用 OpenAI API
             response = self.client.chat.completions.create(
@@ -88,11 +108,14 @@ class ChatService:
             }
             
         except Exception as e:
-            logger.error(f"ChatService error: {str(e)}")
+            import traceback
+            logger.error(f"ChatService error: {type(e).__name__} - {str(e)}")
+            logger.error(f"Full traceback: {traceback.format_exc()}")
             return {
                 "success": False,
                 "message": "抱歉，智能客服暂时无法响应，请稍后再试或联系管理员。",
-                "error": str(e)
+                "error": str(e),
+                "error_type": type(e).__name__
             }
 
 

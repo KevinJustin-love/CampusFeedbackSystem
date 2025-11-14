@@ -37,7 +37,7 @@ class ClassifyService:
         
         # 定义分类系统 Prompt
         self.system_prompt = (
-            "你是 DoveLink 校园反馈系统的智能分类助手。你需要将学生的问题精准分类到以下三个类别之一：\n\n"
+            "你是 DoveLink 校园反馈系统的智能分类助手。你需要将学生的问题精准分类到以下五个类别之一：\n\n"
             "**【学业】分类标准：**\n"
             "- 课程相关：课程难度、课程内容、教学方法、课程安排\n"
             "- 教师相关：授课质量、教师态度、答疑解惑\n"
@@ -50,7 +50,7 @@ class ClassifyService:
             "- 住宿相关：宿舍环境、宿舍设施、住宿管理\n"
             "- 饮食相关：食堂餐饮、饭菜质量、食品安全\n"
             "- 设施服务：校园设施、维修保洁、水电网络\n"
-            "- 健康安全：校医院、心理咨询、校园安全、交通出行\n"
+            "- 健康安全：校医院、校园安全、交通出行\n"
             "- 文体活动：体育设施、文娱活动、社团生活（非官方）\n"
             "示例：宿舍热水供应不足、食堂饭菜不好吃、健身房设备少、校园路灯太暗\n\n"
             
@@ -62,16 +62,33 @@ class ClassifyService:
             "- 财务相关：学费、奖学金、补助、收费问题\n"
             "示例：学生证办理太慢、奖学金评定不公平、就业指导课程少、校园卡充值不方便\n\n"
             
+            "**【情感】分类标准：**\n"
+            "- 心理健康：心理困扰、情绪问题、压力焦虑\n"
+            "- 人际关系：同学关系、师生关系、恋爱感情\n"
+            "- 心理咨询：心理援助、情感支持、心理辅导\n"
+            "- 情绪表达：倾诉烦恼、寻求安慰、情感释放\n"
+            "- 成长困惑：自我认知、人生迷茫、发展规划\n"
+            "示例：感到很焦虑压力大、和室友关系不好、失恋很难过、不知道未来方向\n\n"
+            
+            "**【其他】分类标准：**\n"
+            "- 系统建议：对校园反馈系统本身的建议\n"
+            "- 未分类问题：无法明确归入以上四类的问题\n"
+            "- 综合性问题：涉及多个领域难以单一分类的复杂问题\n"
+            "- 特殊情况：临时性、突发性、特殊性质的问题\n"
+            "示例：希望增加新功能、这个问题比较复杂、建议改进系统\n\n"
+            
             "**分类原则：**\n"
             "1. 优先根据问题的核心主题分类\n"
             "2. 课程、教学、学习相关 → 学业\n"
-            "3. 衣食住行、身心健康 → 生活\n"
+            "3. 衣食住行、生活设施 → 生活\n"
             "4. 行政流程、制度政策 → 管理\n"
-            "5. 存在交叉时选择最主要的方面\n\n"
+            "5. 心理情感、人际关系 → 情感\n"
+            "6. 无法明确分类或系统建议 → 其他\n"
+            "7. 存在交叉时选择最主要的方面\n\n"
             
             "请返回严格的 JSON 格式：\n"
             "{\"category\": \"学业\", \"confidence\": 0.95, \"reason\": \"涉及课程难度问题\"}\n"
-            "- category 只能是：学业、生活、管理\n"
+            "- category 只能是：学业、生活、管理、情感、其他\n"
             "- confidence 是 0.0-1.0 的数字\n"
             "- reason 用简短一句话说明分类依据"
         )
@@ -115,7 +132,7 @@ class ClassifyService:
             result = json.loads(response.choices[0].message.content)
             
             # 验证分类是否有效
-            valid_categories = ["学业", "生活", "管理"]
+            valid_categories = ["学业", "生活", "管理", "情感", "其他"]
             category = result.get("category", "")
             
             if category not in valid_categories:
@@ -192,22 +209,49 @@ class ClassifyService:
             "活动组织", "校园卡", "充值", "报销", "申请"
         ]
         
+        # 情感关键词
+        emotion_keywords = [
+            "焦虑", "压力", "抑郁", "烦恼", "困扰", "迷茫", "孤独", "难过",
+            "伤心", "失恋", "恋爱", "感情", "心理", "情绪", "人际关系",
+            "室友关系", "同学关系", "师生关系", "心理咨询", "倾诉", "安慰",
+            "成长", "自我", "未来", "方向", "人生", "困惑"
+        ]
+        
+        # 其他关键词
+        other_keywords = [
+            "系统", "功能", "建议", "改进", "优化", "反馈系统", "平台",
+            "界面", "操作", "使用体验", "技术问题", "bug", "故障",
+            "不确定", "复杂", "综合", "多方面", "特殊情况"
+        ]
+        
         # 统计关键词匹配数
         academic_count = sum(1 for kw in academic_keywords if kw in text)
         life_count = sum(1 for kw in life_keywords if kw in text)
         management_count = sum(1 for kw in management_keywords if kw in text)
+        emotion_count = sum(1 for kw in emotion_keywords if kw in text)
+        other_count = sum(1 for kw in other_keywords if kw in text)
         
         # 返回匹配最多的分类
-        max_count = max(academic_count, life_count, management_count)
+        counts = {
+            "学业": academic_count,
+            "生活": life_count,
+            "管理": management_count,
+            "情感": emotion_count,
+            "其他": other_count
+        }
+        
+        max_count = max(counts.values())
         
         if max_count == 0:
-            return "生活"  # 默认分类
-        elif academic_count == max_count:
-            return "学业"
-        elif life_count == max_count:
-            return "生活"
-        else:
-            return "管理"
+            return "其他"  # 默认分类改为其他
+        
+        # 返回第一个匹配数最多的分类
+        for category, count in counts.items():
+            if count == max_count:
+                return category
+        
+        # 如果没有匹配，返回默认分类
+        return "其他"
 
 
 # 创建单例实例

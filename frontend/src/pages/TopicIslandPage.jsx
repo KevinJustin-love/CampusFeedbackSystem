@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Hero from "../components/Hero";
@@ -8,16 +7,15 @@ import ForestOnIsland from "../components/ForestOnIsland";
 import { feedbackAPI } from "../api";
 
 const TopicIslandPage = ({ user }) => {
-
   const { topic } = useParams(); // 从路由获取主题
   const navigate = useNavigate();
   // 主题名称映射
   const topicNames = {
     学业: "学业小岛",
     生活: "生活小岛",
-    情感: "情感小岛",
     管理: "管理小岛",
-    其他: "未知小岛",
+    情感: "情感小岛",
+    其他: "其他小岛",
   };
   // 真实后端数据：每次加载时获取该topic的问题数量
   const [issueCount, setIssueCount] = useState(0);
@@ -28,10 +26,15 @@ const TopicIslandPage = ({ user }) => {
     let isMounted = true;
     setLoading(true);
     setError(null);
-    feedbackAPI.getIssueList({ params: { topic } })
+    feedbackAPI
+      .getIssueList({ params: { topic } })
       .then((res) => {
         if (isMounted) {
-          setIssueCount(Array.isArray(res.data) ? res.data.length : (res.data?.results?.length || 0));
+          setIssueCount(
+            Array.isArray(res.data)
+              ? res.data.length
+              : res.data?.results?.length || 0
+          );
         }
       })
       .catch((err) => {
@@ -43,7 +46,9 @@ const TopicIslandPage = ({ user }) => {
       .finally(() => {
         if (isMounted) setLoading(false);
       });
-    return () => { isMounted = false; };
+    return () => {
+      isMounted = false;
+    };
   }, [topic]);
   function getForestMode(issueCount) {
     if (issueCount < 5) return 0; // 稀疏
@@ -66,14 +71,16 @@ const TopicIslandPage = ({ user }) => {
         <h1 className="island-title">
           {topicNames[topic] || "未知小岛"}
           {loading ? (
-            <span style={{ fontSize: 18, color: '#888', marginLeft: 16 }}>(加载中...)</span>
+            <span style={{ fontSize: 18, color: "#888", marginLeft: 16 }}>
+              (加载中...)
+            </span>
           ) : (
-            <span style={{ fontSize: 18, color: '#388e3c', marginLeft: 16 }}>
+            <span style={{ fontSize: 18, color: "#388e3c", marginLeft: 16 }}>
               共 {issueCount} 个问题
             </span>
           )}
         </h1>
-        {error && <div style={{ color: 'red', fontSize: 14 }}>{error}</div>}
+        {error && <div style={{ color: "red", fontSize: 14 }}>{error}</div>}
       </div>
 
       {/* 开发测试：森林模式切换按钮 */}
@@ -114,20 +121,20 @@ const TopicIslandPage = ({ user }) => {
         </button>
       </div>
 
-
       <div className="island-image-wrapper" style={{ position: "relative" }}>
         {/* 森林 SVG 叠加在小岛上，zIndex更高 */}
-        <ForestOnIsland mode={devMode !== null ? devMode : getForestMode(issueCount)} />
+        <ForestOnIsland
+          mode={devMode !== null ? devMode : getForestMode(issueCount)}
+        />
         <IslandImageWithHover />
       </div>
-
 
       <button className="island-back-btn" onClick={handleBackToHome}>
         ← 返回主页
       </button>
     </div>
   );
-}
+};
 
 // 浮动动画+发光效果组件
 function IslandImageWithHover() {

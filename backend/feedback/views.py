@@ -14,6 +14,7 @@ from .models import Issue, Reply, Message, Topic, IssueLike, Notification, ViewH
 from .serializers import IssueSerializer, ReplySerializer, MessageSerializer, TopicSerializer, NotificationSerializer, ViewHistorySerializer, FavoriteSerializer
 from .notification_service import NotificationService
 from .classify_service import classify_service
+from .chat_service import chat_service
 import json
 
 
@@ -395,7 +396,6 @@ def chat(request):
     智能客服聊天接口
     接收用户消息，返回AI回复
     """
-    from .chat_service import chat_service
     
     try:
         # 获取用户消息
@@ -470,6 +470,6 @@ def classify_issue_view(request):
             
     except Exception as e:
         return Response(
-            {'error': f'分类服务错误: {str(e)}', 'category': '生活'},
+            {'error': f'分类服务错误: {str(e)}', 'category': '其他'},
             status=status.HTTP_500_INTERNAL_SERVER_ERROR
         )

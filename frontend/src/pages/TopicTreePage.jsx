@@ -46,8 +46,8 @@ const TopicTreePage = ({ user }) => {
   const topicNames = {
     学业: "学业问题树",
     生活: "生活问题树",
-    情感: "情感问题树",
     管理: "管理问题树",
+    情感: "情感问题树",
     其他: "其他问题树",
     all: "全部问题树",
   };
@@ -58,13 +58,18 @@ const TopicTreePage = ({ user }) => {
 
   // 切换页面函数
   const changePage = (newPage) => {
-    if (isAnimating || newPage === currentPage || newPage < 0 || newPage >= totalPages) {
+    if (
+      isAnimating ||
+      newPage === currentPage ||
+      newPage < 0 ||
+      newPage >= totalPages
+    ) {
       return;
     }
-    
+
     setIsAnimating(true);
     setCurrentPage(newPage);
-    
+
     // 动画结束后重置状态
     setTimeout(() => {
       setIsAnimating(false);
@@ -103,16 +108,19 @@ const TopicTreePage = ({ user }) => {
           <>
             {/* 滑动树容器 */}
             <div className="slider-container">
-              <div 
+              <div
                 ref={containerRef}
-                className={`tree-slider ${isAnimating ? 'animating' : ''}`}
+                className={`tree-slider ${isAnimating ? "animating" : ""}`}
                 style={{ transform: `translateX(-${currentPage * 100}%)` }}
               >
                 {Array.from({ length: totalPages }).map((_, pageIndex) => (
                   <div key={pageIndex} className="tree-slide">
-                    <SingleIssueTree 
-                      issues={issues.slice(pageIndex * issuesPerPage, (pageIndex + 1) * issuesPerPage)} 
-                      pageSize={issuesPerPage} 
+                    <SingleIssueTree
+                      issues={issues.slice(
+                        pageIndex * issuesPerPage,
+                        (pageIndex + 1) * issuesPerPage
+                      )}
+                      pageSize={issuesPerPage}
                     />
                   </div>
                 ))}
