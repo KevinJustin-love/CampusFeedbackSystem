@@ -1,663 +1,533 @@
-// SingleIssueTree.jsx - 单棵树多分支问题展示组件
-import React, { useEffect, useState } from "react";
-import { motion } from "framer-motion";
+// SingleIssueTree.jsx - 动漫/RPG风格树形展示组件
+import React, { useEffect, useState, useMemo } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import "../styles/SingleIssueTree.css";
+import "../styles/SingleIssueTree.css"; // 即使样式变了，文件名保持一致
 
-// 树桩组件
-const TreeStump = ({ x, y, width = 200, height = 35 }) => (
-  <g className="tree-stump">
-    <defs>
-      <linearGradient id="stumpGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-        <stop offset="0%" stopColor="#6D4C41" />
-        <stop offset="100%" stopColor="#4E342E" />
-      </linearGradient>
-    </defs>
-    <rect
-      x={x - width / 2}
-      y={y}
-      width={width}
-      height={height}
-      fill="url(#stumpGradient)"
-      rx={3}
-    />
-    {/* 年轮效果 */}
-    <ellipse
-      cx={x}
-      cy={y + 5}
-      rx={width * 0.35}
-      ry={8}
-      fill="#5D4037"
-      opacity={0.6}
-    />
-    <ellipse
-      cx={x}
-      cy={y + 5}
-      rx={width * 0.25}
-      ry={6}
-      fill="#4E342E"
-      opacity={0.5}
-    />
-  </g>
+// --- 🎨 动漫风格配色与滤镜定义 ---
+const AnimeDefs = () => (
+  <defs>
+    {/* 树干纹理：卡通风格 */}
+    <linearGradient id="animeTrunkGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stopColor="#8D6E63" />
+      <stop offset="40%" stopColor="#A1887F" />
+      <stop offset="50%" stopColor="#BCAAA4" /> {/* 高光线条 */}
+      <stop offset="60%" stopColor="#8D6E63" />
+      <stop offset="100%" stopColor="#5D4037" />
+    </linearGradient>
+
+    {/* 树叶：赛璐珞风格明暗 */}
+    <linearGradient id="animeLeafLight" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stopColor="#81C784" />
+      <stop offset="100%" stopColor="#66BB6A" />
+    </linearGradient>
+    <linearGradient id="animeLeafShadow" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stopColor="#388E3C" />
+      <stop offset="100%" stopColor="#2E7D32" />
+    </linearGradient>
+
+    {/* 木牌纹理 */}
+    <filter id="woodGrain" x="0%" y="0%" width="100%" height="100%">
+      <feTurbulence
+        type="fractalNoise"
+        baseFrequency="0.5"
+        numOctaves="3"
+        result="noise"
+      />
+      <feColorMatrix type="saturate" values="0.2" />
+      <feBlend in="SourceGraphic" in2="noise" mode="multiply" />
+    </filter>
+
+    {/* 动漫发光效果 */}
+    <filter id="animeGlow">
+      <feGaussianBlur stdDeviation="2.5" result="coloredBlur" />
+      <feMerge>
+        <feMergeNode in="coloredBlur" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+
+    {/* 投影 */}
+    <filter id="dropShadowLoose">
+      <feDropShadow
+        dx="0"
+        dy="4"
+        stdDeviation="4"
+        floodColor="#000"
+        floodOpacity="0.25"
+      />
+    </filter>
+  </defs>
 );
 
-// 树干组件
-const TreeTrunk = (
-  { x, y, height, width = 24 } // 🔧 树干粗细：14 → 24（加粗约70%）
-) => (
-  <g className="tree-trunk">
-    <defs>
-      <linearGradient id="trunkGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-        <stop offset="0%" stopColor="#6D4C41" />
-        <stop offset="50%" stopColor="#8B5A2B" />
-        <stop offset="100%" stopColor="#6D4C41" />
-      </linearGradient>
-    </defs>
-    <rect
-      x={x - width / 2}
-      y={y - height}
-      width={width}
-      height={height}
-      fill="url(#trunkGradient)"
-      rx={3} // 圆角也相应增大
-    />
-  </g>
-);
-
-// 🍃 真实叶子组件
-const RealisticLeaf = ({
-  cx,
-  cy,
-  rotation = 0,
-  scale = 1,
-  isHovered = false,
-  index = 0,
-}) => {
-  // 每片叶子有独特的颜色变化
-  const greenVariations = [
-    { base: "#4CAF50", vein: "#2E7D32", highlight: "#66BB6A" },
-    { base: "#43A047", vein: "#1B5E20", highlight: "#81C784" },
-    { base: "#388E3C", vein: "#2E7D32", highlight: "#66BB6A" },
-  ];
-  const colorSet = greenVariations[index % 3];
+// --- 🌳 蓬松的动漫树冠 (Blob形状) ---
+const FluffyCrown = ({ cx, cy, color, r, delay = 0 }) => {
+  // 生成随机的云朵状边缘
+  const blobs = useMemo(() => {
+    return [
+      { dx: 0, dy: -r * 0.8, r: r * 0.6 },
+      { dx: r * 0.7, dy: -r * 0.3, r: r * 0.5 },
+      { dx: r * 0.8, dy: r * 0.4, r: r * 0.55 },
+      { dx: 0, dy: r * 0.8, r: r * 0.5 },
+      { dx: -r * 0.8, dy: r * 0.4, r: r * 0.55 },
+      { dx: -r * 0.7, dy: -r * 0.3, r: r * 0.5 },
+      { dx: 0, dy: 0, r: r * 0.8 }, // 中心填充
+    ];
+  }, [r]);
 
   return (
-    <g
-      transform={`translate(${cx}, ${cy}) rotate(${rotation}) scale(${scale})`}
+    <motion.g
+      animate={{ scale: [1, 1.02, 1], rotate: [-1, 1, -1] }}
+      transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay }}
     >
-      <defs>
-        {/* 叶子渐变 */}
-        <radialGradient id={`leafGradient-${index}`}>
-          <stop offset="0%" stopColor={colorSet.highlight} />
-          <stop offset="60%" stopColor={colorSet.base} />
-          <stop offset="100%" stopColor={colorSet.vein} />
-        </radialGradient>
+      {blobs.map((b, i) => (
+        <circle key={i} cx={cx + b.dx} cy={cy + b.dy} r={b.r} fill={color} />
+      ))}
+    </motion.g>
+  );
+};
 
-        {/* 叶子阴影 */}
-        <filter id={`leafShadow-${index}`}>
-          <feGaussianBlur in="SourceAlpha" stdDeviation="2" />
-          <feOffset dx="1" dy="2" result="offsetblur" />
-          <feComponentTransfer>
-            <feFuncA type="linear" slope="0.3" />
-          </feComponentTransfer>
-          <feMerge>
-            <feMergeNode />
-            <feMergeNode in="SourceGraphic" />
-          </feMerge>
-        </filter>
-      </defs>
+// --- 🪵 悬挂的木牌 (分支问题) ---
+const HangingSign = ({ x, y, text, onClick, delay }) => {
+  const [hover, setHover] = useState(false);
 
-      {/* 阴影层 */}
-      <ellipse
-        cx={2}
-        cy={3}
-        rx={isHovered ? 40 : 35}
-        ry={isHovered ? 24 : 20}
-        fill="rgba(0,0,0,0.2)"
-        filter="blur(3px)"
-      />
+  // 绳子长度
+  const ropeLen = 30;
 
-      {/* 叶片主体 - 使用path绘制真实形状 */}
-      <path
-        d={`
-          M 0,-20
-          C 12,-20 20,-16 26,-8
-          C 28,0 28,8 24,14
-          C 16,20 8,22 0,22
-          C -8,22 -16,20 -24,14
-          C -28,8 -28,0 -26,-8
-          C -20,-16 -12,-20 0,-20
-        `}
-        fill={`url(#leafGradient-${index})`}
-        stroke={colorSet.vein}
-        strokeWidth={isHovered ? 2 : 1.5}
-        filter={`url(#leafShadow-${index})`}
-        className="leaf-shape"
-      />
+  return (
+    <motion.g
+      initial={{ opacity: 0, y: -20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay }}
+      // 像风铃一样摆动
+      style={{ originX: `${x}px`, originY: `${y}px` }} // 设置旋转原点为绳子挂点
+    >
+      <motion.g
+        animate={{ rotate: hover ? 0 : [-2, 2, -2] }}
+        transition={{
+          duration: 3,
+          repeat: Infinity,
+          ease: "easeInOut",
+          delay: delay * 2,
+        }}
+      >
+        {/* 绳子 */}
+        <line
+          x1={x}
+          y1={y}
+          x2={x}
+          y2={y + ropeLen}
+          stroke="#5D4037"
+          strokeWidth="2"
+        />
 
-      {/* 主叶脉（中间） */}
-      <path
-        d="M 0,-18 Q 0,0 0,20"
-        stroke={colorSet.vein}
-        strokeWidth={1.5}
-        fill="none"
-        opacity={0.7}
-      />
-
-      {/* 侧叶脉（左侧） */}
-      <path
-        d="M 0,-12 Q -10,-8 -16,0"
-        stroke={colorSet.vein}
-        strokeWidth={0.8}
-        fill="none"
-        opacity={0.5}
-      />
-      <path
-        d="M 0,0 Q -12,4 -18,10"
-        stroke={colorSet.vein}
-        strokeWidth={0.8}
-        fill="none"
-        opacity={0.5}
-      />
-
-      {/* 侧叶脉（右侧） */}
-      <path
-        d="M 0,-12 Q 10,-8 16,0"
-        stroke={colorSet.vein}
-        strokeWidth={0.8}
-        fill="none"
-        opacity={0.5}
-      />
-      <path
-        d="M 0,0 Q 12,4 18,10"
-        stroke={colorSet.vein}
-        strokeWidth={0.8}
-        fill="none"
-        opacity={0.5}
-      />
-
-      {/* 高光效果 */}
-      <ellipse
-        cx={-5}
-        cy={-5}
-        rx={10}
-        ry={6}
-        fill="#fff"
-        opacity={isHovered ? 0.4 : 0.25}
-        transform="rotate(-20)"
-      />
-
-      {/* 边缘锯齿（模拟真实叶边） */}
-      {[0, 45, 90, 135, 180, 225, 270, 315].map((angle) => {
-        const rad = (angle * Math.PI) / 180;
-        const distance = 24;
-        const x = Math.cos(rad) * distance;
-        const y = Math.sin(rad) * distance;
-        return (
-          <circle
-            key={angle}
-            cx={x}
-            cy={y}
-            r={1.0}
-            fill={colorSet.vein}
-            opacity={0.3}
+        {/* 木牌组 */}
+        <g
+          transform={`translate(${x}, ${y + ropeLen})`}
+          onClick={onClick}
+          onMouseEnter={() => setHover(true)}
+          onMouseLeave={() => setHover(false)}
+          style={{ cursor: "pointer" }}
+        >
+          {/* 牌子背景 */}
+          <motion.rect
+            x={-60}
+            y={0}
+            width={120}
+            height={40}
+            rx={5}
+            fill="#D7CCC8"
+            stroke="#5D4037"
+            strokeWidth="2"
+            filter="url(#dropShadowLoose)"
+            whileHover={{ scale: 1.1, fill: "#EFEBE9" }}
           />
-        );
-      })}
+          {/* 木纹装饰线 */}
+          <path
+            d="M -50 10 L -20 10 M 10 30 L 50 30"
+            stroke="#A1887F"
+            strokeWidth="1"
+            opacity="0.5"
+          />
+
+          {/* 文字 */}
+          <text
+            x={0}
+            y={25}
+            textAnchor="middle"
+            fill="#3E2723"
+            fontSize="12"
+            fontWeight="bold"
+            style={{
+              pointerEvents: "none",
+              fontFamily: "'Comic Sans MS', 'Chalkboard SE', sans-serif",
+            }}
+          >
+            {text.length > 8 ? text.slice(0, 8) + "..." : text}
+          </text>
+
+          {/* Hover 提示气泡 */}
+          <AnimatePresence>
+            {hover && (
+              <motion.g
+                initial={{ opacity: 0, scale: 0 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0 }}
+              >
+                <rect
+                  x={-70}
+                  y={-35}
+                  width={140}
+                  height={25}
+                  rx={12}
+                  fill="#FFF9C4"
+                  stroke="#FBC02D"
+                  strokeWidth={1.5}
+                />
+                <text
+                  x={0}
+                  y={-18}
+                  textAnchor="middle"
+                  fontSize={10}
+                  fill="#F57F17"
+                  fontWeight="bold"
+                >
+                  ✨ 查看详情
+                </text>
+              </motion.g>
+            )}
+          </AnimatePresence>
+        </g>
+      </motion.g>
+    </motion.g>
+  );
+};
+
+// --- ✨ 飘落粒子 ---
+const Particles = ({ width, height }) => {
+  const particles = Array.from({ length: 12 });
+  return (
+    <g style={{ pointerEvents: "none" }}>
+      {particles.map((_, i) => (
+        <motion.circle
+          key={i}
+          r={Math.random() * 2 + 1}
+          fill="#FFF"
+          opacity={0.6}
+          initial={{ x: Math.random() * width, y: Math.random() * height - 50 }}
+          animate={{
+            y: [null, height],
+            x: [null, Math.random() * width],
+            opacity: [0, 1, 0],
+          }}
+          transition={{
+            duration: Math.random() * 5 + 5,
+            repeat: Infinity,
+            ease: "linear",
+            delay: Math.random() * 5,
+          }}
+        />
+      ))}
     </g>
   );
 };
 
-// 更新 Branch 组件使用真实叶子
-const Branch = ({ x, y, side, issue, onClick, index }) => {
-  const [isHovered, setIsHovered] = useState(false);
-  const branchLength = 100; // 🔧 树枝长度：45 → 65（延长约45%）
-  const endX = x + side * branchLength;
-  const endY = y - 12; // 向上倾斜角度也加大（-8 → -12）
-
-  // 根据分枝方向调整叶子位置（向内扩大）
-  const leafOffset = -side * 30; // 向右的分枝向左扩大，向左的分枝向右扩大
-  const leafX = endX + leafOffset;
-
-  return (
-    <motion.g
-      className="branch-group"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-      onClick={onClick}
-      initial={{ opacity: 0, x: -side * 20 }}
-      animate={{ opacity: 1, x: 0 }}
-      transition={{ delay: 0.3 + index * 0.15, type: "spring" }}
-      whileHover={{ scale: 1.05 }}
-    >
-      {/* 分支树枝 */}
-      <line
-        x1={x}
-        y1={y}
-        x2={endX}
-        y2={endY}
-        stroke="#8B5A2B"
-        strokeWidth={isHovered ? 14 : 12} // 树枝粗细
-        strokeLinecap="round"
-      />
-
-      {/* 真实叶子 - 向内扩大 */}
-      <motion.g
-        animate={{
-          rotate: [side * -5, side * 5, side * -5],
-        }}
-        transition={{
-          repeat: Infinity,
-          duration: 3 + index * 0.5,
-          ease: "easeInOut",
-        }}
-      >
-        <RealisticLeaf
-          cx={leafX}
-          cy={endY}
-          rotation={side * 45}
-          scale={isHovered ? 2.3 : 1.8} // 🔧 再缩小0.2倍叶子大小
-          isHovered={isHovered}
-          index={index}
-        />
-      </motion.g>
-
-      {/* 问题编号 */}
-      <text
-        x={leafX}
-        y={endY}
-        fontSize={11}
-        fill="#fff"
-        textAnchor="middle"
-        fontWeight="bold"
-        className="branch-number"
-        style={{ pointerEvents: "none" }}
-      >
-        #{index + 2}
-      </text>
-
-      {/* 问题标题 - 直接显示在叶子上 */}
-      <text
-        x={leafX}
-        y={endY + 8}
-        fontSize={10}
-        fill="#fff"
-        textAnchor="middle"
-        fontWeight="500"
-        style={{ pointerEvents: "none" }}
-      >
-        {issue.title.length > 12 ? issue.title.slice(0, 12) + "..." : issue.title}
-      </text>
-
-      {/* Hover 时显示完整标题预览 */}
-      {isHovered && (
-        <motion.g initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-          <defs>
-            <linearGradient
-              id={`previewGradient-${index}`}
-              x1="0%"
-              y1="0%"
-              x2="0%"
-              y2="100%"
-            >
-              <stop offset="0%" stopColor="#4CAF50" />
-              <stop offset="100%" stopColor="#2E7D32" />
-            </linearGradient>
-            <filter id={`previewShadow-${index}`}>
-              <feDropShadow dx="0" dy="2" stdDeviation="3" floodOpacity="0.3" />
-            </filter>
-          </defs>
-          <rect
-            x={leafX - 90}
-            y={endY + 35}
-            width={180}
-            height={50}
-            fill={`url(#previewGradient-${index})`}
-            stroke="#81C784"
-            strokeWidth={2}
-            rx={8}
-            filter={`url(#previewShadow-${index})`}
-          />
-          <text
-            x={leafX}
-            y={endY + 65}
-            fontSize={16}
-            fill="#B3E5FC"
-            textAnchor="middle"
-            fontWeight="600"
-            fontFamily="'Georgia', 'Times New Roman', serif"
-          >
-            {issue.title.length > 18
-              ? issue.title.slice(0, 18) + "..."
-              : issue.title}
-          </text>
-        </motion.g>
-      )}
-    </motion.g>
-  );
-};
-
-// 真实树冠组件（由多片叶子组成）
-const TreeCrown = ({ x, y, issue, onClick }) => {
-  const [isHovered, setIsHovered] = useState(false);
-
-  return (
-    <motion.g
-      className="tree-crown-group"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-      onClick={onClick}
-      initial={{ opacity: 0, y: -30 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 0.2, type: "spring", stiffness: 120 }}
-      whileHover={{ scale: 1.08 }}
-    >
-      {/* 底层阴影 */}
-      <ellipse
-        cx={x}
-        cy={y + 10}
-        rx={50}
-        ry={35}
-        fill="rgba(0,0,0,0.15)"
-        filter="blur(8px)"
-      />
-      {/* 多层真实叶子组成树冠 */}
-      {/* 后排（暗） */}
-      {[
-        { angle: 0, distance: 50, rotation: 20 }, // 🔧 距离扩大：40→50
-        { angle: 60, distance: 52, rotation: -30 }, // 42→52
-        { angle: 120, distance: 48, rotation: 15 }, // 38→48
-        { angle: 180, distance: 50, rotation: -20 }, // 40→50
-        { angle: 240, distance: 52, rotation: 25 }, // 42→52
-        { angle: 300, distance: 48, rotation: -15 }, // 38→48
-      ].map((leaf, i) => {
-        const rad = (leaf.angle * Math.PI) / 180;
-        const lx = x + Math.cos(rad) * leaf.distance;
-        const ly = y + Math.sin(rad) * leaf.distance;
-        return (
-          <RealisticLeaf
-            key={`back-${i}`}
-            cx={lx}
-            cy={ly}
-            rotation={leaf.rotation}
-            scale={1.6} // 🔧 叶子大小：1.3 → 1.6（放大23%）
-            index={i + 10}
-            isHovered={false}
-          />
-        );
-      })}
-      {/* 中排（正常） */}
-      {[
-        { angle: 30, distance: 38, rotation: 10 }, // 🔧 距离扩大：30→38
-        { angle: 90, distance: 40, rotation: -20 }, // 32→40
-        { angle: 150, distance: 36, rotation: 15 }, // 28→36
-        { angle: 210, distance: 38, rotation: -10 }, // 30→38
-        { angle: 270, distance: 40, rotation: 20 }, // 32→40
-        { angle: 330, distance: 36, rotation: -15 }, // 28→36
-      ].map((leaf, i) => {
-        const rad = (leaf.angle * Math.PI) / 180;
-        const lx = x + Math.cos(rad) * leaf.distance;
-        const ly = y + Math.sin(rad) * leaf.distance;
-        return (
-          <RealisticLeaf
-            key={`mid-${i}`}
-            cx={lx}
-            cy={ly}
-            rotation={leaf.rotation}
-            scale={1.8} // 🔧 叶子大小：1.5 → 1.8（放大20%）
-            index={i}
-            isHovered={isHovered}
-          />
-        );
-      })}
-      {/* 前排（亮） */}
-      {[
-        { angle: 15, distance: 26, rotation: 5 }, // 🔧 距离扩大：20→26
-        { angle: 75, distance: 28, rotation: -10 }, // 22→28
-        { angle: 135, distance: 24, rotation: 8 }, // 18→24
-        { angle: 195, distance: 26, rotation: -5 }, // 20→26
-        { angle: 255, distance: 28, rotation: 10 }, // 22→28
-        { angle: 315, distance: 24, rotation: -8 }, // 18→24
-      ].map((leaf, i) => {
-        const rad = (leaf.angle * Math.PI) / 180;
-        const lx = x + Math.cos(rad) * leaf.distance;
-        const ly = y + Math.sin(rad) * leaf.distance;
-        return (
-          <RealisticLeaf
-            key={`front-${i}`}
-            cx={lx}
-            cy={ly}
-            rotation={leaf.rotation}
-            scale={2.0} // 🔧 叶子大小：1.6 → 2.0（放大25%）
-            index={i + 3}
-            isHovered={isHovered}
-          />
-        );
-      })}
-      {/* 中央信息背景 */}
-      <circle cx={x} cy={y} r={38} fill="rgba(46, 125, 50, 0.85)" />{" "}
-      {/* 🔧 半径：30→38（增大27%） */}
-      {/* 问题编号 */}
-      <text
-        x={x}
-        y={y - 12}
-        fontSize={14}
-        fill="#FFD700"
-        textAnchor="middle"
-        fontWeight="bold"
-      >
-        #1
-      </text>
-      {/* 标题 */}
-      <text
-        x={x}
-        y={y + 5}
-        fontSize={11}
-        fill="#fff"
-        textAnchor="middle"
-        fontWeight="500"
-      >
-        {issue.title.length > 10 ? issue.title.slice(0, 10) : issue.title}
-      </text>
-      {issue.title.length > 10 && (
-        <text
-          x={x}
-          y={y + 18}
-          fontSize={11}
-          fill="#fff"
-          textAnchor="middle"
-          fontWeight="500"
-        >
-          {issue.title.slice(10, 20)}...
-        </text>
-      )}
-      {/* Hover 提示 */}
-      {isHovered && (
-        <motion.g
-          initial={{ opacity: 0, y: -5 }}
-          animate={{ opacity: 1, y: 0 }}
-        >
-          <rect
-            x={x - 70}
-            y={y + 42}
-            width={140}
-            height={28}
-            fill="#4CAF50"
-            stroke="#81C784"
-            strokeWidth={2}
-            rx={6}
-            opacity={0.95}
-          />
-          <text
-            x={x}
-            y={y + 61}
-            fontSize={13}
-            fill="#B3E5FC"
-            textAnchor="middle"
-            fontWeight="600"
-            fontFamily="'Georgia', 'Times New Roman', serif"
-          >
-            📖 点击查看详情
-          </text>
-        </motion.g>
-      )}
-    </motion.g>
-  );
-};
-
-// 主树组件
-export default function SingleIssueTree({ issues = [], pageSize = 5, compact = false }) {
+// --- 🌳 主组件 ---
+export default function SingleIssueTree({
+  issues = [],
+  pageSize = 5,
+  compact = false,
+}) {
   const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(0);
+
+  // 分页逻辑
   const effectivePageSize = Math.max(pageSize, 1);
   const totalPages = Math.ceil(issues.length / effectivePageSize);
   const safeCurrentPage =
     totalPages === 0 ? 0 : Math.min(currentPage, totalPages - 1);
-  const startIndex = safeCurrentPage * effectivePageSize;
-  const displayIssues = issues.slice(
-    startIndex,
-    startIndex + effectivePageSize
+  const currentIssues = issues.slice(
+    safeCurrentPage * effectivePageSize,
+    safeCurrentPage * effectivePageSize + effectivePageSize
   );
 
-  useEffect(() => {
-    if (safeCurrentPage !== currentPage) {
-      setCurrentPage(safeCurrentPage);
-    }
-  }, [safeCurrentPage, currentPage]);
+  const mainIssue = currentIssues[0];
+  const branchIssues = currentIssues.slice(1);
 
-  const handlePrevPage = () => {
-    setCurrentPage((prev) => Math.max(prev - 1, 0));
-  };
+  const handleNext = () =>
+    setCurrentPage((p) => Math.min(p + 1, totalPages - 1));
+  const handlePrev = () => setCurrentPage((p) => Math.max(p - 1, 0));
 
-  const handleNextPage = () => {
-    if (totalPages === 0) return;
-    setCurrentPage((prev) => Math.min(prev + 1, totalPages - 1));
-  };
-
-  // SVG 画布参数
+  // 树的参数
   const centerX = 250;
-  const stumpY = 420;
-  const stumpHeight = 35;
-  const trunkHeight =
-    displayIssues.length === 0 ? 0 : 200 + (displayIssues.length - 1) * 25; // 🔧 树干高度
+  const startY = 450;
+  const trunkHeight = 280;
+  const curveIntensity = 20; // 树干弯曲度
 
-  const handleIssueClick = (issue) => {
-    navigate(`/detail/${issue.id}`);
-  };
-
-  // 无问题状态
-  // 如果 compact 模式，只绘制简化的树干和分支（不需要后端数据）
-  if (compact) {
-    const cCenterX = 180;
-    const cStumpY = 200;
-    const cTrunkHeight = 120;
-    const branchCount = 4;
-    const branchSpacing = cTrunkHeight / (branchCount + 1);
-
-    return (
-      <div className="single-tree-container compact-tree">
-        <svg width={360} height={260} className="tree-svg">
-          <TreeStump x={cCenterX} y={cStumpY} width={120} height={20} />
-          <TreeTrunk x={cCenterX} y={cStumpY} height={cTrunkHeight} width={18} />
-
-          {/* 简化分支：仅线条表示 */}
-          {Array.from({ length: branchCount }).map((_, i) => {
-            const y = cStumpY - branchSpacing * (i + 1);
-            const side = i % 2 === 0 ? 1 : -1;
-            const endX = cCenterX + side * (80 + i * 8);
-            const endY = y - 6;
-            return (
-              <line
-                key={i}
-                x1={cCenterX}
-                y1={y}
-                x2={endX}
-                y2={endY}
-                stroke="#8B5A2B"
-                strokeWidth={6}
-                strokeLinecap="round"
-              />
-            );
-          })}
-        </svg>
-      </div>
-    );
-  }
-
-  const mainIssue = displayIssues[0];
-  const branches = displayIssues.slice(1);
-
-  // 计算分支位置
-  const branchSpacing =
-    branches.length > 0 ? trunkHeight / (branches.length + 1) : 0;
+  // 紧凑模式（Loading/Empty State）
+  if (compact)
+    return <div style={{ textAlign: "center" }}>Loading Anime Tree...</div>;
 
   return (
-    <div className="single-tree-container">
-      <svg width={500} height={480} className="tree-svg">
-        {/* 树桩 */}
-        <TreeStump x={centerX} y={stumpY} />
+    <div
+      className="single-tree-container"
+      style={{
+        background: "linear-gradient(to top, #e0f7fa 0%, #ffffff 80%)", // 蓝天背景
+        borderRadius: "20px",
+        boxShadow: "inset 0 0 30px rgba(255,255,255,0.8)",
+        position: "relative",
+        overflow: "hidden",
+        fontFamily: "'Comic Sans MS', cursive, sans-serif", // 强行可爱字体
+      }}
+    >
+      <svg
+        width={500}
+        height={500}
+        viewBox="0 0 500 500"
+        className="anime-tree-svg"
+      >
+        <AnimeDefs />
 
-        {/* 树干 */}
-        <TreeTrunk x={centerX} y={stumpY} height={trunkHeight} />
+        {/* 背景光晕 */}
+        <circle
+          cx={centerX}
+          cy={150}
+          r={120}
+          fill="url(#animeLeafLight)"
+          opacity="0.2"
+          filter="blur(40px)"
+        />
 
-        {/* 分支（第2-5个问题） */}
-        {branches.map((issue, i) => {
-          const y = stumpY - branchSpacing * (i + 1);
-          const side = i % 2 === 0 ? 1 : -1; // 左右交替
+        {/* --- 树干 (绘制有机的贝塞尔曲线) --- */}
+        <motion.path
+          d={`
+            M ${centerX - 30} ${startY} 
+            Q ${centerX - 40} ${startY - 100}, ${centerX - 15} ${
+            startY - trunkHeight
+          } 
+            L ${centerX + 15} ${startY - trunkHeight}
+            Q ${centerX + 40} ${startY - 100}, ${centerX + 30} ${startY} 
+            Z
+          `}
+          fill="url(#animeTrunkGrad)"
+          stroke="#4E342E"
+          strokeWidth="2"
+          initial={{ pathLength: 0 }}
+          animate={{ pathLength: 1 }}
+          transition={{ duration: 1.5, ease: "easeInOut" }}
+        />
+
+        {/* --- 树枝 (连接到挂牌子的地方) --- */}
+        {branchIssues.map((_, i) => {
+          const yPos = startY - 80 - i * 50;
+          const isLeft = i % 2 !== 0; // 左右交替
+          const xEnd = isLeft ? centerX - 100 : centerX + 100;
+          const controlX = isLeft ? centerX - 20 : centerX + 20;
+
           return (
-            <Branch
-              key={issue.id}
-              x={centerX}
-              y={y}
-              side={side}
-              issue={issue}
-              index={i}
-              onClick={() => handleIssueClick(issue)}
+            <motion.path
+              key={`branch-${i}`}
+              d={`M ${centerX} ${yPos + 20} Q ${controlX} ${
+                yPos - 10
+              }, ${xEnd} ${yPos}`}
+              fill="none"
+              stroke="#5D4037"
+              strokeWidth="6"
+              strokeLinecap="round"
+              initial={{ pathLength: 0 }}
+              animate={{ pathLength: 1 }}
+              transition={{ delay: 0.5 + i * 0.2 }}
             />
           );
         })}
 
-        {/* 树冠（第1个问题） */}
-        <TreeCrown
-          x={centerX}
-          y={stumpY - trunkHeight - 40}
-          issue={mainIssue}
-          onClick={() => handleIssueClick(mainIssue)}
+        {/* --- 树冠 (分层绘制) --- */}
+        {/* 后层阴影叶子 */}
+        <FluffyCrown
+          cx={centerX}
+          cy={startY - trunkHeight - 20}
+          r={85}
+          color="url(#animeLeafShadow)"
+          delay={0.2}
         />
+        {/* 前层高光叶子 */}
+        <FluffyCrown
+          cx={centerX}
+          cy={startY - trunkHeight - 30}
+          r={75}
+          color="url(#animeLeafLight)"
+          delay={0.3}
+        />
+
+        {/* --- 挂在树枝上的牌子 --- */}
+        {branchIssues.map((issue, i) => {
+          const yPos = startY - 80 - i * 50;
+          const isLeft = i % 2 !== 0;
+          const xEnd = isLeft ? centerX - 100 : centerX + 100;
+          return (
+            <HangingSign
+              key={issue.id}
+              x={xEnd}
+              y={yPos}
+              text={issue.title}
+              onClick={() => navigate(`/detail/${issue.id}`)}
+              delay={0.8 + i * 0.1}
+            />
+          );
+        })}
+
+        {/* --- 顶部主要问题 (魔法果实/大牌子) --- */}
+        {mainIssue && (
+          <motion.g
+            initial={{ scale: 0, y: 50 }}
+            animate={{ scale: 1, y: 0 }}
+            transition={{ type: "spring", bounce: 0.5, delay: 1 }}
+            onClick={() => navigate(`/detail/${mainIssue.id}`)}
+            style={{ cursor: "pointer" }}
+          >
+            {/* 光晕背景 */}
+            <circle
+              cx={centerX}
+              cy={startY - trunkHeight - 30}
+              r={45}
+              fill="#FFF176"
+              opacity="0.6"
+              filter="blur(10px)"
+            />
+
+            {/* 核心UI */}
+            <circle
+              cx={centerX}
+              cy={startY - trunkHeight - 30}
+              r={40}
+              fill="#FFEB3B"
+              stroke="#F57F17"
+              strokeWidth="3"
+              filter="url(#animeGlow)"
+            />
+            <text
+              x={centerX}
+              y={startY - trunkHeight - 35}
+              textAnchor="middle"
+              fontSize="16"
+              fontWeight="bold"
+              fill="#E65100"
+            >
+              #1
+            </text>
+            <text
+              x={centerX}
+              y={startY - trunkHeight - 15}
+              textAnchor="middle"
+              fontSize="10"
+              fontWeight="bold"
+              fill="#BF360C"
+            >
+              {mainIssue.title.length > 6
+                ? mainIssue.title.slice(0, 5) + ".."
+                : mainIssue.title}
+            </text>
+
+            {/* 点击提示圆环动画 */}
+            <motion.circle
+              cx={centerX}
+              cy={startY - trunkHeight - 30}
+              r={42}
+              stroke="#FFF"
+              strokeWidth="2"
+              fill="none"
+              animate={{ scale: [1, 1.3], opacity: [1, 0] }}
+              transition={{ duration: 1.5, repeat: Infinity }}
+            />
+          </motion.g>
+        )}
+
+        {/* --- 地面草丛 --- */}
+        <ellipse cx={centerX} cy={startY} rx={120} ry={20} fill="#AED581" />
+        <path
+          d={`M ${centerX - 80} ${startY} q 10 -20 20 0`}
+          stroke="#7CB342"
+          fill="none"
+          strokeWidth="2"
+        />
+        <path
+          d={`M ${centerX + 60} ${startY + 5} q 10 -15 20 0`}
+          stroke="#7CB342"
+          fill="none"
+          strokeWidth="2"
+        />
+
+        {/* 粒子特效 */}
+        <Particles width={500} height={500} />
       </svg>
 
-      {/* 分页控制 */}
+      {/* --- 动漫风格分页控制 --- */}
       {totalPages > 1 && (
-        <div className="tree-pagination">
-          <button
-            className="page-btn"
-            onClick={handlePrevPage}
-            disabled={safeCurrentPage === 0}
-          >
-            上一页
-          </button>
-          <span className="page-indicator">
-            第 {safeCurrentPage + 1} / {totalPages} 页
-          </span>
-          <button
-            className="page-btn"
-            onClick={handleNextPage}
-            disabled={safeCurrentPage === totalPages - 1}
-          >
-            下一页
-          </button>
-        </div>
-      )}
-
-      {/* 问题总数提示 */}
-      {totalPages > 1 && (
-        <motion.div
-          className="more-issues-hint"
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
+        <div
+          className="anime-pagination"
+          style={{
+            position: "absolute",
+            bottom: "20px",
+            width: "100%",
+            display: "flex",
+            justifyContent: "center",
+            gap: "15px",
+            alignItems: "center",
+          }}
         >
-          共 {issues.length} 个问题，使用分页查看更多
-        </motion.div>
+          <motion.button
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+            onClick={handlePrev}
+            disabled={safeCurrentPage === 0}
+            style={{
+              background: "#FFAB91",
+              border: "3px solid #D84315",
+              borderRadius: "50%",
+              width: "40px",
+              height: "40px",
+              color: "#FFF",
+              fontWeight: "bold",
+              cursor: "pointer",
+              opacity: safeCurrentPage === 0 ? 0.5 : 1,
+            }}
+          >
+            ◀
+          </motion.button>
+
+          <div
+            style={{
+              background: "rgba(255,255,255,0.9)",
+              padding: "5px 15px",
+              borderRadius: "15px",
+              border: "2px solid #81C784",
+              color: "#2E7D32",
+              fontWeight: "bold",
+            }}
+          >
+            LV.{safeCurrentPage + 1} / {totalPages}
+          </div>
+
+          <motion.button
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+            onClick={handleNext}
+            disabled={safeCurrentPage === totalPages - 1}
+            style={{
+              background: "#FFAB91",
+              border: "3px solid #D84315",
+              borderRadius: "50%",
+              width: "40px",
+              height: "40px",
+              color: "#FFF",
+              fontWeight: "bold",
+              cursor: "pointer",
+              opacity: safeCurrentPage === totalPages - 1 ? 0.5 : 1,
+            }}
+          >
+            ▶
+          </motion.button>
+        </div>
       )}
     </div>
   );
