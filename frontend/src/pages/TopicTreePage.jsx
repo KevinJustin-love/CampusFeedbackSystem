@@ -1,8 +1,8 @@
 // TopicTreePage.jsx - 沉浸式动漫风格页面
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import SingleIssueTree from "./SingleIssueTree"; // 确保路径正确
-import { fetchIssues } from "../components/functions/FetchIssues"; // 确保路径正确
+import SingleIssueTree from "../components/SingleIssueTree";
+import { fetchIssues } from "../components/functions/FetchIssues"; 
 import { motion, AnimatePresence } from "framer-motion";
 
 // 引入一个漂亮的动漫风格风景图 (使用 unsplash 源作为示例，实际使用可替换本地资源)
