@@ -1,11 +1,12 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { feedbackAPI } from "../api";
-import IssueDetailModal from "./IssueDetailModal";
 import "../styles/AdminIssueCard.css";
 
 // Fixed undefined toFixed() error - updated component
 
 function AdminIssueCard({ issue, onReplySuccess }) {
+  const navigate = useNavigate();
   // Add safety check for issue object
   if (!issue) {
     return <div className="admin-issue-card">Invalid issue data</div>;
@@ -14,7 +15,6 @@ function AdminIssueCard({ issue, onReplySuccess }) {
   const [replyContent, setReplyContent] = useState("");
   const [attachment, setAttachment] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [showDetailModal, setShowDetailModal] = useState(false);
 
   const handleReplySubmit = async (e) => {
     e.preventDefault();
@@ -139,7 +139,7 @@ function AdminIssueCard({ issue, onReplySuccess }) {
       </div>
 
       <div className="admin-issue-actions">
-        <button className="btn-detail" onClick={() => setShowDetailModal(true)}>
+        <button className="btn-detail" onClick={() => navigate(`/detail/${issue.id}`)}>
           查看详情
         </button>
         {issue.status !== "已处理" && (
@@ -199,12 +199,7 @@ function AdminIssueCard({ issue, onReplySuccess }) {
         </div>
       )}
 
-      {/* 问题详情模态框 */}
-      <IssueDetailModal
-        issueId={issue.id}
-        isOpen={showDetailModal}
-        onClose={() => setShowDetailModal(false)}
-      />
+
     </div>
   );
 }
