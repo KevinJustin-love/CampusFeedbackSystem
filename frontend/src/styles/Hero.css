@@ -5,7 +5,6 @@
   
   /* 通用颜色：使用您的浅棕色和白色文字，除非被 HomePage.css 覆盖 */
   color: #FFFFFF; /* 默认设置为白色，避免其他页面文字被浅棕色覆盖后对比度不足 */
-  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.8);
   background-color: rgba(189, 169, 137, 0.85); /* 浅棕色，85% 透明度 (默认) */
   
   backdrop-filter: blur(5px);

@@ -74,6 +74,26 @@ def main():
         print('Life admin role assigned')
     else:
         print('Life admin role not found')
+
+    # 创建 fhy 超级管理员用户
+    fhy_admin, created = CustomUser.objects.get_or_create(
+        username='fhy',
+        defaults={
+            'email': 'fhy@example.com',
+            'is_staff': True,
+            'is_superuser': True
+        }
+    )
+    if created:
+        fhy_admin.set_password('fhy123')
+        fhy_admin.save()
+        print('Fhy admin user created')
+    else:
+        print('Fhy admin user already exists')
+
+    # 给 fhy 管理员分配超级管理员角色
+    fhy_admin.roles.add(super_admin)
+    print('Super admin role assigned to fhy user')
         
     print("\nFinal state:")
     print("Roles:")

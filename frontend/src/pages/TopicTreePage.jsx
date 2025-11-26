@@ -5,9 +5,9 @@ import SingleIssueTree from "../components/SingleIssueTree";
 import { fetchIssues } from "../components/functions/FetchIssues"; 
 import { motion, AnimatePresence } from "framer-motion";
 
-// 引入一个漂亮的动漫风格风景图 (使用 unsplash 源作为示例，实际使用可替换本地资源)
+// 引入一个漂亮的动漫风格风景图 (使用指定图片源)
 const ANIME_BG_URL =
-  "https://images.unsplash.com/photo-1518893386856-93d138285044?q=80&w=2500&auto=format&fit=crop";
+  "https://bpic.588ku.com/back_pic/05/60/82/115b446747546b6.jpg";
 // 备选: 蓝天草地风格
 
 const TopicTreePage = () => {
