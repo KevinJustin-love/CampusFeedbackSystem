@@ -67,7 +67,6 @@
 .homeContainer .dashboard-title {
   /* 导航栏顶层文字（例如 Navbar 中的图标）使用白色 */
   color: #ffffff;
-  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.8);
 }
 
 /* 导航栏左侧内容文字：白色高亮 */
@@ -126,7 +125,6 @@
 .hotspotLabel {
   font-size: 12px;
   letter-spacing: 1px;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
   display: inline-block;
   position: relative;
   z-index: 1;
