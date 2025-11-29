@@ -26,12 +26,20 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-3vy3i)6ndjyey6#s(+tz-^^v15%-gi52ywa=1aegbjb89atcp4"
+SECRET_KEY = os.getenv(
+    "DJANGO_SECRET_KEY", "django-insecure-3vy3i)6ndjyey6#s(+tz-^^v15%-gi52ywa=1aegbjb89atcp4"
+)
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv("DJANGO_DEBUG", "False").lower() in {"true", "1", "yes"}
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = [
+    host.strip()
+    for host in os.getenv(
+        "DJANGO_ALLOWED_HOSTS", "localhost,127.0.0.1,dovelink.com,.dovelink.com"
+    ).split(",")
+    if host.strip()
+]
 
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
@@ -142,6 +150,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
 STATIC_URL = "static/"
+STATIC_ROOT = BASE_DIR / "staticfiles"
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
@@ -150,13 +159,16 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-CORS_ALLOW_ALL_ORIGINS = True
-CORS_ALLOWS_CREDENTIALS = True
+CORS_ALLOW_ALL_ORIGINS = False
+CORS_ALLOW_CREDENTIALS = True
 
-CORS_TRUSTED_ORIGINS = [
-    "http://localhost:5173",
-    "http://127.0.0.1:5173",
-]
+_default_cors_origins = "http://localhost:5173,http://127.0.0.1:5173,https://dovelink.com,https://www.dovelink.com,https://api.dovelink.com"
+
+def _build_origin_list(env_var: str, defaults: str) -> list[str]:
+    return [origin.strip() for origin in os.getenv(env_var, defaults).split(",") if origin.strip()]
+
+CORS_ALLOWED_ORIGINS = _build_origin_list("DJANGO_CORS_ALLOWED_ORIGINS", _default_cors_origins)
+CSRF_TRUSTED_ORIGINS = _build_origin_list("DJANGO_CSRF_TRUSTED_ORIGINS", _default_cors_origins)
 
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 OPENAI_BASE_URL = os.getenv("OPENAI_BASE_URL")
