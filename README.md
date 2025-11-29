@@ -56,6 +56,10 @@ Frontend docs: [frontend/README.md](https://github.com/KevinJustin-love/CampusFe
 
 Backend docs: [backend/README.md](https://github.com/KevinJustin-love/CampusFeedbackSystem/blob/main/backend/README.md)
 
+## 部署到 dovelink.com
+
+需要上线到正式域名时，可参考中文部署手册：[DEPLOYMENT_CN.md](./DEPLOYMENT_CN.md)。
+
 ## Cooperation Guidelines
 
 Plz strictly obey the following content for our collaboration.
