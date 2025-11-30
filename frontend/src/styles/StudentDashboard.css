@@ -5,15 +5,16 @@
   align-items: center; /* 垂直居中对齐 */
   padding-top: 12px;
   padding-bottom: 12px;
-  margin-bottom: 0px;
-  border-bottom: 2px dashed #d1bfa3; /* 整个控制区域的分隔线 */
+  padding-right: 175px;
+  margin-right: 0px;
+  border-bottom: 2px dashed #d1bfa3; /* 分隔线 */
   font-family: "Georgia", "Times New Roman", serif;
 }
 
 /* 信件风格：导航栏 - 关键修正：移除所有可能造成偏移的垂直 padding 和 margin */
 .issues-navbar {
   display: flex;
-  gap: 12px;
+  gap: 20px;
   padding: 0; /* 移除垂直内边距 */
   margin: 0; /* 移除垂直外边距 */
   border-bottom: none; /* 移除原来的底部边框 */
@@ -73,9 +74,24 @@
 
 /* 背景与内容容器 */
 .content-wrapper {
-  max-width: 80%;
-  margin: 0 auto;
-  padding: 16px;
+  flex: 1;
+  max-width: 1200px;
+  width: 100%;
+}
+
+/* 主布局容器 - 包含侧边栏和主内容 */
+.dashboard-main-layout {
+  display: flex;
+  max-width: 1600px;
+  margin: 0;
+  margin-left: 30px;
+  padding: 40px 240px 20px 0px;
+  align-items: flex-start;
+}
+
+/* 确保侧边栏顶部对齐 */
+.dashboard-main-layout > .user-issues-sidebar {
+  margin-top: 50px; /* 与 dashboard-controls-header 的 padding-top 对齐 */
 }
 
 /* 搜索结果提示为信件脚注 */
@@ -97,14 +113,6 @@
 }
 
 /* 确保按钮容器在右侧 */
-.content-wrapper {
-  /* 确保按钮和内容可以并排，或根据需要调整布局 */
-  /* 添加一个用于包裹按钮的 Flex 容器 */
-  position: relative;
-  padding: 20px;
-  width: 80%;
-}
-
 /* 调整 top-buttons-container 的样式 */
 .top-buttons-container {
   display: flex;
