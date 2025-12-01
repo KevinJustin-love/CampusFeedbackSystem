@@ -6,6 +6,7 @@ import FilterBar from "../components/FilterBar";
 import Pagination from "../components/Pagination";
 import IssueGrid from "../components/IssueGrid";
 import UserIssuesSidebar from "../components/UserIssuesSidebar";
+import TrendingIssues from "../components/TrendingIssues";
 
 import "../styles/StudentDashboard.css";
 
@@ -162,6 +163,7 @@ const StudentDashboard = ({ user }) => {
             />
           )}
         </div>
+        <TrendingIssues />
       </div>
     </div>
   );

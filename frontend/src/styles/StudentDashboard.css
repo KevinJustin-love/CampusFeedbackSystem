@@ -76,15 +76,16 @@
   flex: 1;
   max-width: 1200px;
   width: 100%;
+  min-width: 0;
 }
 
-/* 主布局容器 - 包含侧边栏和主内容 */
+/* 主布局容器 - 包含左侧边栏、主内容和右侧边栏 */
 .dashboard-main-layout {
   display: flex;
-  max-width: 1600px;
-  margin: 0;
-  margin-left: 30px;
-  padding: 40px 240px 20px 0px;
+  max-width: 1800px;
+  margin: 0 auto;
+  padding: 40px 20px 20px 20px;
+  gap: 20px;
   align-items: flex-start;
 }
 
