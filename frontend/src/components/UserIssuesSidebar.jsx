@@ -23,8 +23,8 @@ const UserIssuesSidebar = ({ user }) => {
           },
         });
 
-        // 只取前8个问题
-        const issues = response.data.slice(0, 8);
+        // 获取所有问题，最多显示10个
+        const issues = response.data.slice(0, 10);
         setUserIssues(issues);
       } catch (error) {
         console.error("获取用户问题失败:", error);
@@ -38,10 +38,6 @@ const UserIssuesSidebar = ({ user }) => {
 
   const handleIssueClick = (issueId) => {
     navigate(`/detail/${issueId}`);
-  };
-
-  const handleShowMore = () => {
-    navigate("/dashboard?tab=mine");
   };
 
   if (!user || !user.id) {
@@ -60,7 +56,7 @@ const UserIssuesSidebar = ({ user }) => {
         ) : userIssues.length === 0 ? (
           <div className="sidebar-empty">暂无提交的问题</div>
         ) : (
-          <>
+          <div className="issues-scroll-container">
             <ul className="issues-list">
               {userIssues.map((issue) => (
                 <li
@@ -79,12 +75,7 @@ const UserIssuesSidebar = ({ user }) => {
                 </li>
               ))}
             </ul>
-            {userIssues.length >= 8 && (
-              <button className="show-more-btn" onClick={handleShowMore}>
-                查看更多...
-              </button>
-            )}
-          </>
+          </div>
         )}
       </div>
     </div>

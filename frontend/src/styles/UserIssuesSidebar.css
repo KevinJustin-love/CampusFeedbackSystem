@@ -27,6 +27,13 @@
   padding: 8px 0;
 }
 
+/* 滚动容器 */
+.issues-scroll-container {
+  max-height: 480px; /* 大约可以显示10个问题项 */
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
 .sidebar-loading,
 .sidebar-empty {
   padding: 20px;
@@ -98,26 +105,8 @@
   font-style: italic;
 }
 
-.show-more-btn {
-  width: 100%;
-  padding: 10px;
-  background: transparent;
-  border: none;
-  color: #8a7a5c;
-  font-size: 14px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  font-family: "Georgia", "Times New Roman", serif;
-  font-style: italic;
-}
-
-.show-more-btn:hover {
-  color: #4a3c28;
-  background-color: #fff7e6;
-}
-
-/* 滚动条样式 */
-.user-issues-sidebar::-webkit-scrollbar {
+/* 滚动条样式 - 应用到滚动容器 */
+.issues-scroll-container::-webkit-scrollbar {
   width: 6px;
 }
 
@@ -132,5 +121,18 @@
 }
 
 .user-issues-sidebar::-webkit-scrollbar-thumb:hover {
+  background: #bfa58a;
+}
+.issues-scroll-container::-webkit-scrollbar-track {
+  background: #f1ede3;
+  border-radius: 10px;
+}
+
+.issues-scroll-container::-webkit-scrollbar-thumb {
+  background: #d6c6a5;
+  border-radius: 10px;
+}
+
+.issues-scroll-container::-webkit-scrollbar-thumb:hover {
   background: #bfa58a;
 }
