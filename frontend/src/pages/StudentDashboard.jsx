@@ -5,6 +5,8 @@ import IssuesNavbar from "../components/IssuesNavbar";
 import FilterBar from "../components/FilterBar";
 import Pagination from "../components/Pagination";
 import IssueGrid from "../components/IssueGrid";
+import UserIssuesSidebar from "../components/UserIssuesSidebar";
+import TrendingIssues from "../components/TrendingIssues";
 
 import "../styles/StudentDashboard.css";
 
@@ -108,56 +110,60 @@ const StudentDashboard = ({ user }) => {
       <div style={{ position: "relative", zIndex: 1000 }}>
         <Hero user={user} onSearch={handleSearch} />
       </div>
-      <div
-        className="content-wrapper"
-        style={{ position: "relative", zIndex: 100 }}
-      >
-        <div className="dashboard-controls-header">
-          <IssuesNavbar activeTab={activeTab} onTabChange={setActiveTab} />
-          <div className="top-buttons-container">
-            {user && user.username && user.username.includes("admin") && (
+      <div className="dashboard-main-layout">
+        <UserIssuesSidebar user={user} />
+        <div
+          className="content-wrapper"
+          style={{ position: "relative", zIndex: 100 }}
+        >
+          <div className="dashboard-controls-header">
+            <IssuesNavbar activeTab={activeTab} onTabChange={setActiveTab} />
+            <div className="top-buttons-container">
+              {user && user.username && user.username.includes("admin") && (
+                <button
+                  onClick={() => navigate("/admin")}
+                  className="btn-primary"
+                >
+                  切换
+                </button>
+              )}
               <button
-                onClick={() => navigate("/admin")}
-                className="btn-primary"
+                onClick={() => navigate("/submit")}
+                className="btn-primary submit-issue-btn"
               >
-                切换
+                提交新问题 <span className="icon-pigeon">🕊️</span>
               </button>
-            )}
-            <button
-              onClick={() => navigate("/submit")}
-              className="btn-primary submit-issue-btn"
+            </div>
+          </div>
+
+          {activeTab === "mine" && (!user || !user.username) && (
+            <div
+              className="error-message"
+              style={{ color: "red", margin: "10px 0" }}
             >
-              提交新问题 <span className="icon-pigeon">🕊️</span>
-            </button>
-          </div>
-        </div>
+              无法显示"我的"问题：用户信息缺失
+            </div>
+          )}
 
-        {activeTab === "mine" && (!user || !user.username) && (
-          <div
-            className="error-message"
-            style={{ color: "red", margin: "10px 0" }}
-          >
-            无法显示"我的"问题：用户信息缺失
-          </div>
-        )}
-
-        <FilterBar
-          sortBy={sortBy}
-          onSortChange={setSortBy}
-          category={category}
-          onCategoryChange={setCategory}
-        />
-        {searchQuery && (
-          <div className="search-result-note">搜索结果: "{searchQuery}"</div>
-        )}
-        <IssueGrid issues={currentItems} loading={loading} error={error} />
-        {totalPages > 1 && (
-          <Pagination
-            currentPage={currentPage}
-            totalPages={totalPages}
-            onPageChange={setCurrentPage}
+          <FilterBar
+            sortBy={sortBy}
+            onSortChange={setSortBy}
+            category={category}
+            onCategoryChange={setCategory}
           />
-        )}
+          {searchQuery && (
+            <div className="search-result-note">搜索结果: "{searchQuery}"</div>
+          )}
+          <IssueGrid issues={currentItems} loading={loading} error={error} />
+          {totalPages > 1 && (
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={setCurrentPage}
+            />
+          )}
+        </div>
+        <TrendingIssues />
       </div>
     </div>
   );
