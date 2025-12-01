@@ -38,7 +38,7 @@ const TrendingIssues = () => {
   return (
     <div className="trending-issues-sidebar">
       <div className="trending-header">
-        <h3 className="trending-title">🔥 热门问题</h3>
+        <h3 className="trending-title">🔥 热门top5</h3>
       </div>
 
       <div className="trending-content">

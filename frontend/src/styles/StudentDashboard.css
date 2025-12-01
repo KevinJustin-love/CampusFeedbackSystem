@@ -5,7 +5,8 @@
   align-items: center; /* 垂直居中对齐 */
   padding-top: 12px;
   padding-bottom: 12px;
-  margin-right: 175px;
+  margin-right: 10px;
+  padding-right: 30px;
   border-bottom: 2px dashed #d1bfa3; /* 分隔线 */
   font-family: "Georgia", "Times New Roman", serif;
 }
