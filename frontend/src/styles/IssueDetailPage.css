@@ -5,7 +5,7 @@
   background: url("/assets/paper-bg.jpg") repeat;
   background-size: cover;
   padding: 24px;
-  margin: 0px;
+  margin: 30px auto auto auto;
 }
 
 .back-button {

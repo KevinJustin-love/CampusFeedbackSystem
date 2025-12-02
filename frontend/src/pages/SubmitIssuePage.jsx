@@ -146,6 +146,9 @@ const SubmitIssuePage = ({ user, onIssueSubmitted, onCancel }) => {
     <div className="submit-issue-page">
       <Hero user={user} onSearch={() => {}} />
       <div className="submit-container">
+        <button className="back-button" onClick={() => navigate(-1)}>
+          ← 返回上一页
+        </button>
         <div className="submit-card">
           <h2 className="submit-title">提交问题</h2>
         {error && <div className="error-message">{error}</div>}
