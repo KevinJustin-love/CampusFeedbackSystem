@@ -100,10 +100,10 @@
   pointer-events: auto; /* 允许热点接收点击 */
 }
 
-/* 单个热点：可点击 + 小字标签 */
+/* 单个热点容器 - 独立控制标签和图片 */
 .islandHotspot {
   position: absolute;
-  transform: translate(-50%, -50%);
+  transform: translate(-55%, -62%);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -114,22 +114,28 @@
   background: transparent;
   color: #fff;
   transition: transform 0.25s ease, box-shadow 0.25s ease;
+  /* 确保子元素可以独立接收事件 */
+  pointer-events: auto;
 }
 
+/* 小岛图片基础样式 - 独立于标签 */
 .islandHotspotImage {
   position: absolute;
   pointer-events: none;
-  z-index: 0;
+  z-index: 1; /* 低于标签层级 */
   transition: transform 0.25s ease;
+  /* 确保图片不受标签影响 */
+  display: block;
 }
+/* 小岛标签样式 - 独立于图片 */
 .hotspotLabel {
   font-size: 20px;
   font-weight: 600;
   letter-spacing: 2px;
   display: inline-block;
   position: relative;
-  z-index: 1;
-  transition: transform 0.25s ease, color 0.25s ease;
+  z-index: 10; /* 提高层级确保在图片之上 */
+  transition: transform 0.25s ease, color 0.25s ease, background-color 0.25s ease;
   transform-origin: center;
   color: #ffffff;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
@@ -138,8 +144,11 @@
   border-radius: 20px;
   background-color: rgba(134, 199, 166, 0.75);
   margin: 4px 0;
+  /* 确保标签不受图片影响 */
+  pointer-events: auto;
 }
 
+/* 小岛标签悬停效果 - 只影响标签 */
 .hotspotLabel--hovered {
   transform: scale(1.15);
   color: #ffffff;
@@ -147,20 +156,29 @@
   text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.8);
 }
 
-/* 新增：热点激活状态样式 */
+/* 热点激活状态样式 - 分别控制标签和图片 */
 .islandHotspot--active {
   background: transparent;
-  /* 移除阴影以符合用户要求 */
   box-shadow: none;
 }
+
+/* 激活状态下的标签样式 */
 .islandHotspot--active .hotspotLabel {
   transform: scale(1.15);
   font-weight: 600;
   color: #ffffff;
   background-color: rgba(76, 175, 80, 0.85);
   text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.8);
+  z-index: 10; /* 确保标签在顶层 */
 }
 
+/* 激活状态下的图片样式 */
+.islandHotspot--active .islandHotspotImage {
+  z-index: 1; /* 确保图片在标签下方 */
+}
+
+/* 小岛图片悬停效果 - 只影响图片 */
 .islandHotspotImage--hovered {
   transform: translate(-50%, -50%) scale(1.25);
+  z-index: 1; /* 确保仍然低于标签 */
 }

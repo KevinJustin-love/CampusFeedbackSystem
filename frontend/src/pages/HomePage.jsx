@@ -205,8 +205,8 @@ export default function HomePage({ user, onSearch }) {
               transformOrigin: "right center", // 缩放时保持右边缘不动
               transform:
                 hoveredTopic === "情感"
-                  ? "translateY(-50%) scale(1.2)"
-                  : "translateY(-50%)",
+                  ? "translateY(-60%) scale(1.2)"
+                  : "translateY(-60%)",
             }}
           />
         </a>
@@ -241,8 +241,8 @@ export default function HomePage({ user, onSearch }) {
               transformOrigin: "right center",
               transform:
                 hoveredTopic === "生活"
-                  ? "translateY(-50%) scale(1.2)"
-                  : "translateY(-50%)",
+                  ? "translateY(-60%) scale(1.2)"
+                  : "translateY(-60%)",
             }}
           />
         </a>
