@@ -15,7 +15,7 @@
   padding: 6px 12px;
   border: 1px solid #bfbfbf; /* 更浅的灰色边框 */
   border-radius: 16px;
-  background: #d9d9d9; /* 更浅的灰色背景 */
+  background: #bab7b7; /* 更浅的灰色背景 */
   color: #333; /* 提升对比度，避免过浅背景配白字 */
   cursor: pointer;
   font-size: 13px;

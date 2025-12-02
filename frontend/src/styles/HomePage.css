@@ -206,7 +206,7 @@
 .submit-question-container {
   position: fixed;
   top: 12px;
-  right: 500px;
+  right: 440px;
   z-index: 1002; /* 高于导航栏 */
   display: flex;
   align-items: center;
@@ -216,7 +216,8 @@
 
 /* 发布问题按钮样式 */
 .submit-question-btn {
-  background-color: rgba(76, 175, 80, 0.9);
+  /* background-color: rgba(76, 175, 80, 0.9); */
+  background-color: rgba(157, 207, 228, 0.92);
   color: white;
   border: none;
   padding: 8px 16px;
@@ -232,7 +233,7 @@
 
 /* 发布问题按钮悬停效果 */
 .submit-question-btn:hover {
-  background-color: rgba(76, 175, 80, 1);
+  background-color: rgb(62, 126, 214);
   transform: translateY(-2px);
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 }
