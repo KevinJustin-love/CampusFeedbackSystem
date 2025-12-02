@@ -34,7 +34,7 @@ const SubmitIssuePage = ({ onIssueSubmitted, onCancel }) => {
       onCancel();
     } else {
       // 返回到来源页面
-      navigate(fromPage);
+      navigate("/");
     }
   };
 

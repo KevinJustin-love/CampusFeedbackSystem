@@ -1,11 +1,12 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import Hero from "../components/Hero";
 import GuideAnimation from "../components/GuideAnimation";
 import "../styles/HomePage.css";
 
 export default function HomePage({ user, onSearch }) {
   const navigate = useNavigate();
+  const location = useLocation();
   const [hoveredTopic, setHoveredTopic] = useState(null);
   const [showGuide, setShowGuide] = useState(true);
 
@@ -21,10 +22,13 @@ export default function HomePage({ user, onSearch }) {
     setShowGuide(false);
   };
 
-  // 每次进入页面都显示引导动画
-  React.useEffect(() => {
-    setShowGuide(true);
-  }, []);
+  // 检测来源页面，只从登录页面、dashboard页面进入时显示引导
+  useEffect(() => {
+    const fromPage = location.state?.from;
+    const shouldShowGuide = fromPage === '/login' || fromPage === '/dashboard' || !fromPage;
+    
+    setShowGuide(shouldShowGuide);
+  }, [location.state?.from]);
 
   // 定义引导步骤
   const guideSteps = [

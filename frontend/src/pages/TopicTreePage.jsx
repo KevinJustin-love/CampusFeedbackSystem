@@ -102,7 +102,7 @@ const TopicTreePage = () => {
         <motion.button
           whileHover={{ scale: 1.1, rotate: -2 }}
           whileTap={{ scale: 0.95 }}
-          onClick={() => navigate(`/topic-island/${topic}`)}
+          onClick={() => navigate("/")}
           style={{
             background: "#8D6E63",
             color: "#FFF",
