@@ -1,32 +1,51 @@
 import React, { useState, useEffect } from 'react';
 import './GuideAnimation.css';
 
-const GuideAnimation = ({ targetSelector, onComplete }) => {
+const GuideAnimation = ({ guides, onComplete }) => {
   const [visible, setVisible] = useState(true);
-  const [targetElement, setTargetElement] = useState(null);
-  const [position, setPosition] = useState({ top: 0, left: 0 });
+  const [currentStep, setCurrentStep] = useState(0);
+  const [targetElements, setTargetElements] = useState([]);
+  const [positions, setPositions] = useState([]);
 
   useEffect(() => {
-    // 查找目标元素
-    const element = document.querySelector(targetSelector);
-    if (element) {
-      setTargetElement(element);
-      
-      // 计算目标元素的位置，让箭头指向岛屿上方
-      const rect = element.getBoundingClientRect();
-      setPosition({
-        top: rect.top + 10, // 更靠近目标元素顶部
-        left: rect.left + rect.width / 2
-      });
+    // 查找所有目标元素
+    const elements = guides.map(guide => document.querySelector(guide.targetSelector));
+    const validElements = elements.filter(el => el !== null);
+    
+    if (validElements.length === 0) {
+      setVisible(false);
+      onComplete?.();
+      return;
     }
 
-    // 5秒后自动隐藏
+    setTargetElements(validElements);
+
+    // 计算所有目标元素的位置
+    const calculatedPositions = validElements.map((element, index) => {
+      const rect = element.getBoundingClientRect();
+      return {
+        top: rect.top + (guides[index].offsetTop || 10),
+        left: rect.left + rect.width / 2
+      };
+    });
+    setPositions(calculatedPositions);
+
+    // 5秒后自动进入下一步或完成
     const timer = setTimeout(() => {
-      handleClose();
+      handleNext();
     }, 5000);
 
     return () => clearTimeout(timer);
-  }, [targetSelector, onComplete]);
+  }, [currentStep, guides, onComplete]);
+
+  const handleNext = () => {
+    if (currentStep < guides.length - 1) {
+      setCurrentStep(currentStep + 1);
+    } else {
+      setVisible(false);
+      onComplete?.();
+    }
+  };
 
   const handleClose = () => {
     setVisible(false);
@@ -35,21 +54,25 @@ const GuideAnimation = ({ targetSelector, onComplete }) => {
 
   const handleOverlayClick = (e) => {
     if (e.target === e.currentTarget) {
-      handleClose();
+      handleNext();
     }
   };
 
-  if (!visible || !targetElement) {
+  if (!visible || targetElements.length === 0 || currentStep >= guides.length) {
     return null;
   }
+
+  const currentGuide = guides[currentStep];
+  const currentPosition = positions[currentStep] || { top: 0, left: 0 };
+  const currentTargetElement = targetElements[currentStep];
 
   return (
     <div className="guide-overlay" onClick={handleOverlayClick}>
       <div 
         className="guide-content"
         style={{
-          top: `${position.top}px`,
-          left: `${position.left}px`
+          top: `${currentPosition.top}px`,
+          left: `${currentPosition.left}px`
         }}
       >
         <div className="guide-arrow">
@@ -63,10 +86,13 @@ const GuideAnimation = ({ targetSelector, onComplete }) => {
           </svg>
         </div>
         <div className="guide-text">
-          <p>点击岛屿即可查看对应领域问题</p>
+          <p>{currentGuide.text}</p>
+          <div className="guide-step-indicator">
+            {currentStep + 1} / {guides.length}
+          </div>
         </div>
-        <button className="guide-close-btn" onClick={handleClose}>
-          知道了
+        <button className="guide-close-btn" onClick={handleNext}>
+          {currentStep < guides.length - 1 ? '下一步' : '知道了'}
         </button>
       </div>
     </div>

@@ -26,6 +26,20 @@ export default function HomePage({ user, onSearch }) {
     setShowGuide(true);
   }, []);
 
+  // 定义引导步骤
+  const guideSteps = [
+    {
+      targetSelector: ".islandHotspot--life",
+      text: "点击岛屿即可查看对应领域问题",
+      offsetTop: 10
+    },
+    {
+      targetSelector: ".submit-question-container",
+      text: "点击这里发布问题",
+      offsetTop: 100
+    }
+  ];
+
   return (
     <div className="homeContainer">
       <div className="overlay" />
@@ -230,10 +244,10 @@ export default function HomePage({ user, onSearch }) {
         </button>
       </div>
 
-      {/* 引导动画 - 首次访问时指向生活小岛 */}
+      {/* 引导动画 - 多步骤引导 */}
       {showGuide && (
         <GuideAnimation 
-          targetSelector=".islandHotspot--life" 
+          guides={guideSteps} 
           onComplete={handleGuideComplete}
         />
       )}
