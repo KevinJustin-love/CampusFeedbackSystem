@@ -5,7 +5,7 @@
   background: #fffdf5; /* 浅米白色，信纸颜色 */
   border: 1px solid #d6c6a5; /* 略深的边框 */
   border-radius: 12px;
-  padding: 20px 25px 40px 25px; /* 留出底部空间给落款 */
+  padding: 40px 20px 40px 25px; /* 留出底部空间给落款 */
   box-shadow: 2px 2px 6px rgba(0,0,0,0.15);
   font-family: "Georgia", "Times New Roman", serif;
   position: relative;
