@@ -124,7 +124,7 @@ const StudentDashboard = ({ user }) => {
               </button>
             )}
             <button
-              onClick={() => navigate("/")}
+              onClick={() => navigate("/", { state: { from: "/dashboard" } })}
               className="btn-primary switch-mode-btn"
             >
               切换模式 <span className="icon-home">🏠</span>

@@ -25,7 +25,7 @@ export default function HomePage({ user, onSearch }) {
   // 检测来源页面，只从登录页面、dashboard页面进入时显示引导
   useEffect(() => {
     const fromPage = location.state?.from;
-    const shouldShowGuide = fromPage === '/login' || fromPage === '/dashboard' || !fromPage;
+    const shouldShowGuide = fromPage === '/login' || fromPage === '/dashboard';
     
     setShowGuide(shouldShowGuide);
   }, [location.state?.from]);
