@@ -223,18 +223,19 @@ export default function HomePage({ user, onSearch }) {
       </a>
 
       {/* 发布问题按钮和鸽子图标组合 - 固定在导航栏 */}
-      <div className="submit-question-container">
-        <div className="pigeon-icon-fixed" title="点击提交新问题">
+      <div 
+        className="submit-question-container"
+        onClick={() => navigate("/submit", { state: { from: "/" } })}
+        title="发布新问题"
+      >
+        <div className="pigeon-icon-fixed">
           🕊️
         </div>
         <button
           className="submit-question-btn"
-          onClick={() => navigate("/submit", { state: { from: "/" } })}
-          title="发布新问题"
         >
           发布问题
         </button>
-        
       </div>
     </div>
   );

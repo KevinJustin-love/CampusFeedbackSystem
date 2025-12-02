@@ -143,6 +143,7 @@
   padding: 6px 22px;
   border-radius: 20px;
   background-color: rgba(134, 199, 166, 0.75);
+  /* background-color: rgba(157, 207, 228, 0.92); */
   margin: 4px 0;
   /* 确保标签不受图片影响 */
   pointer-events: auto;
@@ -210,50 +211,87 @@
   z-index: 1002; /* 高于导航栏 */
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 0px; /* 缩短鸽子与按钮之间的距离 */
   pointer-events: auto; /* 确保可点击 */
+  transition: all 0.3s ease;
+  cursor: pointer; /* 容器显示为可点击 */
 }
 
-/* 发布问题按钮样式 */
+/* 容器悬停效果 - 同时应用到按钮和鸽子 */
+.submit-question-container:hover {
+  transform: translateY(-2px);
+}
+
+/* 容器悬停时按钮的样式变化 */
+.submit-question-container:hover .submit-question-btn {
+  background-color: #FFFFFF; /* 变亮一点 */
+  border-color: #E0D0B0; /* 悬停时边框颜色变化 */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* 容器悬停时鸽子的样式变化 */
+.submit-question-container:hover .pigeon-icon-fixed {
+  transform: scale(1.15);
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+}
+
+/* 发布问题按钮样式 - 移除单独的悬停效果 */
 .submit-question-btn {
-  /* background-color: rgba(76, 175, 80, 0.9); */
-  background-color: rgba(157, 207, 228, 0.92);
-  color: white;
-  border: none;
-  padding: 8px 16px;
-  border-radius: 20px;
+  background-color: #fbeab6; /* 暖信纸色 */
+  color: #60a094; /* 墨绿文字 */
+  border: 1px solid #EBDCB2; /* 纸张边缘 */
+  border-radius: 24px; /* 胶囊形状 */
+  padding: 8px 20px; /* 舒适的内边距 */
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 600; /* 字体稍粗，像手写体 */
   font-family: 'Microsoft YaHei', 'PingFang SC', sans-serif;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08); /* 轻微的投影，营造悬浮感 */
+  text-shadow: none;
+  display: flex;
+  align-items: center;
+  gap: 6px; /* 图标和文字的间距 */
+  pointer-events: none; /* 让事件穿透到容器 */
 }
 
-/* 发布问题按钮悬停效果 */
-.submit-question-btn:hover {
-  background-color: rgb(62, 126, 214);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-}
+/* 移除按钮的单独悬停效果，改由容器控制 */
+/* .submit-question-btn:hover {...} 已移除 */
 
 /* 发布问题按钮点击效果 */
 .submit-question-btn:active {
   transform: translateY(0);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  background-color: #F5F0E0; /* 点击时纸张颜色变化 */
+  border-color: #D8C8A0; /* 点击时边框颜色变深 */
 }
 
-/* 固定鸽子图标样式 */
+/* 容器点击效果 - 同时应用到按钮和鸽子 */
+.submit-question-container:active {
+  transform: translateY(0);
+}
+
+/* 容器点击时按钮的样式变化 */
+.submit-question-container:active .submit-question-btn {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  background-color: #F5F0E0; /* 点击时纸张颜色变化 */
+  border-color: #D8C8A0; /* 点击时边框颜色变深 */
+}
+
+/* 容器点击时鸽子的样式变化 */
+.submit-question-container:active .pigeon-icon-fixed {
+  transform: scale(1.05);
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+}
+
+/* 固定鸽子图标样式 - 移除单独的悬停效果 */
 .pigeon-icon-fixed {
   font-size: 28px;
   cursor: pointer;
   transition: transform 0.3s ease, filter 0.3s ease;
   filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+  pointer-events: none; /* 让事件穿透到容器 */
 }
 
-/* 固定鸽子图标悬停效果 */
-.pigeon-icon-fixed:hover {
-  transform: scale(1.15);
-  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
-}
+/* 移除鸽子的单独悬停效果，改由容器控制 */
+/* .pigeon-icon-fixed:hover {...} 已移除 */
