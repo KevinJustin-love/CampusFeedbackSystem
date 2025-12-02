@@ -6,8 +6,8 @@ const LoginPage = () => {
   const navigate = useNavigate();
   
   const handleLoginSuccess = () => {
-    // 登录成功后跳转到首页，并标记来源为login
-    navigate("/", { state: { from: '/login' } });
+    // 登录成功后跳转到学生仪表板
+    navigate("/dashboard", { state: { from: '/login' } });
   };
 
   return <Form route="/api/token/" method="login" onSuccess={handleLoginSuccess} />;
