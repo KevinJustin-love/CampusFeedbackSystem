@@ -1,5 +1,5 @@
 .form-group {
-  margin-bottom: 16px;
+  margin-bottom: 20px;
 }
 
 .form-label {
@@ -33,12 +33,50 @@
   box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.1);
 }
 
+/* 页面容器 */
+.submit-issue-page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
 /* 信件风格背景 */
 .submit-container {
-  min-height: 100vh;
+  flex: 1;
   background: url("/assets/paper-bg.jpg") repeat;
   background-size: cover;
   padding: 24px;
+}
+
+/* back-button 样式，保持与 IssueDetailPage 一致 */
+.back-button {
+  align-self: flex-start;
+  position: absolute;
+  top: 20px;
+  left: 30px;
+  padding: 10px 20px;
+  background: linear-gradient(135deg, #8B4513 0%, #6B3410 100%);
+  color: #ffffff;
+  border: 2px solid #5D4037;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: 'Georgia', 'Times New Roman', '楷体', serif;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.back-button:hover {
+  background: linear-gradient(135deg, #6B3410 0%, #5D4037 100%);
+  transform: translateX(-2px);
+  box-shadow: 0 4px 12px rgba(139, 69, 19, 0.3);
+}
+
+.back-button:active {
+  transform: translateX(0);
 }
 
 /* 表单卡片：信件样式 */
@@ -49,7 +87,7 @@
   border: 1px solid #d6c6a5;
   box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.15);
   max-width: 768px;
-  margin: 0 auto;
+  margin: 50px auto auto auto;
   position: relative;
   font-family: "Georgia", "Times New Roman", serif;
 }

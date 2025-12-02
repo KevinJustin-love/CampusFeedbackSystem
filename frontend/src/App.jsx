@@ -67,7 +67,11 @@ const App = () => {
           path="/detail/:id"
           element={
             <ProtectedRoute>
-              <IssueDetailPage />
+              {user ? (
+                <IssueDetailPage user={user} />
+              ) : (
+                <div>加载用户信息中...</div>
+              )}
             </ProtectedRoute>
           }
         />
@@ -140,6 +144,7 @@ const App = () => {
             <ProtectedRoute>
               {user ? (
                 <SubmitIssuePage
+                  user={user}
                   onIssueSubmitted={(newIssue) => {
                     // 提交成功后跳转到问题详情页
                     window.location.href = `/detail/${newIssue.id}`;

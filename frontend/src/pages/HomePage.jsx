@@ -1,17 +1,14 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import Hero from "../components/Hero";
+import GuideAnimation from "../components/GuideAnimation";
 import "../styles/HomePage.css";
 
 export default function HomePage({ user, onSearch }) {
   const navigate = useNavigate();
+  const location = useLocation();
   const [hoveredTopic, setHoveredTopic] = useState(null);
-
-  // 信鸽拖拽相关状态
-  const [pigeonPosition, setPigeonPosition] = useState({ x: 35, y: 10 }); // 使用百分比
-  const [isDragging, setIsDragging] = useState(false);
-  const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
-  const [hasDragged, setHasDragged] = useState(false); // 标记是否发生了拖拽
+  const [showGuide, setShowGuide] = useState(true);
 
   const handleHotspotEnter = (topic) => {
     setHoveredTopic(topic);
@@ -21,61 +18,36 @@ export default function HomePage({ user, onSearch }) {
     setHoveredTopic(null);
   };
 
-  // 信鸽拖拽处理函数
-  const handlePigeonMouseDown = (e) => {
-    e.preventDefault();
-    setIsDragging(true);
-    setHasDragged(false); // 重置拖拽标记
-
-    const rect = e.currentTarget.getBoundingClientRect();
-    setDragOffset({
-      x: e.clientX - rect.left,
-      y: e.clientY - rect.top,
-    });
+  const handleGuideComplete = () => {
+    setShowGuide(false);
   };
 
-  const handleMouseMove = (e) => {
-    if (!isDragging) return;
+  // 检测来源页面，只从登录页面、dashboard页面进入时显示引导
+  useEffect(() => {
+    const fromPage = location.state?.from;
+    const shouldShowGuide = fromPage === '/login' || fromPage === '/dashboard';
+    
+    setShowGuide(shouldShowGuide);
+  }, [location.state?.from]);
 
-    setHasDragged(true); // 标记发生了拖拽
-
-    const container = document.querySelector(".homeContainer");
-    if (!container) return;
-
-    const containerRect = container.getBoundingClientRect();
-
-    // 计算新位置（百分比）
-    const newX =
-      ((e.clientX - containerRect.left - dragOffset.x) / containerRect.width) *
-      100;
-    const newY =
-      ((containerRect.bottom - e.clientY - dragOffset.y) /
-        containerRect.height) *
-      100;
-
-    // 限制在容器范围内
-    const clampedX = Math.max(0, Math.min(95, newX));
-    const clampedY = Math.max(0, Math.min(95, newY));
-
-    setPigeonPosition({ x: clampedX, y: clampedY });
-  };
-
-  const handleMouseUp = () => {
-    setIsDragging(false);
-  };
-
-  // 添加全局鼠标事件监听
-  React.useEffect(() => {
-    if (isDragging) {
-      window.addEventListener("mousemove", handleMouseMove);
-      window.addEventListener("mouseup", handleMouseUp);
-
-      return () => {
-        window.removeEventListener("mousemove", handleMouseMove);
-        window.removeEventListener("mouseup", handleMouseUp);
-      };
+  // 定义引导步骤
+  const guideSteps = [
+    {
+      targetSelector: ".islandHotspot--life",
+      text: "点击岛屿即可查看对应领域问题",
+      offsetTop: 10
+    },
+    {
+      targetSelector: ".submit-question-container",
+      text: "点击这里发布问题",
+      offsetTop: 100
+    },
+    {
+      targetSelector: ".mailbox-container",
+      text: "点击这里切换简洁模式",
+      offsetTop: 120
     }
-  }, [isDragging, dragOffset]);
+  ];
 
   return (
     <div className="homeContainer">
@@ -86,7 +58,7 @@ export default function HomePage({ user, onSearch }) {
       <div className="islandHotspots">
         <a
           className="islandHotspot"
-          href="/topic-island/其他"
+          href="/topic-tree/其他"
           style={{ left: "7%", top: "18%", width: "20%" }}
           onMouseEnter={() => handleHotspotEnter("其他")}
           onMouseLeave={handleHotspotLeave}
@@ -116,13 +88,13 @@ export default function HomePage({ user, onSearch }) {
         </a>
         <a
           className="islandHotspot"
-          href="/topic-island/管理"
+          href="/topic-tree/管理"
           style={{ left: "55%", top: "27%", width: "12%" }}
           onMouseEnter={() => handleHotspotEnter("管理")}
           onMouseLeave={handleHotspotLeave}
         >
           <span
-            className={`hotspotLabel ${
+            className={`hotspotLabel hotspotLabel-manage ${
               hoveredTopic === "管理" ? "hotspotLabel--hovered" : ""
             }`}
           >
@@ -146,13 +118,13 @@ export default function HomePage({ user, onSearch }) {
         </a>
         <a
           className="islandHotspot"
-          href="/topic-island/学业"
+          href="/topic-tree/学业"
           style={{ left: "33%", top: "46%", width: "16%" }}
           onMouseEnter={() => handleHotspotEnter("学业")}
           onMouseLeave={handleHotspotLeave}
         >
           <span
-            className={`hotspotLabel ${
+            className={`hotspotLabel hotspotLabel-study ${
               hoveredTopic === "学业" ? "hotspotLabel--hovered" : ""
             }`}
           >
@@ -176,7 +148,7 @@ export default function HomePage({ user, onSearch }) {
         </a>
         <a
           className="islandHotspot islandHotspot--emotion"
-          href="/topic-island/情感"
+          href="/topic-tree/情感"
           style={{
             right: 0,
             top: "17%",
@@ -205,14 +177,14 @@ export default function HomePage({ user, onSearch }) {
               transformOrigin: "right center", // 缩放时保持右边缘不动
               transform:
                 hoveredTopic === "情感"
-                  ? "translateY(-50%) scale(1.2)"
-                  : "translateY(-50%)",
+                  ? "translateY(-60%) scale(1.2)"
+                  : "translateY(-60%)",
             }}
           />
         </a>
         <a
           className="islandHotspot islandHotspot--life"
-          href="/topic-island/生活"
+          href="/topic-tree/生活"
           style={{
             right: "0%",
             top: "71%",
@@ -223,7 +195,7 @@ export default function HomePage({ user, onSearch }) {
           onMouseLeave={handleHotspotLeave}
         >
           <span
-            className={`hotspotLabel ${
+            className={`hotspotLabel hotspotLabel-life ${
               hoveredTopic === "生活" ? "hotspotLabel--hovered" : ""
             }`}
           >
@@ -241,74 +213,53 @@ export default function HomePage({ user, onSearch }) {
               transformOrigin: "right center",
               transform:
                 hoveredTopic === "生活"
-                  ? "translateY(-50%) scale(1.2)"
-                  : "translateY(-50%)",
+                  ? "translateY(-60%) scale(1.2)"
+                  : "translateY(-60%)",
             }}
           />
         </a>
       </div>
 
-      {/* 邮箱图标 - 链接到 Dashboard */}
-      <a
-        href="/dashboard"
-        className="mailbox-icon"
-        style={{
-          position: "absolute",
-          left: "18%", // 调整左右位置：增大值向右移动
-          bottom: "11%", // 调整上下位置：增大值向上移动
-          textDecoration: "none",
-          zIndex: 10,
-          cursor: "pointer",
-          transition: "transform 0.3s ease, filter 0.3s ease",
-        }}
-        onMouseEnter={(e) => {
-          e.currentTarget.style.transform = "scale(1.15)";
-          e.currentTarget.querySelector("img").style.filter =
-            "brightness(1.1) drop-shadow(0 4px 8px rgba(0,0,0,0.3))";
-        }}
-        onMouseLeave={(e) => {
-          e.currentTarget.style.transform = "scale(1)";
-          e.currentTarget.querySelector("img").style.filter =
-            "drop-shadow(0 2px 4px rgba(0,0,0,0.2))";
-        }}
+      {/* 邮箱图标和切换模式按钮组合 - 链接到 Dashboard */}
+      <div 
+        className="mailbox-container"
+        onClick={() => window.location.href = "/dashboard"}
+        title="进入邮箱"
       >
-        <img
-          src="../../public/assets/mailRed.png"
-          alt="Mailbox"
-          style={{
-            width: "80px", // 调整邮箱图片宽度
-            height: "auto", // 自动高度保持比例
-            filter: "drop-shadow(0 2px 4px rgba(0,0,0,0.2))",
-            transition: "filter 0.3s ease",
-          }}
-        />
-      </a>
-
-      {/* 信鸽图标 - 可拖拽，点击链接到提交问题页面 */}
-      <div
-        className="pigeon-icon"
-        style={{
-          position: "absolute",
-          left: `${pigeonPosition.x}%`,
-          bottom: `${pigeonPosition.y}%`,
-          fontSize: "70px",
-          zIndex: 1000,
-          cursor: isDragging ? "grabbing" : "grab",
-          transition: isDragging ? "none" : "transform 0.3s ease",
-          transform: isDragging ? "scale(1.1)" : "scale(1)",
-          userSelect: "none",
-        }}
-        onMouseDown={handlePigeonMouseDown}
-        onClick={(e) => {
-          // 只有在没有拖拽时才触发导航
-          if (!hasDragged) {
-            navigate("/submit", { state: { from: "/" } });
-          }
-        }}
-        title="拖拽移动 | 点击提交新问题"
-      >
-        🕊️
+        <div className="mailbox-icon">
+          <img
+            src="../../public/assets/mailRed.png"
+            alt="Mailbox"
+          />
+        </div>
+        <button className="mode-toggle-btn">
+          切换模式
+        </button>
       </div>
+
+      {/* 发布问题按钮和鸽子图标组合 - 固定在导航栏 */}
+      <div 
+        className="submit-question-container"
+        onClick={() => navigate("/submit", { state: { from: "/" } })}
+        title="发布新问题"
+      >
+        <div className="pigeon-icon-fixed">
+          🕊️
+        </div>
+        <button
+          className="submit-question-btn"
+        >
+          发布问题
+        </button>
+      </div>
+
+      {/* 引导动画 - 多步骤引导 */}
+      {showGuide && (
+        <GuideAnimation 
+          guides={guideSteps} 
+          onComplete={handleGuideComplete}
+        />
+      )}
     </div>
   );
 }

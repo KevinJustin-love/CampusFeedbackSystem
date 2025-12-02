@@ -143,6 +143,28 @@
   box-shadow: 0 5px 8px rgba(0, 0, 0, 0.15);
 }
 
+/* 切换模式按钮：与提交问题按钮样式一致 */
+.dashboard-container .btn-primary.switch-mode-btn {
+  background-color: #d1bfa3; /* 浅棕色背景 */
+  color: #4a3c28; /* 深棕色文字 */
+  border: 1px solid #a39074;
+  padding: 10px 15px;
+  border-radius: 25px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.25, 0.1, 0.25, 1.5); /* 弹跳动画 */
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+}
+
+.dashboard-container .btn-primary.switch-mode-btn:hover {
+  background-color: #bfa58a;
+  transform: scale(1.05); /* 放大一点，增加点击感 */
+  box-shadow: 0 5px 8px rgba(0, 0, 0, 0.15);
+}
+
 /* 鸽子图标 (使用 Emoji 模拟) */
 .submit-issue-btn .icon-pigeon {
   font-size: 20px;
@@ -153,6 +175,18 @@
 .submit-issue-btn:hover .icon-pigeon {
   /* 模拟鸽子/信件飞走的动作 */
   transform: translateX(5px) translateY(-5px) rotate(10deg) scale(1.1);
+}
+
+/* 房子图标 (使用 Emoji 模拟) */
+.switch-mode-btn .icon-home {
+  font-size: 20px;
+  line-height: 1; /* 确保不影响高度 */
+  transition: transform 0.5s ease-in-out;
+}
+
+.switch-mode-btn:hover .icon-home {
+  /* 模拟回家的动作 */
+  transform: translateX(3px) translateY(-3px) rotate(-5deg) scale(1.1);
 }
 
 /* 切换按钮 (Admin) 保持原样或略作调整 */

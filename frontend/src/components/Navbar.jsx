@@ -242,12 +242,12 @@ export default function Navbar({
       {/* 占位将用户区域推至最右侧 */}
       <div className="navbar-spacer" />
 
-      {/* 退出按钮 */}
+      {/* 退出按钮
       <div>
         <button className="logout-btn" onClick={handleLogout}>
           退出
         </button>
-      </div>
+      </div> */}
       <HistoryModal
         isOpen={isHistoryModalOpen}
         onClose={handleCloseHistoryModal}

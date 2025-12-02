@@ -1,22 +1,25 @@
 // TopicTreePage.jsx - 沉浸式动漫风格页面
 import React, { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import SingleIssueTree from "../components/SingleIssueTree";
+import GuideAnimation from "../components/GuideAnimation";
 import { fetchIssues } from "../components/functions/FetchIssues"; 
 import { motion, AnimatePresence } from "framer-motion";
 
 // 引入一个漂亮的动漫风格风景图 (使用指定图片源)
 const ANIME_BG_URL =
-  "https://bpic.588ku.com/back_pic/05/60/82/115b446747546b6.jpg";
+  "/assets/forest-bg.png"; // 动漫风格森林背景
 // 备选: 蓝天草地风格
 
 const TopicTreePage = () => {
   const { topic } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
   const [issues, setIssues] = useState([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(0);
   const [direction, setDirection] = useState(0); // 用于动画方向
+  const [showGuide, setShowGuide] = useState(false); // 初始为 false，数据加载后改为 true
 
   const issuesPerPage = 5;
 
@@ -36,6 +39,17 @@ const TopicTreePage = () => {
     loadData();
   }, [topic]);
 
+  // 数据加载完成后显示引导
+  useEffect(() => {
+    if (!loading && issues.length > 0) {
+      // 延迟 100ms 确保 DOM 已准备好
+      const timer = setTimeout(() => {
+        setShowGuide(true);
+      }, 100);
+      return () => clearTimeout(timer);
+    }
+  }, [loading, issues.length]);
+
   const totalPages = Math.ceil(issues.length / issuesPerPage);
   const currentIssueSlice = issues.slice(
     currentPage * issuesPerPage,
@@ -50,6 +64,10 @@ const TopicTreePage = () => {
     }
   };
 
+  const handleGuideComplete = () => {
+    setShowGuide(false);
+  };
+
   const topicMap = {
     学业: { title: "知识之森", color: "#4CAF50", icon: "📚" },
     生活: { title: "日常原野", color: "#FF9800", icon: "☕" },
@@ -59,6 +77,15 @@ const TopicTreePage = () => {
   };
 
   const theme = topicMap[topic] || topicMap["all"];
+
+  // 定义引导步骤
+  const guideSteps = [
+    {
+      targetSelector: ".topic-tree-slider",
+      text: "点击叶子可以查看问题详情",
+      offsetTop: 150
+    }
+  ];
 
   return (
     <div
@@ -74,6 +101,9 @@ const TopicTreePage = () => {
         fontFamily: "'Comic Sans MS', cursive, sans-serif",
       }}
     >
+      {/* 引导动画 */}
+      {showGuide && <GuideAnimation guides={guideSteps} onComplete={handleGuideComplete} />}
+
       {/* 遮罩层，确保文字清晰 */}
       <div
         style={{
@@ -102,7 +132,7 @@ const TopicTreePage = () => {
         <motion.button
           whileHover={{ scale: 1.1, rotate: -2 }}
           whileTap={{ scale: 0.95 }}
-          onClick={() => navigate(`/topic-island/${topic}`)}
+          onClick={() => navigate("/")}
           style={{
             background: "#8D6E63",
             color: "#FFF",
@@ -232,6 +262,7 @@ const TopicTreePage = () => {
                   transition: { duration: 0.2 },
                 }}
                 transition={{ type: "spring", stiffness: 200, damping: 20 }}
+                className="topic-tree-slider"
                 style={{
                   width: "100%",
                   maxWidth: "800px",
