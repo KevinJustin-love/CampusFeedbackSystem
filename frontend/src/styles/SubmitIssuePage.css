@@ -1,5 +1,5 @@
 .form-group {
-  margin-bottom: 16px;
+  margin-bottom: 20px;
 }
 
 .form-label {
@@ -33,9 +33,16 @@
   box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.1);
 }
 
+/* 页面容器 */
+.submit-issue-page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
 /* 信件风格背景 */
 .submit-container {
-  min-height: 100vh;
+  flex: 1;
   background: url("/assets/paper-bg.jpg") repeat;
   background-size: cover;
   padding: 24px;
@@ -49,7 +56,7 @@
   border: 1px solid #d6c6a5;
   box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.15);
   max-width: 768px;
-  margin: 0 auto;
+  margin: 50px auto auto auto;
   position: relative;
   font-family: "Georgia", "Times New Roman", serif;
 }

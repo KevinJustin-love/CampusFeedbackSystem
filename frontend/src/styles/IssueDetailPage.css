@@ -8,6 +8,36 @@
   margin: 0px;
 }
 
+.back-button {
+  align-self: flex-start;
+  margin-top: 60px;
+  margin-bottom: 0px;
+  margin-left: 220px;
+  padding: 10px 20px;
+  background: linear-gradient(135deg, #8B4513 0%, #6B3410 100%);
+  color: #ffffff;
+  border: 2px solid #5D4037;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: 'Georgia', 'Times New Roman', '楷体', serif;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.back-button:hover {
+  background: linear-gradient(135deg, #6B3410 0%, #5D4037 100%);
+  transform: translateX(-2px);
+  box-shadow: 0 4px 12px rgba(139, 69, 19, 0.3);
+}
+
+.back-button:active {
+  transform: translateX(0);
+}
+
 .detail-container {
   display: flex;
   flex-direction: column;

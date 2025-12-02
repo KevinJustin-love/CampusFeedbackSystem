@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import Hero from "../components/Hero";
 import { feedbackAPI, classifyAPI } from "../api";
 
 import "../styles/SubmitIssuePage.css";
 
-const SubmitIssuePage = ({ onIssueSubmitted, onCancel }) => {
+const SubmitIssuePage = ({ user, onIssueSubmitted, onCancel }) => {
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -142,9 +143,11 @@ const SubmitIssuePage = ({ onIssueSubmitted, onCancel }) => {
   }
 
   return (
-    <div className="submit-container">
-      <div className="submit-card">
-        <h2 className="submit-title">提交问题</h2>
+    <div className="submit-issue-page">
+      <Hero user={user} onSearch={() => {}} />
+      <div className="submit-container">
+        <div className="submit-card">
+          <h2 className="submit-title">提交问题</h2>
         {error && <div className="error-message">{error}</div>}
         <form onSubmit={handleSubmit}>
           <div className="form-group">
@@ -291,6 +294,7 @@ const SubmitIssuePage = ({ onIssueSubmitted, onCancel }) => {
             取消
           </button>
         </form>
+      </div>
       </div>
     </div>
   );

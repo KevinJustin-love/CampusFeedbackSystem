@@ -1,5 +1,6 @@
 import React,{ useState, useEffect } from "react"; 
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
+import Hero from "../components/Hero";
 import IssueDetail from "../components/IssueDetail";
 import CommentSection from "../components/IssueCommentSection/CommentSection";
 import HandlingReply from "../components/IssueReply";
@@ -7,8 +8,9 @@ import { feedbackAPI, historyAPI } from "../api"
 
 import "../styles/IssueDetailPage.css";
 
-function IssueDetailPage() {
+function IssueDetailPage({ user }) {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [issue, setIssue] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
@@ -64,6 +66,10 @@ function IssueDetailPage() {
 
   return (
     <div className="issue-detail-page">
+      <Hero user={user} onSearch={() => {}} />
+      <button className="back-button" onClick={() => navigate(-1)}>
+        ← 返回上一页
+      </button>
       <IssueDetail issue={issue} />
       <HandlingReply issueId={id} />
       <CommentSection issueId={id}/>
