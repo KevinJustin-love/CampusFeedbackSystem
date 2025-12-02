@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Hero from "../components/Hero";
+import GuideAnimation from "../components/GuideAnimation";
 import "../styles/HomePage.css";
 
 export default function HomePage({ user, onSearch }) {
   const navigate = useNavigate();
   const [hoveredTopic, setHoveredTopic] = useState(null);
+  const [showGuide, setShowGuide] = useState(true);
 
   const handleHotspotEnter = (topic) => {
     setHoveredTopic(topic);
@@ -14,6 +16,15 @@ export default function HomePage({ user, onSearch }) {
   const handleHotspotLeave = () => {
     setHoveredTopic(null);
   };
+
+  const handleGuideComplete = () => {
+    setShowGuide(false);
+  };
+
+  // 每次进入页面都显示引导动画
+  React.useEffect(() => {
+    setShowGuide(true);
+  }, []);
 
   return (
     <div className="homeContainer">
@@ -218,6 +229,14 @@ export default function HomePage({ user, onSearch }) {
           发布问题
         </button>
       </div>
+
+      {/* 引导动画 - 首次访问时指向生活小岛 */}
+      {showGuide && (
+        <GuideAnimation 
+          targetSelector=".islandHotspot--life" 
+          onComplete={handleGuideComplete}
+        />
+      )}
     </div>
   );
 }

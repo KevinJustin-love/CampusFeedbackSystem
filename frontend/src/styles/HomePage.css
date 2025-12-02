@@ -296,8 +296,8 @@
 /* 邮箱图标和切换模式按钮组合容器 */
 .mailbox-container {
   position: absolute;
-  left: 18%;
-  bottom: 9%;
+  left: 15%;
+  bottom: 8%;
   display: flex;
   align-items: center;
   gap: 8px;
