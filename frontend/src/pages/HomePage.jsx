@@ -7,12 +7,6 @@ export default function HomePage({ user, onSearch }) {
   const navigate = useNavigate();
   const [hoveredTopic, setHoveredTopic] = useState(null);
 
-  // 信鸽拖拽相关状态
-  const [pigeonPosition, setPigeonPosition] = useState({ x: 35, y: 10 }); // 使用百分比
-  const [isDragging, setIsDragging] = useState(false);
-  const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
-  const [hasDragged, setHasDragged] = useState(false); // 标记是否发生了拖拽
-
   const handleHotspotEnter = (topic) => {
     setHoveredTopic(topic);
   };
@@ -20,62 +14,6 @@ export default function HomePage({ user, onSearch }) {
   const handleHotspotLeave = () => {
     setHoveredTopic(null);
   };
-
-  // 信鸽拖拽处理函数
-  const handlePigeonMouseDown = (e) => {
-    e.preventDefault();
-    setIsDragging(true);
-    setHasDragged(false); // 重置拖拽标记
-
-    const rect = e.currentTarget.getBoundingClientRect();
-    setDragOffset({
-      x: e.clientX - rect.left,
-      y: e.clientY - rect.top,
-    });
-  };
-
-  const handleMouseMove = (e) => {
-    if (!isDragging) return;
-
-    setHasDragged(true); // 标记发生了拖拽
-
-    const container = document.querySelector(".homeContainer");
-    if (!container) return;
-
-    const containerRect = container.getBoundingClientRect();
-
-    // 计算新位置（百分比）
-    const newX =
-      ((e.clientX - containerRect.left - dragOffset.x) / containerRect.width) *
-      100;
-    const newY =
-      ((containerRect.bottom - e.clientY - dragOffset.y) /
-        containerRect.height) *
-      100;
-
-    // 限制在容器范围内
-    const clampedX = Math.max(0, Math.min(95, newX));
-    const clampedY = Math.max(0, Math.min(95, newY));
-
-    setPigeonPosition({ x: clampedX, y: clampedY });
-  };
-
-  const handleMouseUp = () => {
-    setIsDragging(false);
-  };
-
-  // 添加全局鼠标事件监听
-  React.useEffect(() => {
-    if (isDragging) {
-      window.addEventListener("mousemove", handleMouseMove);
-      window.addEventListener("mouseup", handleMouseUp);
-
-      return () => {
-        window.removeEventListener("mousemove", handleMouseMove);
-        window.removeEventListener("mouseup", handleMouseUp);
-      };
-    }
-  }, [isDragging, dragOffset]);
 
   return (
     <div className="homeContainer">
@@ -284,30 +222,19 @@ export default function HomePage({ user, onSearch }) {
         />
       </a>
 
-      {/* 信鸽图标 - 可拖拽，点击链接到提交问题页面 */}
-      <div
-        className="pigeon-icon"
-        style={{
-          position: "absolute",
-          left: `${pigeonPosition.x}%`,
-          bottom: `${pigeonPosition.y}%`,
-          fontSize: "70px",
-          zIndex: 1000,
-          cursor: isDragging ? "grabbing" : "grab",
-          transition: isDragging ? "none" : "transform 0.3s ease",
-          transform: isDragging ? "scale(1.1)" : "scale(1)",
-          userSelect: "none",
-        }}
-        onMouseDown={handlePigeonMouseDown}
-        onClick={(e) => {
-          // 只有在没有拖拽时才触发导航
-          if (!hasDragged) {
-            navigate("/submit", { state: { from: "/" } });
-          }
-        }}
-        title="拖拽移动 | 点击提交新问题"
-      >
-        🕊️
+      {/* 发布问题按钮和鸽子图标组合 - 固定在导航栏 */}
+      <div className="submit-question-container">
+        <div className="pigeon-icon-fixed" title="点击提交新问题">
+          🕊️
+        </div>
+        <button
+          className="submit-question-btn"
+          onClick={() => navigate("/submit", { state: { from: "/" } })}
+          title="发布新问题"
+        >
+          发布问题
+        </button>
+        
       </div>
     </div>
   );
