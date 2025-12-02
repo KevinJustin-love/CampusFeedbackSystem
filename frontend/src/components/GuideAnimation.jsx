@@ -75,7 +75,21 @@ const GuideAnimation = ({ guides, onComplete }) => {
           left: `${currentPosition.left}px`
         }}
       >
-        <div className="guide-arrow">
+        {/* 鸽子引导动画 */}
+        <div className="guide-pigeon">
+          <div className="pigeon-speech-bubble">
+            <p className="pigeon-speech-text">{currentGuide.text}</p>
+            <div className="pigeon-speech-step">
+              {currentStep + 1} / {guides.length}
+            </div>
+          </div>
+          <div className="guide-pigeon-icon">
+            🕊️
+          </div>
+        </div>
+        
+        {/* 传统箭头样式（作为备选） */}
+        {/* <div className="guide-arrow">
           <svg width="60" height="60" viewBox="0 0 60 60" fill="none">
             <path 
               d="M30 10 L50 30 L40 30 L40 50 L20 50 L20 30 L10 30 Z" 
@@ -84,13 +98,8 @@ const GuideAnimation = ({ guides, onComplete }) => {
               strokeWidth="2"
             />
           </svg>
-        </div>
-        <div className="guide-text">
-          <p>{currentGuide.text}</p>
-          <div className="guide-step-indicator">
-            {currentStep + 1} / {guides.length}
-          </div>
-        </div>
+        </div> */}
+        
         <button className="guide-close-btn" onClick={handleNext}>
           {currentStep < guides.length - 1 ? '下一步' : '知道了'}
         </button>
