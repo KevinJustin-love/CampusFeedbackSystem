@@ -255,9 +255,6 @@
   pointer-events: none; /* 让事件穿透到容器 */
 }
 
-/* 移除按钮的单独悬停效果，改由容器控制 */
-/* .submit-question-btn:hover {...} 已移除 */
-
 /* 发布问题按钮点击效果 */
 .submit-question-btn:active {
   transform: translateY(0);
@@ -295,3 +292,79 @@
 
 /* 移除鸽子的单独悬停效果，改由容器控制 */
 /* .pigeon-icon-fixed:hover {...} 已移除 */
+
+/* 邮箱图标和切换模式按钮组合容器 */
+.mailbox-container {
+  position: absolute;
+  left: 18%;
+  bottom: 9%;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  z-index: 10;
+}
+
+/* 容器悬停效果 */
+.mailbox-container:hover {
+  transform: scale(1.05);
+}
+
+/* 邮箱图标容器 */
+.mailbox-icon {
+  transition: all 0.3s ease;
+}
+
+/* 邮箱图标 */
+.mailbox-icon img {
+  width: 110px;
+  height: auto;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+  transition: filter 0.3s ease;
+}
+
+/* 容器悬停时邮箱图标效果 */
+.mailbox-container:hover .mailbox-icon img {
+  filter: brightness(1.1) drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+}
+
+/* 切换模式按钮样式 */
+.mode-toggle-btn {
+  background-color: #ef8e6b; /* 珊瑚红色 */
+  color: black;
+  border: none;
+  border-radius: 18px;
+  padding: 10px 20px;
+  font-size: 12px;
+  font-weight: 600;
+  font-family: 'Microsoft YaHei', 'PingFang SC', sans-serif;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 6px rgba(255, 127, 80, 0.3);
+  text-shadow: none;
+  pointer-events: none; /* 让事件穿透到容器 */
+  margin-top: 70px; /* 向下移动20px */
+  margin-left: -20px; /* 向左移动20px */
+}
+
+/* 容器悬停时切换模式按钮效果 */
+.mailbox-container:hover .mode-toggle-btn {
+  background-color: #FF6347; /* 稍深的珊瑚红色 */
+  transform: scale(1.05);
+  box-shadow: 0 4px 10px rgba(255, 127, 80, 0.4);
+}
+
+/* 容器点击时效果 */
+.mailbox-container:active {
+  transform: scale(1);
+}
+
+.mailbox-container:active .mailbox-icon img {
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+}
+
+.mailbox-container:active .mode-toggle-btn {
+  background-color: #FF6347;
+  box-shadow: 0 1px 3px rgba(255, 127, 80, 0.3);
+}

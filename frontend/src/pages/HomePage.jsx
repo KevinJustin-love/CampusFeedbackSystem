@@ -186,41 +186,22 @@ export default function HomePage({ user, onSearch }) {
         </a>
       </div>
 
-      {/* 邮箱图标 - 链接到 Dashboard */}
-      <a
-        href="/dashboard"
-        className="mailbox-icon"
-        style={{
-          position: "absolute",
-          left: "18%", // 调整左右位置：增大值向右移动
-          bottom: "11%", // 调整上下位置：增大值向上移动
-          textDecoration: "none",
-          zIndex: 10,
-          cursor: "pointer",
-          transition: "transform 0.3s ease, filter 0.3s ease",
-        }}
-        onMouseEnter={(e) => {
-          e.currentTarget.style.transform = "scale(1.15)";
-          e.currentTarget.querySelector("img").style.filter =
-            "brightness(1.1) drop-shadow(0 4px 8px rgba(0,0,0,0.3))";
-        }}
-        onMouseLeave={(e) => {
-          e.currentTarget.style.transform = "scale(1)";
-          e.currentTarget.querySelector("img").style.filter =
-            "drop-shadow(0 2px 4px rgba(0,0,0,0.2))";
-        }}
+      {/* 邮箱图标和切换模式按钮组合 - 链接到 Dashboard */}
+      <div 
+        className="mailbox-container"
+        onClick={() => window.location.href = "/dashboard"}
+        title="进入邮箱"
       >
-        <img
-          src="../../public/assets/mailRed.png"
-          alt="Mailbox"
-          style={{
-            width: "80px", // 调整邮箱图片宽度
-            height: "auto", // 自动高度保持比例
-            filter: "drop-shadow(0 2px 4px rgba(0,0,0,0.2))",
-            transition: "filter 0.3s ease",
-          }}
-        />
-      </a>
+        <div className="mailbox-icon">
+          <img
+            src="../../public/assets/mailRed.png"
+            alt="Mailbox"
+          />
+        </div>
+        <button className="mode-toggle-btn">
+          切换模式
+        </button>
+      </div>
 
       {/* 发布问题按钮和鸽子图标组合 - 固定在导航栏 */}
       <div 
