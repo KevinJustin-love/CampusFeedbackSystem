@@ -1,5 +1,5 @@
 import React,{ useState, useEffect } from "react"; 
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import Hero from "../components/Hero";
 import IssueDetail from "../components/IssueDetail";
 import CommentSection from "../components/IssueCommentSection/CommentSection";
@@ -11,11 +11,16 @@ import "../styles/IssueDetailPage.css";
 function IssueDetailPage({ user }) {
   const { id } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
   const [issue, setIssue] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
+  const [isFromTopicTree, setIsFromTopicTree] = useState(false)
 
   useEffect(() => {
+    // 检测来源页面
+    const fromPage = location.state?.from;
+    setIsFromTopicTree(fromPage === '/topic-tree');
     
     if (id === 'undefined' || id === undefined) {
       setError("Invalid issue ID");
@@ -65,7 +70,7 @@ function IssueDetailPage({ user }) {
  
 
   return (
-    <div className="issue-detail-page">
+    <div className={`issue-detail-page ${isFromTopicTree ? 'tree-theme' : ''}`}>
       <Hero user={user} onSearch={() => {}} />
       <button className="back-button" onClick={() => navigate(-1)}>
         ← 返回上一页
