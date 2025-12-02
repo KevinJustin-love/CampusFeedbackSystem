@@ -122,7 +122,7 @@ export default function HomePage({ user, onSearch }) {
           onMouseLeave={handleHotspotLeave}
         >
           <span
-            className={`hotspotLabel ${
+            className={`hotspotLabel hotspotLabel-manage ${
               hoveredTopic === "管理" ? "hotspotLabel--hovered" : ""
             }`}
           >
@@ -152,7 +152,7 @@ export default function HomePage({ user, onSearch }) {
           onMouseLeave={handleHotspotLeave}
         >
           <span
-            className={`hotspotLabel ${
+            className={`hotspotLabel hotspotLabel-study ${
               hoveredTopic === "学业" ? "hotspotLabel--hovered" : ""
             }`}
           >
@@ -223,7 +223,7 @@ export default function HomePage({ user, onSearch }) {
           onMouseLeave={handleHotspotLeave}
         >
           <span
-            className={`hotspotLabel ${
+            className={`hotspotLabel hotspotLabel-life ${
               hoveredTopic === "生活" ? "hotspotLabel--hovered" : ""
             }`}
           >

@@ -129,7 +129,7 @@
 }
 /* 小岛标签样式 - 独立于图片 */
 .hotspotLabel {
-  font-size: 20px;
+  font-size: 25px;
   font-weight: 600;
   letter-spacing: 2px;
   display: inline-block;
@@ -140,7 +140,7 @@
   color: #ffffff;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
   font-family: 'Microsoft YaHei', 'PingFang SC', sans-serif;
-  padding: 6px 20px;
+  padding: 6px 22px;
   border-radius: 20px;
   background-color: rgba(134, 199, 166, 0.75);
   margin: 4px 0;
@@ -181,4 +181,23 @@
 .islandHotspotImage--hovered {
   transform: translate(-50%, -50%) scale(1.25);
   z-index: 1; /* 确保仍然低于标签 */
+}
+
+/* 管理标签特定位置 - 向左偏移50px */
+.hotspotLabel-manage {
+  position: relative;
+  left: -100px;
+}
+
+/* 学业标签特定位置 - 向左偏移50px */
+.hotspotLabel-study {
+  position: relative;
+  left: -100px;
+}
+
+/* 生活标签特定位置 - 向上移动80px并加宽左右padding */
+.hotspotLabel-life {
+  position: relative;
+  top: -50px;
+  padding: 6px 35px; /* 增加左右padding从20px到35px */
 }
