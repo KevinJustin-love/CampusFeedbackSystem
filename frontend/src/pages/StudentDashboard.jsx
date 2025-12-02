@@ -124,6 +124,12 @@ const StudentDashboard = ({ user }) => {
               </button>
             )}
             <button
+              onClick={() => navigate("/")}
+              className="btn-primary switch-mode-btn"
+            >
+              切换模式 <span className="icon-home">🏠</span>
+            </button>
+            <button
               onClick={() => navigate("/submit")}
               className="btn-primary submit-issue-btn"
             >
