@@ -42,10 +42,10 @@
 /* **HOME PAGE 专属导航栏样式覆盖 (高优先级)** */
 /* ------------------------------------------- */
 
-/* 导航栏背景：浅绿色透明 */
+/* 导航栏背景：浅绿色不透明 */
 .homeContainer .dashboard-title {
-  /* 使用 rgba(143, 188, 143, 0.7) 来设置一个更不透明的浅绿色 */
-  background-color: rgba(143, 188, 143, 0.7);
+  /* 使用 rgba(143, 188, 143, 0.9) 来设置一个更不透明的浅绿色 */
+  background-color: rgba(143, 188, 143, 0.9);
   /* 确保定位是 fixed，且优先级设置得当 */
   position: fixed;
   top: 0;
@@ -53,9 +53,9 @@
   right: 0;
   z-index: 1001;
 
-  /* 保持原有的磨砂效果和尺寸 */
-  backdrop-filter: blur(5px);
-  -webkit-backdrop-filter: blur(5px);
+  /* 移除磨砂效果，保持原有尺寸 */
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
   height: 65px;
   display: flex;
   align-items: center;
@@ -123,28 +123,42 @@
   transition: transform 0.25s ease;
 }
 .hotspotLabel {
-  font-size: 12px;
-  letter-spacing: 1px;
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: 2px;
   display: inline-block;
   position: relative;
   z-index: 1;
-  transition: transform 0.25s ease;
+  transition: transform 0.25s ease, color 0.25s ease;
   transform-origin: center;
+  color: #ffffff;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+  font-family: 'Microsoft YaHei', 'PingFang SC', sans-serif;
+  padding: 6px 20px;
+  border-radius: 20px;
+  background-color: rgba(134, 199, 166, 0.75);
+  margin: 4px 0;
 }
 
 .hotspotLabel--hovered {
-  transform: scale(1.3);
+  transform: scale(1.15);
+  color: #ffffff;
+  background-color: rgba(76, 175, 80, 0.85);
+  text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.8);
 }
 
 /* 新增：热点激活状态样式 */
 .islandHotspot--active {
-  background: rgba(99, 161, 232, 0.5);
-  /* 可选：添加阴影以突出显示 */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  background: transparent;
+  /* 移除阴影以符合用户要求 */
+  box-shadow: none;
 }
 .islandHotspot--active .hotspotLabel {
-  transform: scale(1.3);
+  transform: scale(1.15);
   font-weight: 600;
+  color: #ffffff;
+  background-color: rgba(76, 175, 80, 0.85);
+  text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.8);
 }
 
 .islandHotspotImage--hovered {
