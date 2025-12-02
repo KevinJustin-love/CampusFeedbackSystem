@@ -37,6 +37,11 @@ export default function HomePage({ user, onSearch }) {
       targetSelector: ".submit-question-container",
       text: "点击这里发布问题",
       offsetTop: 100
+    },
+    {
+      targetSelector: ".mailbox-container",
+      text: "点击这里切换简洁模式",
+      offsetTop: 120
     }
   ];
 
