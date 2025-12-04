@@ -127,34 +127,11 @@ const TopicTreePage = ({ user, onSearch }) => {
           right: 0,
           padding: "20px",
           display: "flex",
-          justifyContent: "space-between",
+          justifyContent: "center",
           alignItems: "center",
           zIndex: 10,
         }}
       >
-        {/* 返回按钮 (木牌风格)
-        <motion.button
-          whileHover={{ scale: 1.1, rotate: -2 }}
-          whileTap={{ scale: 0.95 }}
-          onClick={() => navigate("/")}
-          style={{
-            background: "#8D6E63",
-            color: "#FFF",
-            border: "3px solid #5D4037",
-            padding: "10px 20px",
-            borderRadius: "12px",
-            fontSize: "16px",
-            fontWeight: "bold",
-            boxShadow: "0 4px 0 #3E2723",
-            cursor: "pointer",
-            display: "flex",
-            alignItems: "center",
-            gap: "5px",
-          }}
-        >
-          <span>↩️</span> 返回小岛
-        </motion.button> */}
-
         {/* 标题 (卷轴/牌匾风格) */}
         <div
           style={{
@@ -184,9 +161,6 @@ const TopicTreePage = ({ user, onSearch }) => {
             共 {issues.length} 个问题
           </span>
         </div>
-
-        {/* 占位，保持平衡 */}
-        <div style={{ width: "100px" }} />
       </header>
 
       {/* --- 核心内容区域 --- */}
