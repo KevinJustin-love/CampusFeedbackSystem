@@ -348,6 +348,28 @@
   margin-left: -20px; /* 向左移动20px */
 }
 
+/* 针对右侧和底部大图的特殊定位修正，避免超出页面或偏移 */
+/* 情感小岛在右侧：图片贴紧右侧且最大不超过视窗的一部分 */
+.islandHotspot--emotion .islandHotspotImage,
+.islandHotspot--emotion .islandHotspotImage-emotion {
+  right: 0 !important;
+  left: auto !important;
+  max-width: 18vw; /* 避免在小视窗中溢出 */
+  width: auto !important;
+  transform-origin: right center !important;
+}
+
+/* 生活小岛在右下：图片贴紧右侧并限制宽度，修正过度左偏 */
+.islandHotspot--life .islandHotspotImage,
+.islandHotspot--life .islandHotspotImage-life {
+  right: 0 !important;
+  left: auto !important;
+  max-width: 30vw; /* 保持较大但不溢出 */
+  width: auto !important;
+  transform-origin: right center !important;
+}
+
+/* 如果需要微调垂直居中，可以再调整 translateY 值（JS inline transform 优先级更高） */
 /* 容器悬停时切换模式按钮效果 */
 .mailbox-container:hover .mode-toggle-btn {
   background-color: #FF6347; /* 稍深的珊瑚红色 */
