@@ -30,10 +30,10 @@ const GuideAnimation = ({ guides, onComplete }) => {
     });
     setPositions(calculatedPositions);
 
-    // 5秒后自动进入下一步或完成
+    // 3秒后自动进入下一步或完成
     const timer = setTimeout(() => {
       handleNext();
-    }, 5000);
+    }, 3000);
 
     return () => clearTimeout(timer);
   }, [currentStep, guides, onComplete]);
