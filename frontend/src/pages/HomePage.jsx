@@ -189,7 +189,7 @@ export default function HomePage({ user, onSearch }) {
             right: "0%",
             top: "71%",
             width: "30%",
-            transform: "translateY(-50%)",
+            transform: "translateY(-50)",
           }}
           onMouseEnter={() => handleHotspotEnter("生活")}
           onMouseLeave={handleHotspotLeave}

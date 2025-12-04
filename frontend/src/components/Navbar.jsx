@@ -25,8 +25,8 @@ export default function Navbar({
         <svg
           className="envelope-icon"
           xmlns="http://www.w3.org/2000/svg"
-          width="20"
-          height="20"
+          width="24"
+          height="24"
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
@@ -35,6 +35,7 @@ export default function Navbar({
           <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
           <polyline points="22,6 12,13 2,6" />
         </svg>
+        <span className="icon-label">通知</span>
         {/* 显示未读消息数量的小红点 */}
         {displayUnreadCount > 0 && (
           <span className="notification-badge">
@@ -70,6 +71,7 @@ export default function Navbar({
           <circle cx="12" cy="12" r="10" />
           <polyline points="12 6 12 12 16 14" />
         </svg>
+        <span className="icon-label">历史</span>
       </span>
     );
   }
@@ -83,8 +85,8 @@ export default function Navbar({
         style={{ cursor: "pointer" }}
       >
         <svg
-          width={size}
-          height={size}
+          width="24"
+          height="24"
           viewBox="0 0 24 24"
           fill={filled ? color : "none"}
           stroke={color}
@@ -95,6 +97,7 @@ export default function Navbar({
           {/* 五角星路径 */}
           <path d="M12 2L14.47 8.53L21 9.27L16.24 14.25L17.47 21L12 17.77L6.53 21L7.76 14.25L3 9.27L9.53 8.53L12 2Z" />
         </svg>
+        <span className="icon-label">收藏</span>
       </span>
     );
   }
