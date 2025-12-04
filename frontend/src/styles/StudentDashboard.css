@@ -92,7 +92,9 @@
 
 /* 确保侧边栏顶部对齐 */
 .dashboard-main-layout > .user-issues-sidebar {
-  margin-top: 50px; /* 与 dashboard-controls-header 的 padding-top 对齐 */
+  margin-top: 0; /* 清除硬编码偏移，使用 sticky top 对齐 */
+  position: sticky;
+  top: 240px; /* 与右侧侧栏保持一致以对齐 IssueGrid 区域（可根据需要微调） */
 }
 
 /* 搜索结果提示为信件脚注 */
