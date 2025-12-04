@@ -53,6 +53,17 @@
   font-family: "Georgia", "Times New Roman", serif;
 }
 
+.detail-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #8B4513, #D2691E, #CD853F);
+  border-radius: 12px 12px 0 0;
+}
+
 /* ========== 绿色主题样式（从问题树进入时） ========== */
 
 /* 页面背景 */
@@ -65,6 +76,10 @@
 .issue-detail-page.tree-theme .detail-container {
   background-color: #e8f5e9;
   border: 2px solid #81c784;
+}
+
+.issue-detail-page.tree-theme .detail-container::before {
+  background: linear-gradient(90deg, #2e7d32, #66bb6a, #81c784);
 }
 
 .issue-detail-page.tree-theme .detail-title {
@@ -89,9 +104,6 @@
 
 .issue-detail-page.tree-theme .label {
   color: #2e7d32;
-}
-.detail-container::before {
- background: linear-gradient(90deg, #2e7d32, #66bb6a, #81c784);
 }
 
 /* 返回按钮 */
