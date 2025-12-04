@@ -15,7 +15,7 @@
       rgba(0, 150, 150, 0.4),
       rgba(50, 160, 255, 0.4)
     ),
-    url("../../pictures/login-sea.jpg") center/cover no-repeat fixed;
+    url("/assets/login-sea.jpg") center/cover no-repeat fixed;
 }
 
 /* 登录卡片 */

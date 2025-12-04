@@ -5,13 +5,15 @@ import SingleIssueTree from "../components/SingleIssueTree";
 import GuideAnimation from "../components/GuideAnimation";
 import { fetchIssues } from "../components/functions/FetchIssues"; 
 import { motion, AnimatePresence } from "framer-motion";
+import Hero from "../components/Hero";
+import "../styles/TopicTreePage.css";
 
 // 引入一个漂亮的动漫风格风景图 (使用指定图片源)
 const ANIME_BG_URL =
   "/assets/forest-bg.png"; // 动漫风格森林背景
 // 备选: 蓝天草地风格
 
-const TopicTreePage = () => {
+const TopicTreePage = ({ user, onSearch }) => {
   const { topic } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
@@ -81,6 +83,11 @@ const TopicTreePage = () => {
   // 定义引导步骤
   const guideSteps = [
     {
+      targetSelector: ".island-icon-container",
+      text: "点击这里回到小岛",
+      offsetTop: 150
+    },
+    {
       targetSelector: ".topic-tree-slider",
       text: "点击叶子可以查看问题详情",
       offsetTop: 150
@@ -88,8 +95,10 @@ const TopicTreePage = () => {
   ];
 
   return (
-    <div
-      className="anime-page-wrapper"
+    <div className="topic-tree-page-root">
+      <Hero user={user} onSearch={onSearch} />
+      <div
+        className="anime-page-wrapper"
       style={{
         width: "100vw",
         height: "100vh",
@@ -123,34 +132,11 @@ const TopicTreePage = () => {
           right: 0,
           padding: "20px",
           display: "flex",
-          justifyContent: "space-between",
+          justifyContent: "center",
           alignItems: "center",
           zIndex: 10,
         }}
       >
-        {/* 返回按钮 (木牌风格) */}
-        <motion.button
-          whileHover={{ scale: 1.1, rotate: -2 }}
-          whileTap={{ scale: 0.95 }}
-          onClick={() => navigate("/")}
-          style={{
-            background: "#8D6E63",
-            color: "#FFF",
-            border: "3px solid #5D4037",
-            padding: "10px 20px",
-            borderRadius: "12px",
-            fontSize: "16px",
-            fontWeight: "bold",
-            boxShadow: "0 4px 0 #3E2723",
-            cursor: "pointer",
-            display: "flex",
-            alignItems: "center",
-            gap: "5px",
-          }}
-        >
-          <span>↩️</span> 返回小岛
-        </motion.button>
-
         {/* 标题 (卷轴/牌匾风格) */}
         <div
           style={{
@@ -176,13 +162,10 @@ const TopicTreePage = () => {
           >
             {theme.icon} {theme.title}
           </h1>
-          <span style={{ fontSize: "12px", color: "#666", marginTop: "5px" }}>
-            共发现 {issues.length} 个遗落的问题
+          <span style={{ fontSize: "18px", color: "#666", marginTop: "5px" }}>
+            共 {issues.length} 个问题
           </span>
         </div>
-
-        {/* 占位，保持平衡 */}
-        <div style={{ width: "100px" }} />
       </header>
 
       {/* --- 核心内容区域 --- */}
@@ -333,6 +316,7 @@ const TopicTreePage = () => {
           </div>
         )}
       </div>
+    </div>
     </div>
   );
 };

@@ -130,7 +130,7 @@ const App = () => {
           element={
             <ProtectedRoute>
               {user ? (
-                <TopicTreePage user={user} />
+                <TopicTreePage user={user} onSearch={() => {}} />
               ) : (
                 <div>加载用户信息中...</div>
               )}

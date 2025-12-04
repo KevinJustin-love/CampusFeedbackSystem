@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { favoriteAPI } from '../api';
 import '../styles/FavoritesModal.css';
 
 const FavoritesModal = ({ isOpen, onClose }) => {
+  const navigate = useNavigate();
   const [favorites, setFavorites] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -41,7 +43,7 @@ const FavoritesModal = ({ isOpen, onClose }) => {
 
   const handleItemClick = (issueId) => {
     // 跳转到问题详情页
-    window.location.href = `/detail/${issueId}`;
+    navigate(`/detail/${issueId}`, { state: { from: 'homepage-favorites' } });
   };
 
   if (!isOpen) return null;

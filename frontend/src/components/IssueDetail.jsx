@@ -2,6 +2,29 @@ import React, { useState, useEffect } from "react";
 import { feedbackAPI, favoriteAPI } from "../api";
 import "../styles/IssueDetail.css";
 
+// 格式化日期时间的辅助函数
+const formatDateTime = (dateString) => {
+  if (!dateString) return "未知时间";
+  
+  try {
+    const date = new Date(dateString);
+    // 检查日期是否有效
+    if (isNaN(date.getTime())) return "无效日期";
+    
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+    const seconds = String(date.getSeconds()).padStart(2, '0');
+    
+    return `${year}年${month}月${day}日 ${hours}:${minutes}:${seconds}`;
+  } catch (error) {
+    console.error("日期格式化错误:", error);
+    return "日期格式错误";
+  }
+};
+
 function IssueDetail({ issue }) {
   // 点赞相关状态
   const [likes, setLikes] = useState(issue.likes || 0);
@@ -63,7 +86,7 @@ function IssueDetail({ issue }) {
         <div className="detail-meta">
           <p className="detail-info"><span>分类：</span>{issue.topic}</p>
           <p className="detail-info"><span>状态：</span>{issue.status}</p>
-          <p className="detail-info"><span>提交时间：</span>{issue.created}</p>
+          <p className="detail-info"><span>提交时间：</span>{formatDateTime(issue.created)}</p>
           <div className="detail-actions">
             <button 
               className={`favorite-btn ${isFavorited ? 'favorited' : ''}`}

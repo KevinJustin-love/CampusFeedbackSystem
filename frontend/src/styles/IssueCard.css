@@ -33,48 +33,49 @@
 }
 
 /* 2. 顶部装饰：虚线分隔 (原 IssueGrid.css 中样式，移到此处) */
-/* 注意：由于 IssueCard.jsx 的结构没有 issue-description，
-  如果这个虚线是用来分隔 IssueCard 顶部和内容，应该放在 IssueCard 内部。
-  如果您希望它在卡片顶部，可以使用 ::before 伪元素。
-*/
 .issue-card::before {
   content: "";
-  display: block;
-  width: 100%;
+  position: absolute;
+  top: 35px; /* 调整到标题上方，不压在标题上 */
+  left: 25px;
+  right: 25px;
+  height: 2px;
   border-top: 2px dashed #d1bfa3;
-  margin-bottom: 12px;
-  position: absolute; /* 使其在 padding 内部 */
-  top: 45px; /* 放在邮票下方 */
-  left: 0;
-  padding: 0 25px; /* 调整宽度，使其在左右 padding 之间 */
-  box-sizing: border-box; /* 让 padding 不影响宽度计算 */
+  z-index: 1;
 }
 
-/* 3. 邮票（左上角）- 保持不变 */
+/* 3. 邮票（左上角） */
 .issue-stamp {
   position: absolute;
-  top: 12px;
-  left: 12px;
-  font-size: 22px;
-  transform: rotate(-10deg);
-  opacity: 0.8;
+  top: 10px;
+  left: 15px;
+  font-size: 28px;
+  transform: rotate(-15deg);
+  opacity: 0.9;
   z-index: 10; /* 确保在虚线上方 */
+  filter: drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.1));
 }
 
 /* 4. 标题和信息（调整以配合信纸风格） */
+.issue-body {
+  padding-top: 8px; /* 留空间给虚线 */
+}
+
 .issue-title {
   font-size: 18px;
   font-weight: bold;
   color: #4a3c28; /* 深棕色字体 */
   margin-left: 30px; /* 避开邮票 */
-  margin-bottom: 10px;
+  margin-bottom: 8px;
   margin-top: 0;
 }
+
 .issue-info {
   margin-left: 30px;
   margin-top: 0; /* 调整间距 */
-  color: #5a4a36; /* 略浅的棕色 */
-  font-size: 15px;
+  color: #6a5a46; /* 略浅的棕色 */
+  font-size: 14px;
+  line-height: 1.4;
 }
 
 /* 5. 信件落款（时间戳）- 保持不变 */
@@ -102,42 +103,97 @@
   margin-right: 0;
 }
 
+.card-actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.card-stats {
+  display: flex;
+  align-items: center;
+}
+
 /* 7. 操作按钮美化 */
-.btn-link, .btn-delete {
+.card-actions .btn-link,
+.card-actions .btn-delete {
   font-family: inherit; /* 保持信纸字体 */
-  font-weight: bold;
-  border: none;
-  background: none;
+  font-weight: 600;
+  border: 1.5px solid #d1bfa3;
+  background: #fffdf5;
   cursor: pointer;
-  padding: 4px 8px;
-  border-radius: 4px;
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-size: 14px;
+  transition: all 0.2s ease;
 }
 
-.btn-link {
-  color: #5a4a36; /* 棕色链接 */
-  text-decoration: underline;
-}
-.btn-link:hover {
-  color: #4a3c28;
-  background-color: #f7f3ed;
+.card-actions .btn-link {
+  color: rgb(75, 125, 226); /* 蓝色链接 */
+  border-color: #4b7de2;
+  text-decoration: none;
+  margin-left: 20px;
 }
 
-.btn-delete {
-  color: #b91c1c;
+.card-actions .btn-link:hover {
+  color: #ffffff;
+  background-color: #4b7de2;
+  box-shadow: 0 2px 6px rgba(75, 125, 226, 0.3);
+}
+
+.card-actions .btn-delete {
+  color: #b91c1c; /* 棕色删除 */
+  border-color: #b91c1c;
+}
+
+.card-actions .btn-delete:hover {
+  color: #ffffff;
+  background-color: #b91c1c;
+  box-shadow: 0 2px 6px rgba(185, 28, 28, 0.3);
 }
 
 /* 8. 互动按钮美化 */
 .issue-interactions {
   display: flex;
-  align-items: flex-start; /* 改为顶部对齐 */
-  gap: 15px;
-  font-size: 15px; /* 减小字体 */
+  align-items: center;
+  gap: 12px;
+  font-size: 14px;
 }
-.interaction-button,
-.interaction-views {
-  color: #7a6c5b;
+
+.interaction-button {
+  border: 1.5px solid #d1bfa3;
+  background: #fffdf5;
+  color: #b91c1c;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-family: inherit;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  font-size: 13px;
+  margin-left: 20px;
+}
+
+.interaction-button:hover {
+  background-color: #f7f3ed;
+  border-color: #8B4513;
 }
 
 .interaction-button.liked {
-  color: #e57373; /* 略微柔和的红心 */
+  background-color: #ffe8e8;
+  border-color: #e57373;
+  color: #d32f2f;
+}
+
+.interaction-button.liked:hover {
+  background-color: #ffd6d6;
+  box-shadow: 0 2px 6px rgba(227, 26, 26, 0.2);
+}
+
+.interaction-views {
+  color: #6a5a46;
+  padding: 4px 12px;
+  border-radius: 5px;
+  font-weight: 600;
+  border: 1.5px solid #d1bfa3;
 }
