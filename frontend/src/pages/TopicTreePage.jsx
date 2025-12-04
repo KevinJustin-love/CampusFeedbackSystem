@@ -5,13 +5,15 @@ import SingleIssueTree from "../components/SingleIssueTree";
 import GuideAnimation from "../components/GuideAnimation";
 import { fetchIssues } from "../components/functions/FetchIssues"; 
 import { motion, AnimatePresence } from "framer-motion";
+import Hero from "../components/Hero";
+import "../styles/TopicTreePage.css";
 
 // 引入一个漂亮的动漫风格风景图 (使用指定图片源)
 const ANIME_BG_URL =
   "/assets/forest-bg.png"; // 动漫风格森林背景
 // 备选: 蓝天草地风格
 
-const TopicTreePage = () => {
+const TopicTreePage = ({ user, onSearch }) => {
   const { topic } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
@@ -88,6 +90,8 @@ const TopicTreePage = () => {
   ];
 
   return (
+    <>
+    <Hero user={user} onSearch={onSearch} />
     <div
       className="anime-page-wrapper"
       style={{
@@ -128,7 +132,7 @@ const TopicTreePage = () => {
           zIndex: 10,
         }}
       >
-        {/* 返回按钮 (木牌风格) */}
+        {/* 返回按钮 (木牌风格)
         <motion.button
           whileHover={{ scale: 1.1, rotate: -2 }}
           whileTap={{ scale: 0.95 }}
@@ -149,7 +153,7 @@ const TopicTreePage = () => {
           }}
         >
           <span>↩️</span> 返回小岛
-        </motion.button>
+        </motion.button> */}
 
         {/* 标题 (卷轴/牌匾风格) */}
         <div
@@ -334,7 +338,7 @@ const TopicTreePage = () => {
         )}
       </div>
     </div>
-  );
+    </>);
 };
 
 export default TopicTreePage;

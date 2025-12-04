@@ -1,7 +1,61 @@
 /* TopicTreePage.css - 森林背景 + 清晰内容分层 */
 
+/* ========== 确保 Hero 部分使用 HomePage 的样式 ========== */
+ .dashboard-title {
+  /* 覆盖默认的 Hero.css 样式，使用 HomePage 的浅绿色 */
+  background-color: rgba(143, 188, 143, 0.9); /* 与 HomePage 相同的浅绿色 */
+  color: #ffffff; /* 白色文字 */
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.2);
+  height: 65px; /* 与 HomePage 的导航栏高度一致 */
+  position: fixed;
+  top: 0px;
+  left: 0;
+  right: 0;
+  z-index: 1001; /* 与 HomePage 的导航栏层级一致 */
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+}
+
+ .dashboard-title > * {
+  pointer-events: auto;
+}
+
+/* 左侧内容容器 */
+ .dashboard-title-content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #ffffff; /* 白色文字，与 HomePage 一致 */
+}
+
+/* 用户头像 */
+ .userimg {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease;
+  cursor: pointer;
+}
+
+.userimg:hover {
+  transform: scale(1.05);
+}
+
+/* ========== 原有样式 ========== */
+
 .anime-page-wrapper {
-  min-height: 100vh;
+  margin-top: 51px; /* 给导航栏留出空间 */
+  min-height: 80vh;
   width: 100%;
   background-image: url("/assets/forest-bg.png") !important;
   background-size: cover !important;
