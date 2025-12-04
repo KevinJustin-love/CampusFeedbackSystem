@@ -176,8 +176,8 @@ const TopicTreePage = () => {
           >
             {theme.icon} {theme.title}
           </h1>
-          <span style={{ fontSize: "12px", color: "#666", marginTop: "5px" }}>
-            共发现 {issues.length} 个遗落的问题
+          <span style={{ fontSize: "18px", color: "#666", marginTop: "5px" }}>
+            共 {issues.length} 个问题
           </span>
         </div>
 

@@ -112,6 +112,60 @@
   stroke: #ffffff;
 }
 
+.home-icon-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  color: #d0d0d0;
+  transition: transform 0.3s ease;
+}
+
+.home-icon-container:hover {
+  transform: scale(1.2);
+  color: #ffffff;
+}
+
+.home-icon-container:hover .icon-label {
+  color: #ffffff;
+}
+
+.home-icon {
+  width: 24px;
+  stroke-width: 2px;
+}
+
+.home-icon-container:hover .home-icon {
+  stroke: #ffffff;
+}
+
+.island-icon-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  color: #d0d0d0;
+  transition: transform 0.3s ease;
+}
+
+.island-icon-container:hover {
+  transform: scale(1.2);
+  color: #ffffff;
+}
+
+.island-icon-container:hover .icon-label {
+  color: #ffffff;
+}
+
+.island-icon {
+  width: 24px;
+  stroke-width: 2px;
+}
+
+.island-icon-container:hover .island-icon {
+  stroke: #ffffff;
+}
+
 .search-container {
   display: flex;
   align-items: center;
