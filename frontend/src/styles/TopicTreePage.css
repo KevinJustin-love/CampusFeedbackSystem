@@ -1,7 +1,7 @@
 /* TopicTreePage.css - 森林背景 + 清晰内容分层 */
 
-/* ========== 确保 Hero 部分使用 HomePage 的样式 ========== */
- .dashboard-title {
+/* ========== 确保 Hero 部分使用 HomePage 的样式（仅限于 TopicTreePage） ========== */
+.topic-tree-page-root .dashboard-title {
   /* 覆盖默认的 Hero.css 样式，使用 HomePage 的浅绿色 */
   background-color: rgba(143, 188, 143, 0.9); /* 与 HomePage 相同的浅绿色 */
   color: #ffffff; /* 白色文字 */
@@ -21,12 +21,12 @@
   padding: 0 20px;
 }
 
- .dashboard-title > * {
+.topic-tree-page-root .dashboard-title > * {
   pointer-events: auto;
 }
 
 /* 左侧内容容器 */
- .dashboard-title-content {
+.topic-tree-page-root .dashboard-title-content {
   display: flex;
   align-items: center;
   gap: 12px;
@@ -34,7 +34,7 @@
 }
 
 /* 用户头像 */
- .userimg {
+.topic-tree-page-root .userimg {
   width: 36px;
   height: 36px;
   border-radius: 50%;
@@ -47,7 +47,7 @@
   cursor: pointer;
 }
 
-.userimg:hover {
+.topic-tree-page-root .userimg:hover {
   transform: scale(1.05);
 }
 

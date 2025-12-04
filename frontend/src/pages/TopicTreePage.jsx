@@ -95,10 +95,10 @@ const TopicTreePage = ({ user, onSearch }) => {
   ];
 
   return (
-    <>
-    <Hero user={user} onSearch={onSearch} />
-    <div
-      className="anime-page-wrapper"
+    <div className="topic-tree-page-root">
+      <Hero user={user} onSearch={onSearch} />
+      <div
+        className="anime-page-wrapper"
       style={{
         width: "100vw",
         height: "100vh",
@@ -317,7 +317,8 @@ const TopicTreePage = ({ user, onSearch }) => {
         )}
       </div>
     </div>
-    </>);
+    </div>
+  );
 };
 
 export default TopicTreePage;
