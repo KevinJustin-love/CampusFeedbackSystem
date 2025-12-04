@@ -40,7 +40,7 @@ export default function HomePage({ user, onSearch }) {
     {
       targetSelector: ".submit-question-container",
       text: "点击这里发布问题",
-      offsetTop: 90
+      offsetTop: 120
     },
     {
       targetSelector: ".mailbox-container",
