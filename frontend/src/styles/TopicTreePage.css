@@ -13,7 +13,7 @@
   top: 0px;
   left: 0;
   right: 0;
-  z-index: 1001; /* 与 HomePage 的导航栏层级一致 */
+  z-index: 1000; /* 降低z-index以确保引导动画在最上层 */
   pointer-events: none;
   display: flex;
   align-items: center;
@@ -67,10 +67,10 @@
   overflow-x: hidden;
 }
 
-/* 使所有直接子元素在内容层 */
+/* 使所有直接子元素在内容层 - 但不限制 z-index，允许引导动画在上层 */
 .anime-page-wrapper > * {
   position: relative;
-  z-index: 1;
+  /* z-index 不再设置，允许子元素自由设置 */
 }
 
 .topic-tree-page {

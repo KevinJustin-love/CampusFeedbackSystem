@@ -146,6 +146,8 @@
   cursor: pointer;
   color: #d0d0d0;
   transition: transform 0.3s ease;
+  position: relative; /* 添加相对定位 */
+  z-index: 1002; /* 提高z-index确保可点击 */
 }
 
 .island-icon-container:hover {
