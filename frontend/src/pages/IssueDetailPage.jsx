@@ -20,6 +20,7 @@ function IssueDetailPage({ user }) {
   useEffect(() => {
     // 检测来源页面
     const fromPage = location.state?.from;
+    // 只有从/topic-tree（问题树页面）进入时使用绿色主题，其他情况（包括dashboard）使用棕色主题
     setIsFromTopicTree(fromPage === '/topic-tree');
     
     if (id === 'undefined' || id === undefined) {
