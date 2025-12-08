@@ -40,7 +40,7 @@ export default function HomePage({ user, onSearch }) {
     {
       targetSelector: ".submit-question-container",
       text: "点击这里发布问题",
-      offsetTop: 100
+      offsetTop: 120
     },
     {
       targetSelector: ".mailbox-container",
@@ -172,13 +172,13 @@ export default function HomePage({ user, onSearch }) {
             style={{
               width: "320px",
               top: "80%",
-              right: 0, // 贴紧父元素右边
+              right: "-10px", // 贴紧父元素右边
               left: "auto",
               transformOrigin: "right center", // 缩放时保持右边缘不动
               transform:
                 hoveredTopic === "情感"
-                  ? "translateY(-60%) scale(1.2)"
-                  : "translateY(-60%)",
+                  ? "translateY(-80%) scale(1.2)"
+                  : "translateY(-80%)",
             }}
           />
         </a>
@@ -213,8 +213,8 @@ export default function HomePage({ user, onSearch }) {
               transformOrigin: "right center",
               transform:
                 hoveredTopic === "生活"
-                  ? "translateY(-60%) scale(1.2)"
-                  : "translateY(-60%)",
+                  ? "translateY(-70%) scale(1.2)"
+                  : "translateY(-70%)",
             }}
           />
         </a>

@@ -27,7 +27,7 @@ const HistoryModal = ({ isOpen, onClose }) => {
 
   const handleItemClick = (issueId) => {
     onClose();
-    navigate(`/detail/${issueId}`);
+    navigate(`/detail/${issueId}`, { state: { from: 'homepage-history' } });
   };
 
   const handleClearHistory = async () => {

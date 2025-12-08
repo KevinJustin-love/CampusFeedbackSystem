@@ -8,7 +8,7 @@
   align-self: flex-start;
   font-family: "Georgia", "Times New Roman", serif;
   position: sticky;
-  top: 80px;
+  top: 160px; /* 对齐到 IssueGrid 顶部（与左侧侧栏一致） */
   margin-left: 0px; /* 调整这个值来改变与主内容的距离 */
 }
 

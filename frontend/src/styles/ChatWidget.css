@@ -83,6 +83,24 @@
   border: 2px solid #f0f8ff;
 }
 
+/* 气泡提示 - "点击我开始对话" */
+.chat-widget-bubble {
+  position: absolute;
+  bottom: -50px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #4682b4;
+  color: #f7f1e8;
+  padding: 8px 12px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+  box-shadow: 0 4px 12px rgba(70, 130, 180, 0.4);
+  pointer-events: none;
+  z-index: 9998;
+}
+
 /* 背景遮罩 */
 .chat-widget-backdrop {
   position: fixed;

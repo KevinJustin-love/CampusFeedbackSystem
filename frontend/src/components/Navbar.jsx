@@ -25,8 +25,8 @@ export default function Navbar({
         <svg
           className="envelope-icon"
           xmlns="http://www.w3.org/2000/svg"
-          width="20"
-          height="20"
+          width="24"
+          height="24"
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
@@ -35,6 +35,7 @@ export default function Navbar({
           <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
           <polyline points="22,6 12,13 2,6" />
         </svg>
+        <span className="icon-label">通知</span>
         {/* 显示未读消息数量的小红点 */}
         {displayUnreadCount > 0 && (
           <span className="notification-badge">
@@ -70,6 +71,7 @@ export default function Navbar({
           <circle cx="12" cy="12" r="10" />
           <polyline points="12 6 12 12 16 14" />
         </svg>
+        <span className="icon-label">历史</span>
       </span>
     );
   }
@@ -83,8 +85,8 @@ export default function Navbar({
         style={{ cursor: "pointer" }}
       >
         <svg
-          width={size}
-          height={size}
+          width="24"
+          height="24"
           viewBox="0 0 24 24"
           fill={filled ? color : "none"}
           stroke={color}
@@ -95,6 +97,63 @@ export default function Navbar({
           {/* 五角星路径 */}
           <path d="M12 2L14.47 8.53L21 9.27L16.24 14.25L17.47 21L12 17.77L6.53 21L7.76 14.25L3 9.27L9.53 8.53L12 2Z" />
         </svg>
+        <span className="icon-label">收藏</span>
+      </span>
+    );
+  }
+
+  //回到主页图标
+  function HomeIcon({ size = 24, onClick, stroke = "rgba(216, 213, 213, 1)" }) {
+    return (
+      <span
+        className="home-icon-container"
+        onClick={onClick}
+        style={{ cursor: "pointer" }}
+      >
+        <svg
+          width={size}
+          height={size}
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke={stroke}
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className="home-icon"
+        >
+          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+          <polyline points="9 22 9 12 15 12 15 22"></polyline>
+        </svg>
+        <span className="icon-label">主页</span>
+      </span>
+    );
+  }
+ 
+  //回到小岛图标
+  function IslandIcon({ size = 24, onClick, stroke = "rgba(216, 213, 213, 1)" }) {
+    return (
+      <span
+        className="island-icon-container"
+        onClick={onClick}
+        style={{ cursor: "pointer" }}
+      >
+        <svg
+          width={size}
+          height={size}
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke={stroke}
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className="island-icon"
+        >
+          <ellipse cx="12" cy="17" rx="8" ry="4"></ellipse>
+          <path d="M8 17c0 2.2 1.8 4 4 4s4-1.8 4-4"></path>
+          <path d="M12 13c-2.2 0-4 1.8-4 4h8c0-2.2-1.8-4-4-4z"></path>
+          <path d="M6 8l6-6 6 6"></path>
+        </svg>
+        <span className="icon-label">小岛</span>
       </span>
     );
   }
@@ -217,6 +276,14 @@ export default function Navbar({
     navigate("/logout");
   };
 
+  const handleHomeIconClick = () => {
+    navigate("/dashboard"); // 跳转到dashboard页面
+  };
+
+  const handleIslandIconClick = () => {
+    navigate("/"); // 跳转到homepage页面
+  };
+
   return (
     <div className="navbar-container">
       <div
@@ -238,6 +305,16 @@ export default function Navbar({
         <StarIcon />
       </div>
       <SearchBar />
+      
+      {/* 回到主页图标 */}
+      <div onClick={handleHomeIconClick} style={{ cursor: "pointer", zIndex: 1000 }}>
+        <HomeIcon />
+      </div>
+      
+      {/* 回到小岛图标 */}
+      <div onClick={handleIslandIconClick} style={{ cursor: "pointer", zIndex: 1000 }}>
+        <IslandIcon />
+      </div>
 
       {/* 占位将用户区域推至最右侧 */}
       <div className="navbar-spacer" />

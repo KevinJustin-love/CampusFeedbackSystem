@@ -22,7 +22,7 @@
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
-  font-family: 'Georgia', 'Times New Roman', '楷体', serif;
+  /* font-family: 'Georgia', 'Times New Roman', '楷体', serif; */
   display: flex;
   align-items: center;
   gap: 6px;
@@ -53,6 +53,47 @@
   font-family: "Georgia", "Times New Roman", serif;
 }
 
+.detail-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #8B4513, #D2691E, #CD853F);
+  border-radius: 12px 12px 0 0;
+}
+
+/* 默认的棕色主题样式（从 dashboard 进入） */
+.detail-title {
+  font-size: 32px;
+  font-weight: 700;
+  color: #8B4513; /* 棕色 */
+  margin-bottom: 28px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  text-shadow: 1px 1px 2px rgba(139, 69, 19, 0.1);
+  border-bottom: 2px solid #d6c6a5;
+  padding-bottom: 16px;
+  font-family: "Georgia", "Times New Roman", serif;
+}
+
+.detail-title::before {
+  content: '✉️';
+  font-size: 28px;
+}
+
+.reply-title {
+  font-size: 20px;
+  font-weight: bold;
+  color: #4a3c28; /* 棕色 */
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid #d6c6a5;
+  font-family: "Georgia", "Times New Roman", serif;
+}
+
 /* ========== 绿色主题样式（从问题树进入时） ========== */
 
 /* 页面背景 */
@@ -61,15 +102,34 @@
   background-size: cover;
 }
 
+
 /* 问题详情卡片 */
 .issue-detail-page.tree-theme .detail-container {
   background-color: #e8f5e9;
   border: 2px solid #81c784;
 }
 
-.issue-detail-page.tree-theme .detail-title {
+.issue-detail-page.tree-theme .detail-container::before {
+  background: linear-gradient(90deg, #2e7d32, #66bb6a, #81c784);
+}
+
+.issue-detail-page.tree-theme .detail-title.tree-theme {
   color: #1b5e20;
   border-bottom: 2px solid #81c784;
+  font-size: 32px;
+  font-weight: 700;
+  font-family: "Georgia", "Times New Roman", serif;
+  margin-bottom: 28px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  text-shadow: 1px 1px 2px rgba(46, 125, 50, 0.1);
+  padding-bottom: 16px;
+}
+
+.issue-detail-page.tree-theme .detail-title::before {
+  content: '✉️';
+  font-size: 28px;
 }
 
 .issue-detail-page.tree-theme .detail-info span {
@@ -89,9 +149,6 @@
 
 .issue-detail-page.tree-theme .label {
   color: #2e7d32;
-}
-.detail-container::before {
- background: linear-gradient(90deg, #2e7d32, #66bb6a, #81c784);
 }
 
 /* 返回按钮 */
@@ -118,6 +175,11 @@
 .issue-detail-page.tree-theme .reply-title {
   color: #1b5e20;
   border-bottom: 2px solid #81c784;
+  font-size: 20px;
+  font-weight: bold;
+  font-family: "Georgia", "Times New Roman", serif;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
 }
 
 .issue-detail-page.tree-theme .reply {
