@@ -6,7 +6,7 @@ import Navbar from "./Navbar";
 
 import "../styles/Hero.css";
 
-const Home = ({ user, onSearch, adminUnreadCount, adminFilter = false }) => {
+const Home = ({ user, onSearch, adminUnreadCount, adminFilter = false, isSearching = false }) => {
   const navigate = useNavigate();
   const [currentUser, setCurrentUser] = useState(user);
   const [isLoading, setIsLoading] = useState(false);
@@ -74,6 +74,7 @@ const Home = ({ user, onSearch, adminUnreadCount, adminFilter = false }) => {
           onSearch={onSearch}
           adminUnreadCount={adminUnreadCount}
           adminFilter={adminFilter}
+          isSearching={isSearching}
         />
       </div>
     </div>
