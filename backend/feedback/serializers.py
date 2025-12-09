@@ -1,8 +1,29 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
 from .models import Issue, Reply, Message, Topic, Notification, ViewHistory, Favorite
+import re
+import html
 
 class TopicSerializer(serializers.ModelSerializer):
+    
+    def validate_name(self, value):
+        """验证分类名称"""
+        if not value or not value.strip():
+            raise serializers.ValidationError("分类名称不能为空")
+        
+        # 限制长度
+        if len(value) > 50:
+            raise serializers.ValidationError("分类名称不能超过50个字符")
+        
+        # 只允许字母、数字、中文、空格和常见标点
+        if not re.match(r'^[\w\u4e00-\u9fa5\s\-_,.()（）\[\]【】]+$', value):
+            raise serializers.ValidationError("分类名称只能包含字母、数字、中文、空格和常见标点符号")
+        
+        # HTML转义防护
+        value = html.escape(value)
+        
+        return value.strip()
+    
     class Meta:
         model = Topic
         fields = ['id', 'name']
@@ -25,6 +46,26 @@ class MessageSerializer(serializers.ModelSerializer):
         if obj.user:
             return obj.user.username
         return '匿名用户'
+    
+    def validate_body(self, value):
+        """验证评论内容"""
+        if not value or not value.strip():
+            raise serializers.ValidationError("评论内容不能为空")
+        
+        # 限制长度
+        if len(value) > 1000:
+            raise serializers.ValidationError("评论内容不能超过1000个字符")
+        
+        # 基本HTML标签过滤
+        dangerous_tags = ['<script', '<iframe', '<object', '<embed', '<form', '<input', '<button']
+        for tag in dangerous_tags:
+            if tag in value.lower():
+                raise serializers.ValidationError("评论内容中不能包含危险的HTML标签")
+        
+        # HTML转义防护
+        value = html.escape(value)
+        
+        return value.strip()
 
     class Meta:
         model = Message
@@ -55,6 +96,26 @@ class ReplySerializer(serializers.ModelSerializer):
             return obj.attachment.url
         return None
     
+    def validate_content(self, value):
+        """验证回复内容"""
+        if not value or not value.strip():
+            raise serializers.ValidationError("回复内容不能为空")
+        
+        # 限制长度
+        if len(value) > 1000:
+            raise serializers.ValidationError("回复内容不能超过1000个字符")
+        
+        # 基本HTML标签过滤
+        dangerous_tags = ['<script', '<iframe', '<object', '<embed', '<form', '<input', '<button']
+        for tag in dangerous_tags:
+            if tag in value.lower():
+                raise serializers.ValidationError("回复内容中不能包含危险的HTML标签")
+        
+        # HTML转义防护
+        value = html.escape(value)
+        
+        return value.strip()
+    
     class Meta:
         model = Reply
         fields = [
@@ -74,6 +135,45 @@ class IssueSerializer(serializers.ModelSerializer):
     topic = serializers.StringRelatedField()
     attachment = serializers.SerializerMethodField()
     is_favorited = serializers.SerializerMethodField()
+    
+    def validate_title(self, value):
+        """验证问题标题"""
+        if not value or not value.strip():
+            raise serializers.ValidationError("问题标题不能为空")
+        
+        # 限制长度
+        if len(value) > 50:
+            raise serializers.ValidationError("问题标题不能超过50个字符")
+        
+        # 只允许字母、数字、中文、空格和常见标点
+        if not re.match(r'^[\w\u4e00-\u9fa5\s\-_,.!?()（）\[\]【】]+$', value):
+            raise serializers.ValidationError("标题只能包含字母、数字、中文、空格和常见标点符号")
+        
+        # HTML转义防护
+        value = html.escape(value)
+        
+        return value.strip()
+    
+    def validate_description(self, value):
+        """验证问题描述"""
+        if not value or not value.strip():
+            raise serializers.ValidationError("问题描述不能为空")
+        
+        # 限制长度
+        if len(value) > 1000:
+            raise serializers.ValidationError("问题描述不能超过1000个字符")
+        
+        # 基本HTML标签过滤（允许一些安全的标签）
+        # 移除危险标签
+        dangerous_tags = ['<script', '<iframe', '<object', '<embed', '<form', '<input', '<button']
+        for tag in dangerous_tags:
+            if tag in value.lower():
+                raise serializers.ValidationError("描述中不能包含危险的HTML标签")
+        
+        # HTML转义防护
+        value = html.escape(value)
+        
+        return value.strip()
 
     def get_attachment(self, obj):
         """获取附件的完整URL"""

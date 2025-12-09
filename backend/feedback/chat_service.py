@@ -4,6 +4,8 @@
 """
 from openai import OpenAI
 from django.conf import settings
+from rest_framework.exceptions import ValidationError
+from .validation_utils import InputValidator, SQLInjectionDetector
 import logging
 
 logger = logging.getLogger(__name__)
@@ -74,17 +76,54 @@ class ChatService:
             }
         
         try:
+            # 输入验证
+            if not user_message or not user_message.strip():
+                return {
+                    "success": False,
+                    "message": "请输入有效的消息内容。",
+                    "error": "消息内容为空"
+                }
+            
+            # 验证消息长度
+            if len(user_message) > 1000:
+                return {
+                    "success": False,
+                    "message": "消息内容过长，请控制在1000个字符以内。",
+                    "error": "消息内容过长"
+                }
+            
+            # 检测SQL注入
+            if SQLInjectionDetector.detect_sql_injection(user_message):
+                logger.warning(f"Detected possible SQL injection attempt in chat message: {user_message[:50]}")
+                return {
+                    "success": False,
+                    "message": "检测到不安全的输入内容，请检查后重试。",
+                    "error": "SQL注入检测"
+                }
+            
+            # 清理用户输入
+            safe_user_message = InputValidator.sanitize_input(user_message, max_length=1000)
+            
             # 构建消息列表
             messages = [{"role": "system", "content": self.system_prompt}]
             
             # 添加历史对话（如果有）
             if conversation_history:
-                messages.extend(conversation_history)
+                # 验证历史对话格式
+                if isinstance(conversation_history, list):
+                    for msg in conversation_history:
+                        if isinstance(msg, dict) and 'role' in msg and 'content' in msg:
+                            # 清理历史消息内容
+                            safe_content = InputValidator.sanitize_input(msg['content'], max_length=1000)
+                            messages.append({
+                                "role": msg['role'],
+                                "content": safe_content
+                            })
             
             # 添加当前用户消息
-            messages.append({"role": "user", "content": user_message})
+            messages.append({"role": "user", "content": safe_user_message})
             
-            logger.info(f"ChatService preparing API call - messages: {len(messages)}, user_message_length: {len(user_message)}")
+            logger.info(f"ChatService preparing API call - messages: {len(messages)}, user_message_length: {len(safe_user_message)}")
             
             # 调用 OpenAI API
             response = self.client.chat.completions.create(
