@@ -4,6 +4,8 @@
 """
 from openai import OpenAI
 from django.conf import settings
+from rest_framework.exceptions import ValidationError
+from .validation_utils import InputValidator, SQLInjectionDetector
 import logging
 import json
 
@@ -111,10 +113,49 @@ class ClassifyService:
             }
         """
         try:
+            # 输入验证
+            if not title or not title.strip():
+                return {
+                    "success": False,
+                    "category": "其他",
+                    "confidence": 0.0,
+                    "reason": "标题不能为空",
+                    "error": "标题为空"
+                }
+            
+            # 验证标题长度
+            if len(title) > 100:
+                return {
+                    "success": False,
+                    "category": "其他",
+                    "confidence": 0.0,
+                    "reason": "标题过长，请控制在100个字符以内",
+                    "error": "标题过长"
+                }
+            
+            # 验证描述长度
+            if description and len(description) > 500:
+                description = description[:500]
+            
+            # 检测SQL注入
+            if SQLInjectionDetector.detect_sql_injection(title) or SQLInjectionDetector.detect_sql_injection(description):
+                logger.warning(f"Detected possible SQL injection attempt in classification request: {title[:50]}")
+                return {
+                    "success": False,
+                    "category": "其他",
+                    "confidence": 0.0,
+                    "reason": "检测到不安全的输入内容",
+                    "error": "SQL注入检测"
+                }
+            
+            # 清理输入内容
+            safe_title = InputValidator.sanitize_input(title, max_length=100)
+            safe_description = InputValidator.sanitize_input(description, max_length=500) if description else ""
+            
             # 构建用户消息
-            user_message = f"问题标题：{title}\n"
-            if description:
-                user_message += f"问题描述：{description}"
+            user_message = f"问题标题：{safe_title}\n"
+            if safe_description:
+                user_message += f"问题描述：{safe_description}"
             
             # 调用 OpenAI API
             response = self.client.chat.completions.create(
@@ -136,14 +177,14 @@ class ClassifyService:
             category = result.get("category", "")
             
             if category not in valid_categories:
-                logger.warning(f"Invalid category '{category}' returned for title '{title}', using fallback logic")
+                logger.warning(f"Invalid category '{category}' returned for title '{safe_title}', using fallback logic")
                 # 使用关键词回退策略
-                category = self._fallback_classify(title, description)
+                category = self._fallback_classify(safe_title, safe_description)
             
             confidence = result.get("confidence", 0.5)
             reason = result.get("reason", "根据内容分析得出")
             
-            logger.info(f"Classified '{title}' as '{category}' with confidence {confidence}")
+            logger.info(f"Classified '{safe_title}' as '{category}' with confidence {confidence}")
             
             return {
                 "success": True,

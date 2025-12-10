@@ -11,6 +11,7 @@ export default function Navbar({
   onSearch,
   adminUnreadCount,
   adminFilter = false,
+  isSearching = false,
 }) {
   const { unreadCount } = useNotifications();
   const navigate = useNavigate();
@@ -186,56 +187,62 @@ export default function Navbar({
     };
 
     return (
-      <div className="search-container">
-        <input
-          type="text"
-          placeholder="输入关键词..."
-          className="search-input"
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          onKeyPress={handleKeyPress}
-        />
-        {searchQuery && (
-          <button
-            className="clear-button"
-            onClick={handleClearSearch}
-            style={{
-              background: "none",
-              border: "none",
-              cursor: "pointer",
-              padding: "4px",
-              marginRight: "8px",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              position: "absolute",
-              right: "40px",
-              top: "50%",
-              transform: "translateY(-50%)",
-            }}
-          >
+      <div className="search-container" style={{ display: "flex", alignItems: "center" }}>
+        <div style={{ position: "relative", display: "flex", flex: 1, minWidth: "200px" }}>
+          <input
+            type="text"
+            placeholder="输入关键词..."
+            className="search-input"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            onKeyPress={handleKeyPress}
+            style={{ width: "100%" }}
+          />
+          
+          {searchQuery && (
+            <button
+              className="clear-button"
+              onClick={handleClearSearch}
+              style={{
+                background: "none",
+                border: "none",
+                cursor: "pointer",
+                padding: "4px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                position: "absolute",
+                right: "40px",
+                top: "50%",
+                transform: "translateY(-50%)",
+              }}
+            >
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+              >
+                <path d="M18 6L6 18M6 6l12 12" />
+              </svg>
+            </button>
+          )}
+          
+          <button className="search-button" onClick={handleSearch}>
             <svg
-              width="16"
-              height="16"
+              className="search-icon"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
-              strokeWidth="2"
             >
-              <path d="M18 6L6 18M6 6l12 12" />
+              <path d="M21 21L15 15M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z" />
             </svg>
           </button>
-        )}
-        <button className="search-button" onClick={handleSearch}>
-          <svg
-            className="search-icon"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-          >
-            <path d="M21 21L15 15M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z" />
-          </svg>
-        </button>
+        </div>
+        
+
       </div>
     );
   }

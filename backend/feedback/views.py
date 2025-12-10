@@ -2,7 +2,7 @@ from django.shortcuts import render,get_object_or_404
 from django.contrib.auth.models import User
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated, AllowAny
-from rest_framework.exceptions import PermissionDenied
+from rest_framework.exceptions import PermissionDenied, ValidationError
 from django.middleware.csrf import get_token
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
@@ -15,6 +15,7 @@ from .serializers import IssueSerializer, ReplySerializer, MessageSerializer, To
 from .notification_service import NotificationService
 from .classify_service import classify_service
 from .chat_service import chat_service
+from .validation_utils import InputValidator, SQLInjectionDetector
 import json
 
 
@@ -31,23 +32,43 @@ class IssueListCreate(generics.ListCreateAPIView):
         # 初始查询集：所有公开的问题
         queryset = Issue.objects.filter(is_public=True)
 
-        # 获取查询参数
+        # 获取查询参数并进行安全验证
         topic = self.request.GET.get('topic', None)
         sort_by = self.request.GET.get('sortBy', None)
 
-
-        # 1. 过滤逻辑：按分类筛选
+        # 1. 过滤逻辑：按分类筛选（添加安全验证）
         if topic and topic != 'all':
-            # 假设 topic 名称是唯一的，或者你需要根据你的模型进行修改
-            queryset = queryset.filter(topic__name=topic)
+            try:
+                # 验证topic参数
+                safe_topic = InputValidator.validate_url_param('topic', topic)
+                if safe_topic:
+                    # 使用更安全的方式：先获取分类对象
+                    try:
+                        topic_obj = Topic.objects.get(name=safe_topic)
+                        queryset = queryset.filter(topic=topic_obj)
+                    except Topic.DoesNotExist:
+                        # 分类不存在，返回空结果集
+                        queryset = queryset.none()
+            except ValidationError as e:
+                # 参数验证失败，返回空结果集
+                queryset = queryset.none()
 
-        # 2. 排序逻辑
-        if sort_by == 'time':
-            # 默认排序（按更新时间）
-            queryset = queryset.order_by('-updated')
-        elif sort_by == 'popularity':
-            # 按热度值排序，热度值高的在前
-            queryset = queryset.order_by('-popularity', '-updated')
+        # 2. 排序逻辑（添加安全验证）
+        if sort_by:
+            try:
+                safe_sort_by = InputValidator.validate_url_param('sortBy', sort_by, max_length=20)
+                if safe_sort_by == 'time':
+                    # 默认排序（按更新时间）
+                    queryset = queryset.order_by('-updated')
+                elif safe_sort_by == 'popularity':
+                    # 按热度值排序，热度值高的在前
+                    queryset = queryset.order_by('-popularity', '-updated')
+                else:
+                    # 默认排序
+                    queryset = queryset.order_by('-updated')
+            except ValidationError:
+                # 参数验证失败，使用默认排序
+                queryset = queryset.order_by('-updated')
         else:
             # 默认排序
             queryset = queryset.order_by('-updated')
