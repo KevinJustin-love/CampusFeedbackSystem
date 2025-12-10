@@ -266,6 +266,7 @@ export default function Navbar({
   const [isFavoritesModalOpen, setIsFavoritesModalOpen] = useState(false);
   const [isNotificationModalOpen, setIsNotificationModalOpen] = useState(false);
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
+  const [isAvatarMenuOpen, setIsAvatarMenuOpen] = useState(false);
 
   const handleClockIconClick = () => {
     console.log("点击历史记录图标");
@@ -412,24 +413,78 @@ export default function Navbar({
 
         {/* 头像下拉 */}
         <div
-          className="navbar-avatar-container"
-          onClick={() => setIsProfileModalOpen(true)}
-          title="个人资料"
+          className="navbar-avatar-wrapper"
+          onMouseLeave={() => setIsAvatarMenuOpen(false)}
         >
-          <img
-            src={user?.avatar || "../../pictures/OIP-C.jpg"}
-            alt="头像"
-            className="navbar-avatar"
-          />
-          <svg
-            className="navbar-avatar-dropdown"
-            width="12"
-            height="12"
-            viewBox="0 0 16 16"
-            fill="currentColor"
+          <div
+            className="navbar-avatar-container"
+            onClick={() => setIsAvatarMenuOpen(!isAvatarMenuOpen)}
+            title="个人资料"
           >
-            <path d="m4.427 7.427 3.396 3.396a.25.25 0 0 0 .354 0l3.396-3.396A.25.25 0 0 0 11.396 7H4.604a.25.25 0 0 0-.177.427Z" />
-          </svg>
+            <img
+              src={user?.avatar || "../../pictures/OIP-C.jpg"}
+              alt="头像"
+              className="navbar-avatar"
+            />
+            <svg
+              className={`navbar-avatar-dropdown ${
+                isAvatarMenuOpen ? "open" : ""
+              }`}
+              width="12"
+              height="12"
+              viewBox="0 0 16 16"
+              fill="currentColor"
+            >
+              <path d="m4.427 7.427 3.396 3.396a.25.25 0 0 0 .354 0l3.396-3.396A.25.25 0 0 0 11.396 7H4.604a.25.25 0 0 0-.177.427Z" />
+            </svg>
+          </div>
+          {/* 下拉菜单 */}
+          {isAvatarMenuOpen && (
+            <div className="navbar-avatar-menu">
+              <div
+                className="navbar-avatar-menu-item"
+                onClick={() => {
+                  setIsProfileModalOpen(true);
+                  setIsAvatarMenuOpen(false);
+                }}
+              >
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                >
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+                <span>个人资料</span>
+              </div>
+              <div className="navbar-avatar-menu-divider"></div>
+              <div
+                className="navbar-avatar-menu-item navbar-avatar-menu-logout"
+                onClick={() => {
+                  setIsAvatarMenuOpen(false);
+                  handleLogout();
+                }}
+              >
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                >
+                  <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                  <polyline points="16 17 21 12 16 7"></polyline>
+                  <line x1="21" y1="12" x2="9" y2="12"></line>
+                </svg>
+                <span>退出登录</span>
+              </div>
+            </div>
+          )}
         </div>
       </div>
 

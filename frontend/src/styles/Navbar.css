@@ -196,35 +196,109 @@
 }
 
 /* 头像区域 */
+.navbar-avatar-wrapper {
+  position: relative;
+}
+
 .navbar-avatar-container {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 6px;
   cursor: pointer;
-  padding: 4px 6px;
-  border-radius: 6px;
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  background-color: rgba(0, 0, 0, 0.1);
-  transition: all 0.15s ease;
+  padding: 4px 10px 4px 4px;
+  border-radius: 20px;
+  border: 2px solid rgba(255, 255, 255, 0.6);
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.35));
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
 }
 
 .navbar-avatar-container:hover {
-  background-color: rgba(0, 0, 0, 0.25);
-  border-color: rgba(255, 255, 255, 0.6);
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.45));
+  border-color: rgba(255, 255, 255, 0.9);
+  transform: scale(1.02);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
 }
 
 .navbar-avatar {
-  width: 24px;
-  height: 24px;
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
   object-fit: cover;
-  border: 2px solid rgba(255, 255, 255, 0.7);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  border: 2px solid #ffffff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
 }
 
 .navbar-avatar-dropdown {
   color: #ffffff;
-  opacity: 0.7;
+  transition: transform 0.2s ease;
+}
+
+.navbar-avatar-dropdown.open {
+  transform: rotate(180deg);
+}
+
+/* 头像下拉菜单 */
+.navbar-avatar-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  min-width: 160px;
+  background: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25), 0 2px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  z-index: 2000;
+  animation: fadeInDown 0.15s ease;
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.navbar-avatar-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  cursor: pointer;
+  color: #333;
+  font-size: 14px;
+  font-weight: 500;
+  transition: background-color 0.15s ease;
+}
+
+.navbar-avatar-menu-item:hover {
+  background-color: #f5f5f5;
+}
+
+.navbar-avatar-menu-item svg {
+  color: #666;
+}
+
+.navbar-avatar-menu-divider {
+  height: 1px;
+  background-color: #e5e5e5;
+  margin: 4px 0;
+}
+
+.navbar-avatar-menu-logout {
+  color: #d32f2f;
+}
+
+.navbar-avatar-menu-logout:hover {
+  background-color: #fff5f5;
+}
+
+.navbar-avatar-menu-logout svg {
+  color: #d32f2f;
 }
 
 /* 将用户区域推到最右侧 */
