@@ -14,7 +14,76 @@
 .navbar-left {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 8px;
+}
+
+/* 导航按钮（主页和小岛）- 更突出的样式 */
+.navbar-nav-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  cursor: pointer;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  border: 2px solid;
+}
+
+.navbar-nav-label {
+  color: inherit;
+  white-space: nowrap;
+}
+
+/* 主页按钮 - 暖色调 */
+.navbar-home-btn {
+  color: #ffffff;
+  background: linear-gradient(
+    135deg,
+    rgba(139, 90, 43, 0.9),
+    rgba(101, 67, 33, 0.9)
+  );
+  border-color: rgba(255, 220, 180, 0.6);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.navbar-home-btn:hover {
+  background: linear-gradient(
+    135deg,
+    rgba(160, 110, 60, 0.95),
+    rgba(120, 85, 45, 0.95)
+  );
+  border-color: rgba(255, 220, 180, 0.9);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.25);
+}
+
+/* 小岛按钮 - 清新绿色调 */
+.navbar-island-btn {
+  color: #ffffff;
+  background: linear-gradient(
+    135deg,
+    rgba(76, 140, 100, 0.9),
+    rgba(55, 110, 75, 0.9)
+  );
+  border-color: rgba(180, 230, 200, 0.6);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.navbar-island-btn:hover {
+  background: linear-gradient(
+    135deg,
+    rgba(90, 160, 115, 0.95),
+    rgba(70, 130, 90, 0.95)
+  );
+  border-color: rgba(180, 230, 200, 0.9);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.25);
 }
 
 .navbar-menu-btn {

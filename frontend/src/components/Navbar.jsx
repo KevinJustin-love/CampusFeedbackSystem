@@ -312,39 +312,41 @@ export default function Navbar({
       {/* 左侧区域：主页 + 小岛 */}
       <div className="navbar-left">
         <div
-          className="navbar-icon-btn"
+          className="navbar-nav-btn navbar-home-btn"
           onClick={handleHomeIconClick}
           title="主页"
         >
           <svg
-            width="18"
-            height="18"
+            width="20"
+            height="20"
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
-            strokeWidth="2"
+            strokeWidth="2.5"
           >
             <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
             <polyline points="9 22 9 12 15 12 15 22"></polyline>
           </svg>
+          <span className="navbar-nav-label">主页</span>
         </div>
         <div
-          className="navbar-icon-btn"
+          className="navbar-nav-btn navbar-island-btn"
           onClick={handleIslandIconClick}
           title="小岛"
         >
           <svg
-            width="18"
-            height="18"
+            width="20"
+            height="20"
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
-            strokeWidth="2"
+            strokeWidth="2.5"
           >
             <ellipse cx="12" cy="17" rx="8" ry="4"></ellipse>
             <path d="M12 13c-2.2 0-4 1.8-4 4h8c0-2.2-1.8-4-4-4z"></path>
             <path d="M12 3v6M9 6l3-3 3 3"></path>
           </svg>
+          <span className="navbar-nav-label">小岛</span>
         </div>
       </div>
 
