@@ -1,22 +1,27 @@
 // TopicTreePage.jsx - 沉浸式动漫风格页面
 import React, { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import SingleIssueTree from "../components/SingleIssueTree";
+import GuideAnimation from "../components/GuideAnimation";
 import { fetchIssues } from "../components/functions/FetchIssues"; 
 import { motion, AnimatePresence } from "framer-motion";
+import Hero from "../components/Hero";
+import "../styles/TopicTreePage.css";
 
 // 引入一个漂亮的动漫风格风景图 (使用指定图片源)
 const ANIME_BG_URL =
-  "https://bpic.588ku.com/back_pic/05/60/82/115b446747546b6.jpg";
+  "/assets/forest-bg.png"; // 动漫风格森林背景
 // 备选: 蓝天草地风格
 
-const TopicTreePage = () => {
+const TopicTreePage = ({ user, onSearch }) => {
   const { topic } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
   const [issues, setIssues] = useState([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(0);
   const [direction, setDirection] = useState(0); // 用于动画方向
+  const [showGuide, setShowGuide] = useState(false); // 初始为 false，数据加载后改为 true
 
   const issuesPerPage = 5;
 
@@ -36,6 +41,17 @@ const TopicTreePage = () => {
     loadData();
   }, [topic]);
 
+  // 数据加载完成后显示引导
+  useEffect(() => {
+    if (!loading && issues.length > 0) {
+      // 延迟 100ms 确保 DOM 已准备好
+      const timer = setTimeout(() => {
+        setShowGuide(true);
+      }, 100);
+      return () => clearTimeout(timer);
+    }
+  }, [loading, issues.length]);
+
   const totalPages = Math.ceil(issues.length / issuesPerPage);
   const currentIssueSlice = issues.slice(
     currentPage * issuesPerPage,
@@ -50,6 +66,10 @@ const TopicTreePage = () => {
     }
   };
 
+  const handleGuideComplete = () => {
+    setShowGuide(false);
+  };
+
   const topicMap = {
     学业: { title: "知识之森", color: "#4CAF50", icon: "📚" },
     生活: { title: "日常原野", color: "#FF9800", icon: "☕" },
@@ -60,9 +80,25 @@ const TopicTreePage = () => {
 
   const theme = topicMap[topic] || topicMap["all"];
 
+  // 定义引导步骤
+  const guideSteps = [
+    {
+      targetSelector: ".island-icon-container",
+      text: "点击这里回到小岛",
+      offsetTop: 150
+    },
+    {
+      targetSelector: ".topic-tree-slider",
+      text: "点击叶子可以查看问题详情",
+      offsetTop: 150
+    }
+  ];
+
   return (
-    <div
-      className="anime-page-wrapper"
+    <div className="topic-tree-page-root">
+      <Hero user={user} onSearch={onSearch} />
+      <div
+        className="anime-page-wrapper"
       style={{
         width: "100vw",
         height: "100vh",
@@ -74,6 +110,9 @@ const TopicTreePage = () => {
         fontFamily: "'Comic Sans MS', cursive, sans-serif",
       }}
     >
+      {/* 引导动画 */}
+      {showGuide && <GuideAnimation guides={guideSteps} onComplete={handleGuideComplete} />}
+
       {/* 遮罩层，确保文字清晰 */}
       <div
         style={{
@@ -93,34 +132,11 @@ const TopicTreePage = () => {
           right: 0,
           padding: "20px",
           display: "flex",
-          justifyContent: "space-between",
+          justifyContent: "center",
           alignItems: "center",
           zIndex: 10,
         }}
       >
-        {/* 返回按钮 (木牌风格) */}
-        <motion.button
-          whileHover={{ scale: 1.1, rotate: -2 }}
-          whileTap={{ scale: 0.95 }}
-          onClick={() => navigate(`/topic-island/${topic}`)}
-          style={{
-            background: "#8D6E63",
-            color: "#FFF",
-            border: "3px solid #5D4037",
-            padding: "10px 20px",
-            borderRadius: "12px",
-            fontSize: "16px",
-            fontWeight: "bold",
-            boxShadow: "0 4px 0 #3E2723",
-            cursor: "pointer",
-            display: "flex",
-            alignItems: "center",
-            gap: "5px",
-          }}
-        >
-          <span>↩️</span> 返回小岛
-        </motion.button>
-
         {/* 标题 (卷轴/牌匾风格) */}
         <div
           style={{
@@ -146,13 +162,10 @@ const TopicTreePage = () => {
           >
             {theme.icon} {theme.title}
           </h1>
-          <span style={{ fontSize: "12px", color: "#666", marginTop: "5px" }}>
-            共发现 {issues.length} 个遗落的问题
+          <span style={{ fontSize: "18px", color: "#666", marginTop: "5px" }}>
+            共 {issues.length} 个问题
           </span>
         </div>
-
-        {/* 占位，保持平衡 */}
-        <div style={{ width: "100px" }} />
       </header>
 
       {/* --- 核心内容区域 --- */}
@@ -232,6 +245,7 @@ const TopicTreePage = () => {
                   transition: { duration: 0.2 },
                 }}
                 transition={{ type: "spring", stiffness: 200, damping: 20 }}
+                className="topic-tree-slider"
                 style={{
                   width: "100%",
                   maxWidth: "800px",
@@ -302,6 +316,7 @@ const TopicTreePage = () => {
           </div>
         )}
       </div>
+    </div>
     </div>
   );
 };

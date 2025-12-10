@@ -1,44 +1,45 @@
-/* 评论输入区域 - 现代化设计 */
+/* 评论输入区域 - 信纸风格 */
 .comment-input-container {
   display: flex;
   align-items: center;
   gap: 12px;
   padding: 16px;
-  background: #ffffff;
+  background: #f8f4e9;
   border-radius: 8px;
-  border: 1px solid #e2e8f0;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+  border: 2px solid #d6c6a5;
+  box-shadow: 0 2px 4px rgba(139, 69, 19, 0.1);
 }
 
 .comment-input {
   flex: 1;
   height: 40px;
   padding: 8px 12px;
-  border: 2px solid #e2e8f0;
+  border: 2px solid #d6c6a5;
   border-radius: 6px;
   font-size: 14px;
-  color: #334155;
-  background: #f8fafc;
+  color: #5a4a3a;
+  background: #fffdf5;
   transition: all 0.2s ease;
   outline: none;
+  font-family: 'Georgia', 'Times New Roman', '楷体', serif;
 }
 
 .comment-input:focus {
-  border-color: #3b82f6;
-  background: #ffffff;
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  border-color: #8B4513;
+  background: #fffdf5;
+  box-shadow: 0 0 0 3px rgba(139, 69, 19, 0.15);
 }
 
 .comment-input::placeholder {
-  color: #94a3b8;
+  color: #9a8a7a;
 }
 
 .comment-button {
   height: 40px;
   padding: 0 20px;
-  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+  background: linear-gradient(135deg, #8B4513 0%, #6B3410 100%);
   color: #ffffff;
-  border: none;
+  border: 2px solid #5D4037;
   border-radius: 6px;
   font-size: 14px;
   font-weight: 600;
@@ -49,12 +50,13 @@
   gap: 6px;
   min-width: 80px;
   justify-content: center;
+  font-family: 'Georgia', 'Times New Roman', '楷体', serif;
 }
 
 .comment-button:hover {
-  background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
+  background: linear-gradient(135deg, #6B3410 0%, #5D4037 100%);
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+  box-shadow: 0 4px 12px rgba(139, 69, 19, 0.3);
 }
 
 .comment-button:active {
@@ -62,7 +64,8 @@
 }
 
 .comment-button:disabled {
-  background: #94a3b8;
+  background: #9a8a7a;
+  border-color: #7a6a5a;
   cursor: not-allowed;
   transform: none;
   box-shadow: none;

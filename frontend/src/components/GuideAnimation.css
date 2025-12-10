@@ -1,0 +1,250 @@
+/* 引导动画样式 */
+.guide-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 99999; /* 增加z-index确保在最顶层 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: fadeIn 0.3s ease-in-out;
+  pointer-events: auto; /* 确保可以接收点击事件 */
+}
+
+.guide-overlay * {
+  pointer-events: auto; /* 确保所有子元素都可以接收事件 */
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.guide-content {
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transform: translate(-50%, -50%);
+  animation: bounceIn 0.6s ease-out;
+  z-index: 100000; /* 确保内容在覆盖层之上 */
+  pointer-events: auto; /* 确保可以接收点击事件 */
+}
+
+@keyframes bounceIn {
+  0% {
+    transform: translate(-50%, -50%) scale(0.3);
+    opacity: 0;
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.05);
+  }
+  70% {
+    transform: translate(-50%, -50%) scale(0.9);
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+}
+
+/* 鸽子引导动画样式 */
+.guide-pigeon {
+  margin-bottom: 15px;
+  animation: pigeonFly 2s ease-in-out infinite;
+  position: relative;
+}
+
+.guide-pigeon-icon {
+  font-size: 48px;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+  animation: pigeonGlide 2s ease-in-out infinite;
+}
+
+@keyframes pigeonFly {
+  0%, 100% {
+    transform: translateY(0) rotate(-5deg) scale(1);
+  }
+  25% {
+    transform: translateY(-8px) rotate(0deg) scale(1.05);
+  }
+  50% {
+    transform: translateY(-15px) rotate(5deg) scale(0.95);
+  }
+  75% {
+    transform: translateY(-8px) rotate(0deg) scale(1.02);
+  }
+}
+
+@keyframes pigeonGlide {
+  0%, 100% {
+    transform: scale(1) rotateY(0deg);
+  }
+  25% {
+    transform: scale(1.1) rotateY(10deg);
+  }
+  50% {
+    transform: scale(0.9) rotateY(-5deg);
+  }
+  75% {
+    transform: scale(1.05) rotateY(5deg);
+  }
+}
+
+/* 鸽子说话气泡 */
+.pigeon-speech-bubble {
+  position: absolute;
+  top: -60px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: white;
+  border-radius: 20px;
+  padding: 12px 18px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  border: 2px solid #4a90e2;
+  min-width: 200px;
+  text-align: center;
+  animation: bubbleFloat 2s ease-in-out infinite;
+}
+
+.pigeon-speech-bubble::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-top: 8px solid white;
+}
+
+.pigeon-speech-bubble::before {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-top: 10px solid #4a90e2;
+  z-index: -1;
+}
+
+@keyframes bubbleFloat {
+  0%, 100% {
+    transform: translateX(-50%) translateY(0);
+  }
+  50% {
+    transform: translateX(-50%) translateY(-5px);
+  }
+}
+
+.pigeon-speech-text {
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+  margin: 0;
+}
+
+.pigeon-speech-step {
+  font-size: 12px;
+  color: #666;
+  margin-top: 5px;
+  font-weight: normal;
+}
+
+/* 传统箭头样式（保留作为备选） */
+.guide-arrow {
+  margin-bottom: 15px;
+  animation: upDownBounce 2s ease-in-out infinite;
+}
+
+@keyframes upDownBounce {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+  }
+  25% {
+    transform: translateY(15px) scale(0.9);
+  }
+  50% {
+    transform: translateY(25px) scale(0.8);
+  }
+  75% {
+    transform: translateY(15px) scale(0.9);
+  }
+}
+
+.guide-text {
+  background: rgba(255, 255, 255, 0.95);
+  padding: 12px 20px;
+  border-radius: 20px;
+  font-size: 16px;
+  font-weight: 500;
+  color: #333;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  margin-bottom: 15px;
+  min-width: 250px;
+  text-align: center;
+  border: 2px solid #4a90e2;
+  position: relative;
+}
+
+.guide-step-indicator {
+  font-size: 12px;
+  color: #666;
+  margin-top: 8px;
+  font-weight: normal;
+}
+
+.guide-close-btn {
+  background: linear-gradient(135deg, #4a90e2, #357abd);
+  color: white;
+  border: none;
+  padding: 8px 20px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(74, 144, 226, 0.3);
+}
+
+.guide-close-btn:hover {
+  background: linear-gradient(135deg, #357abd, #2968a3);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(74, 144, 226, 0.4);
+}
+
+.guide-close-btn:active {
+  transform: translateY(0);
+}
+
+/* 移动端适配 */
+@media (max-width: 768px) {
+  .guide-text {
+    font-size: 14px;
+    padding: 10px 16px;
+    min-width: 200px;
+  }
+  
+  .guide-arrow svg {
+    width: 50px;
+    height: 50px;
+  }
+  
+  .guide-close-btn {
+    font-size: 12px;
+    padding: 6px 16px;
+  }
+}

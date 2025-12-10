@@ -34,7 +34,7 @@ const NotificationModal = ({ isOpen, onClose, adminFilter = false }) => {
     
     // 如果通知关联了问题，跳转到问题详情页
     if (notification.issue) {
-      navigate(`/detail/${notification.issue}`);
+      navigate(`/detail/${notification.issue}`, { state: { from: 'homepage-notification' } });
     }
   };
 

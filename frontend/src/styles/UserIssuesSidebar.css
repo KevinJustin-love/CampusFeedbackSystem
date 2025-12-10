@@ -1,0 +1,138 @@
+/* 用户问题侧边栏 - 仿 GitHub 风格 */
+.user-issues-sidebar {
+  width: 320px;
+  background: #fffdf5;
+  border: 1px solid #d6c6a5;
+  border-radius: 12px;
+  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
+  align-self: flex-start;
+  font-family: "Georgia", "Times New Roman", serif;
+}
+
+.sidebar-header {
+  padding: 16px;
+  border-bottom: 1px solid #d6c6a5;
+  background: #fff7e6;
+  border-radius: 12px 12px 0 0;
+}
+
+.sidebar-title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: bold;
+  color: #4a3c28;
+}
+
+.sidebar-content {
+  padding: 8px 0;
+}
+
+/* 滚动容器 */
+.issues-scroll-container {
+  max-height: 480px; /* 大约可以显示10个问题项 */
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.sidebar-loading,
+.sidebar-empty {
+  padding: 20px;
+  text-align: center;
+  color: #8a7a5c;
+  font-size: 14px;
+  font-style: italic;
+}
+
+.issues-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.issue-item {
+  display: flex;
+  align-items: flex-start;
+  padding: 12px 16px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  border-bottom: 1px dashed #e8dcc8;
+}
+
+.issue-item:last-child {
+  border-bottom: none;
+}
+
+.issue-item:hover {
+  background-color: #fff7e6;
+}
+
+.issue-item-icon {
+  font-size: 20px;
+  margin-right: 12px;
+  flex-shrink: 0;
+}
+
+.issue-item-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.issue-item-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #4a3c28;
+  margin-bottom: 4px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.issue-item-meta {
+  display: flex;
+  gap: 8px;
+  font-size: 12px;
+  color: #8a7a5c;
+}
+
+.issue-item-status {
+  padding: 2px 6px;
+  background-color: #e8dcc8;
+  border-radius: 4px;
+  font-size: 11px;
+}
+
+.issue-item-topic {
+  font-style: italic;
+}
+
+/* 滚动条样式 - 应用到滚动容器 */
+.issues-scroll-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.user-issues-sidebar::-webkit-scrollbar-track {
+  background: #f1ede3;
+  border-radius: 10px;
+}
+
+.user-issues-sidebar::-webkit-scrollbar-thumb {
+  background: #d6c6a5;
+  border-radius: 10px;
+}
+
+.user-issues-sidebar::-webkit-scrollbar-thumb:hover {
+  background: #bfa58a;
+}
+.issues-scroll-container::-webkit-scrollbar-track {
+  background: #f1ede3;
+  border-radius: 10px;
+}
+
+.issues-scroll-container::-webkit-scrollbar-thumb {
+  background: #d6c6a5;
+  border-radius: 10px;
+}
+
+.issues-scroll-container::-webkit-scrollbar-thumb:hover {
+  background: #bfa58a;
+}

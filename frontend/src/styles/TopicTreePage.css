@@ -1,30 +1,84 @@
-/* TopicTreePage.css - 专题树页面样式 */
+/* TopicTreePage.css - 森林背景 + 清晰内容分层 */
+
+/* ========== 确保 Hero 部分使用 HomePage 的样式（仅限于 TopicTreePage） ========== */
+.topic-tree-page-root .dashboard-title {
+  /* 覆盖默认的 Hero.css 样式，使用 HomePage 的浅绿色 */
+  background-color: rgba(143, 188, 143, 0.9); /* 与 HomePage 相同的浅绿色 */
+  color: #ffffff; /* 白色文字 */
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.2);
+  height: 65px; /* 与 HomePage 的导航栏高度一致 */
+  position: fixed;
+  top: 0px;
+  left: 0;
+  right: 0;
+  z-index: 1000; /* 降低z-index以确保引导动画在最上层 */
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+}
+
+.topic-tree-page-root .dashboard-title > * {
+  pointer-events: auto;
+}
+
+/* 左侧内容容器 */
+.topic-tree-page-root .dashboard-title-content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #ffffff; /* 白色文字，与 HomePage 一致 */
+}
+
+/* 用户头像 */
+.topic-tree-page-root .userimg {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease;
+  cursor: pointer;
+}
+
+.topic-tree-page-root .userimg:hover {
+  transform: scale(1.05);
+}
+
+/* ========== 原有样式 ========== */
+
+.anime-page-wrapper {
+  margin-top: 51px; /* 给导航栏留出空间 */
+  min-height: 80vh;
+  width: 100%;
+  background-image: url("/assets/forest-bg.png") !important;
+  background-size: cover !important;
+  background-position: center !important;
+  background-attachment: fixed !important;
+  background-repeat: no-repeat !important;
+  position: relative;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* 使所有直接子元素在内容层 - 但不限制 z-index，允许引导动画在上层 */
+.anime-page-wrapper > * {
+  position: relative;
+  /* z-index 不再设置，允许子元素自由设置 */
+}
 
 .topic-tree-page {
   min-height: 100vh;
-  background: 
-    linear-gradient(rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.4)),
-    url('https://images.unsplash.com/photo-1448375240586-882707db888b?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80');
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed;
-  background-repeat: no-repeat;
+  width: 100%;
+  background: transparent;
   padding-bottom: 40px;
   position: relative;
-}
-
-.topic-tree-page::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(135deg, 
-    rgba(232, 245, 233, 0.2) 0%, 
-    rgba(241, 248, 233, 0.3) 50%, 
-    rgba(232, 245, 233, 0.2) 100%);
-  z-index: -1;
 }
 
 /* 页面头部 */
@@ -46,7 +100,7 @@
   color: white;
   border: none;
   border-radius: 20px;
-  font-size: 28px;
+  font-size: 14px;
   font-weight: 500;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -70,7 +124,7 @@
 }
 
 .topic-stats {
-  font-size: 28px;
+  font-size: 14px;
   color: #558b2f;
   background: rgba(139, 195, 74, 0.2);
   padding: 8px 16px;
@@ -170,7 +224,7 @@
   color: white;
   border: none;
   border-radius: 20px;
-  font-size: 28px;
+  font-size: 14px;
   cursor: pointer;
   transition: all 0.3s ease;
 }
@@ -282,7 +336,7 @@
 }
 
 .page-label {
-  font-size: 28px;
+  font-size: 14px;
   color: #689f38;
   margin-left: 4px;
 }

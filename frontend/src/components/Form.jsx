@@ -82,7 +82,7 @@ const Form = ({ route, method }) => {
         if (isAdmin) {
           navigate("/admin");
         } else {
-          navigate("/");
+          navigate("/dashboard", { state: { from: "/login" } });
         }
       } else {
         navigate("/login");

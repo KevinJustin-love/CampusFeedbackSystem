@@ -5,7 +5,37 @@
   background: url("/assets/paper-bg.jpg") repeat;
   background-size: cover;
   padding: 24px;
-  margin: 0px;
+  margin: 30px auto auto auto;
+}
+
+.back-button {
+  align-self: flex-start;
+  margin-top: 60px;
+  margin-bottom: 0px;
+  margin-left: 220px;
+  padding: 10px 20px;
+  background: linear-gradient(135deg, #8B4513 0%, #6B3410 100%);
+  color: #ffffff;
+  border: 2px solid #5D4037;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  /* font-family: 'Georgia', 'Times New Roman', '楷体', serif; */
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.back-button:hover {
+  background: linear-gradient(135deg, #6B3410 0%, #5D4037 100%);
+  transform: translateX(-2px);
+  box-shadow: 0 4px 12px rgba(139, 69, 19, 0.3);
+}
+
+.back-button:active {
+  transform: translateX(0);
 }
 
 .detail-container {
@@ -23,4 +53,263 @@
   font-family: "Georgia", "Times New Roman", serif;
 }
 
+.detail-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #8B4513, #D2691E, #CD853F);
+  border-radius: 12px 12px 0 0;
+}
 
+/* 默认的棕色主题样式（从 dashboard 进入） */
+.detail-title {
+  font-size: 32px;
+  font-weight: 700;
+  color: #8B4513; /* 棕色 */
+  margin-bottom: 28px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  text-shadow: 1px 1px 2px rgba(139, 69, 19, 0.1);
+  border-bottom: 2px solid #d6c6a5;
+  padding-bottom: 16px;
+  font-family: "Georgia", "Times New Roman", serif;
+}
+
+.detail-title::before {
+  content: '✉️';
+  font-size: 28px;
+}
+
+.reply-title {
+  font-size: 20px;
+  font-weight: bold;
+  color: #4a3c28; /* 棕色 */
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid #d6c6a5;
+  font-family: "Georgia", "Times New Roman", serif;
+}
+
+/* ========== 绿色主题样式（从问题树进入时） ========== */
+
+/* 页面背景 */
+.issue-detail-page.tree-theme {
+  background: url("/assets/leaf-bg.png") repeat;
+  background-size: cover;
+}
+
+
+/* 问题详情卡片 */
+.issue-detail-page.tree-theme .detail-container {
+  background-color: #e8f5e9;
+  border: 2px solid #81c784;
+}
+
+.issue-detail-page.tree-theme .detail-container::before {
+  background: linear-gradient(90deg, #2e7d32, #66bb6a, #81c784);
+}
+
+.issue-detail-page.tree-theme .detail-title.tree-theme {
+  color: #1b5e20;
+  border-bottom: 2px solid #81c784;
+  font-size: 32px;
+  font-weight: 700;
+  font-family: "Georgia", "Times New Roman", serif;
+  margin-bottom: 28px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  text-shadow: 1px 1px 2px rgba(46, 125, 50, 0.1);
+  padding-bottom: 16px;
+}
+
+.issue-detail-page.tree-theme .detail-title::before {
+  content: '✉️';
+  font-size: 28px;
+}
+
+.issue-detail-page.tree-theme .detail-info span {
+  color: #2e7d32;
+}
+
+.issue-detail-page.tree-theme .detail-meta {
+  background-color: #fffdf5;
+  /* background: linear-gradient(135deg, #c8e6c9 0%, #a5d6a7 100%); */
+  border: 1px solid #81c784;
+}
+
+.issue-detail-page.tree-theme .detail-description,
+.issue-detail-page.tree-theme .detail-info {
+  color: #1b5e20;
+}
+
+.issue-detail-page.tree-theme .label {
+  color: #2e7d32;
+}
+
+/* 返回按钮 */
+.issue-detail-page.tree-theme .back-button {
+  background: linear-gradient(135deg, #2e7d32 0%, #1b5e20 100%);
+  border: 2px solid #1b5e20;
+}
+
+.issue-detail-page.tree-theme .back-button:hover {
+  background: linear-gradient(135deg, #1b5e20 0%, #0d3b1a 100%);
+  box-shadow: 0 4px 12px rgba(46, 125, 50, 0.3);
+}
+
+/* 处理结果卡片 */
+.issue-detail-page.tree-theme .reply-container {
+  background: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm11 0c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-11 11c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7z' fill='%234caf50' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E") #e8f5e9;
+  border: 2px solid #81c784;
+}
+
+.issue-detail-page.tree-theme .reply-container::before {
+  background: linear-gradient(90deg, #2e7d32, #66bb6a, #81c784);
+}
+
+.issue-detail-page.tree-theme .reply-title {
+  color: #1b5e20;
+  border-bottom: 2px solid #81c784;
+  font-size: 20px;
+  font-weight: bold;
+  font-family: "Georgia", "Times New Roman", serif;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+}
+
+.issue-detail-page.tree-theme .reply {
+  background: #c8e6c9;
+  border: 2px solid #81c784;
+  border-left: 8px solid #2e7d32;
+}
+
+.issue-detail-page.tree-theme .reply::before {
+  background: linear-gradient(180deg, #2e7d32, #66bb6a);
+}
+
+.issue-detail-page.tree-theme .reply-text {
+  color: #1b5e20;
+}
+
+.issue-detail-page.tree-theme .reply-date {
+  background: #a5d6a7;
+  border: 1px solid #81c784;
+  color: #1b5e20;
+}
+
+.issue-detail-page.tree-theme .reply-file {
+  background: linear-gradient(135deg, #c8e6c9 0%, #a5d6a7 100%);
+  border: 2px dashed #81c784;
+}
+
+.issue-detail-page.tree-theme .reply-file h3 {
+  color: #1b5e20;
+}
+
+/* 评论区卡片 */
+.issue-detail-page.tree-theme .comment-section-container {
+  background: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm11 0c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-11 11c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7z' fill='%234caf50' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E") #e8f5e9;
+  border: 2px solid #81c784;
+}
+
+.issue-detail-page.tree-theme .comment-section-container::before {
+  background: linear-gradient(90deg, #2e7d32, #66bb6a, #81c784);
+}
+
+.issue-detail-page.tree-theme .comment-title {
+  color: #1b5e20;
+  border-bottom: 2px solid #81c784;
+}
+
+.issue-detail-page.tree-theme .comment-section {
+  background: #c8e6c9;
+  border: 2px solid #81c784;
+  scrollbar-color: #81c784 #c8e6c9;
+}
+
+.issue-detail-page.tree-theme .comment-section::-webkit-scrollbar-track {
+  background: #c8e6c9;
+}
+
+.issue-detail-page.tree-theme .comment-section::-webkit-scrollbar-thumb {
+  background: #81c784;
+}
+
+.issue-detail-page.tree-theme .comment-section::-webkit-scrollbar-thumb:hover {
+  background: #2e7d32;
+}
+
+/* 评论输入框 */
+.issue-detail-page.tree-theme .comment-input-container {
+  background: #a5d6a7;
+  border: 2px solid #81c784;
+}
+
+.issue-detail-page.tree-theme .comment-input {
+  border: 2px solid #81c784;
+  background: #e8f5e9;
+  color: #1b5e20;
+  font-family: 'Georgia', 'Times New Roman', '楷体', serif;
+}
+
+.issue-detail-page.tree-theme .comment-input:focus {
+  border-color: #2e7d32;
+  box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.15);
+}
+
+.issue-detail-page.tree-theme .comment-input::placeholder {
+  color: #558b2f;
+}
+
+.issue-detail-page.tree-theme .comment-button {
+  background: linear-gradient(135deg, #2e7d32 0%, #1b5e20 100%);
+  border: 2px solid #1b5e20;
+  color: #ffffff;
+  font-family: 'Georgia', 'Times New Roman', '楷体', serif;
+}
+
+.issue-detail-page.tree-theme .comment-button:hover {
+  background: linear-gradient(135deg, #1b5e20 0%, #0d3b1a 100%);
+  box-shadow: 0 4px 12px rgba(46, 125, 50, 0.3);
+}
+
+/* ========== 导航栏绿色主题（从问题树进入时） ========== */
+
+/* 导航栏背景：浅绿色不透明，与 HomePage 相同 */
+.issue-detail-page.tree-theme .dashboard-title {
+  background-color: rgba(143, 188, 143, 0.9);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1001;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  height: 65px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  color: #ffffff;
+}
+
+/* 导航栏左侧内容文字：白色高亮 */
+.issue-detail-page.tree-theme .dashboard-title-content {
+  color: #ffffff;
+}
+
+/* 导航栏用户头像 */
+.issue-detail-page.tree-theme .userimg {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: center;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
+}

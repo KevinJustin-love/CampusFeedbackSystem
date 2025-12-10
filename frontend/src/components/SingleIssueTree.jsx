@@ -344,7 +344,7 @@ export default function SingleIssueTree({ issues = [], compact = false }) {
               x={xEnd}
               y={yPos}
               text={issue.title}
-              onClick={() => navigate(`/detail/${issue.id}`)}
+              onClick={() => navigate(`/detail/${issue.id}`, { state: { from: '/topic-tree' } })}
               delay={0.8 + i * 0.1}
             />
           );
@@ -356,7 +356,7 @@ export default function SingleIssueTree({ issues = [], compact = false }) {
             initial={{ scale: 0, y: 50 }}
             animate={{ scale: 1, y: 0 }}
             transition={{ type: "spring", bounce: 0.6, delay: 1.2 }}
-            onClick={() => navigate(`/detail/${mainIssue.id}`)}
+            onClick={() => navigate(`/detail/${mainIssue.id}`, { state: { from: '/topic-tree' } })}
             style={{ cursor: "pointer" }}
           >
             {/* 光效背景 */}
