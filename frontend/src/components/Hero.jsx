@@ -1,12 +1,17 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import UserProfile from "./Profile";
 import Navbar from "./Navbar";
 
 import "../styles/Hero.css";
 
-const Home = ({ user, onSearch, adminUnreadCount, adminFilter = false, isSearching = false }) => {
+const Home = ({
+  user,
+  onSearch,
+  adminUnreadCount,
+  adminFilter = false,
+  isSearching = false,
+}) => {
   const navigate = useNavigate();
   const [currentUser, setCurrentUser] = useState(user);
   const [isLoading, setIsLoading] = useState(false);
@@ -23,14 +28,11 @@ const Home = ({ user, onSearch, adminUnreadCount, adminFilter = false, isSearchi
       }
 
       try {
-        const response = await axios.get(
-          "http://127.0.0.1:8000/api/profile/",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const response = await axios.get("http://127.0.0.1:8000/api/profile/", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         setCurrentUser(response.data);
       } catch (error) {
         console.error("无法获取用户信息:", error);
@@ -48,33 +50,16 @@ const Home = ({ user, onSearch, adminUnreadCount, adminFilter = false, isSearchi
     setCurrentUser(updatedUserData);
   };
 
-  const [showModal, setShowModal] = useState(false);
-
   return (
     <div>
       <div className="dashboard-title">
-        <div className="dashboard-title-content">
-          <img
-            src={currentUser?.avatar || "../../pictures/OIP-C.jpg"}
-            alt="用户头像"
-            className="userimg"
-            onClick={() => setShowModal(true)}
-          />
-          {showModal && (
-            <UserProfile
-              user={currentUser}
-              onClose={() => setShowModal(false)}
-              onUpdate={handleUserUpdate}
-            />
-          )}
-          <span className="welcome-text">欢迎，{currentUser?.username || user?.username || "访客"}</span>
-        </div>
-        
         <Navbar
           onSearch={onSearch}
           adminUnreadCount={adminUnreadCount}
           adminFilter={adminFilter}
           isSearching={isSearching}
+          user={currentUser}
+          onUserUpdate={handleUserUpdate}
         />
       </div>
     </div>
