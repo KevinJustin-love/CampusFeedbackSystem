@@ -80,45 +80,52 @@ const StudentDashboard = ({ user }) => {
     .filter((issue) => category === "all" || issue.topic === category)
     .filter((issue) => {
       if (!searchQuery.trim()) return true;
-      
+
       const searchText = searchQuery.toLowerCase().trim();
       const title = issue.title.toLowerCase();
       const description = issue.description.toLowerCase();
-      
+
       // 1. 完全匹配（保留原有功能）
       if (title.includes(searchText) || description.includes(searchText)) {
         return true;
       }
-      
+
       // 2. 中文分词模糊匹配 - 专门解决"食堂菜"搜索"食堂饭菜"的问题
       if (searchText.length >= 2) {
         // 方法1：检查搜索词是否被包含在标题或描述中
         if (title.includes(searchText) || description.includes(searchText)) {
           return true;
         }
-        
+
         // 方法2：检查搜索词是否包含在标题或描述的某个部分中
         const titleWords = title.split(/\s+/);
         const descWords = description.split(/\s+/);
-        
-        const titleContainsSearch = titleWords.some(word => word.includes(searchText));
-        const descContainsSearch = descWords.some(word => word.includes(searchText));
-        
+
+        const titleContainsSearch = titleWords.some((word) =>
+          word.includes(searchText)
+        );
+        const descContainsSearch = descWords.some((word) =>
+          word.includes(searchText)
+        );
+
         if (titleContainsSearch || descContainsSearch) {
           return true;
         }
-        
+
         // 方法3：检查标题或描述是否包含搜索词的某个部分
         for (let i = 0; i < searchText.length - 1; i++) {
           for (let j = i + 2; j <= searchText.length; j++) {
             const part = searchText.substring(i, j);
-            if (part.length >= 2 && (title.includes(part) || description.includes(part))) {
+            if (
+              part.length >= 2 &&
+              (title.includes(part) || description.includes(part))
+            ) {
               return true;
             }
           }
         }
       }
-      
+
       return false;
     })
     .sort((a, b) => {
@@ -188,67 +195,60 @@ const StudentDashboard = ({ user }) => {
             </div>
           )}
 
-        <FilterBar
-          sortBy={sortBy}
-          onSortChange={setSortBy}
-          category={category}
-          onCategoryChange={setCategory}
-        />
-        {searchQuery && (
-          <div className="search-result-note" style={{ 
-            display: "flex",
-            alignItems: "center",
-            gap: "10px",
-            margin: "10px 0"
-          }}>
-            <span>搜索结果: "{searchQuery}"</span>
-            <button
-              onClick={() => handleSearch("")}
-              style={{
-                background: "#667eea",
-                border: "1px solid #5a67d8",
-                borderRadius: "4px",
-                cursor: "pointer",
-                padding: "4px 10px",
-                fontSize: "11px",
-                color: "white",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                fontWeight: "500",
-                boxShadow: "0 1px 2px rgba(102, 126, 234, 0.3)",
-                transition: "all 0.2s ease-in-out",
-                height: "24px",
-                lineHeight: "1",
-                minWidth: "80px",
-                whiteSpace: "nowrap",
-                letterSpacing: "-0.3px",
-              }}
-            >
-              <svg
-                width="12"
-                height="12"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                style={{ marginRight: "4px" }}
-              >
-                <path d="M19 12H5M12 19l-7-7 7-7" />
-              </svg>
-              返回全部
-            </button>
-          </div>
-        )}
-        <IssueGrid issues={currentItems} loading={loading} error={error} />
-        {totalPages > 1 && (
-          <Pagination
-            currentPage={currentPage}
-            totalPages={totalPages}
-            onPageChange={setCurrentPage}
+          <FilterBar
+            sortBy={sortBy}
+            onSortChange={setSortBy}
+            category={category}
+            onCategoryChange={setCategory}
           />
           {searchQuery && (
-            <div className="search-result-note">搜索结果: "{searchQuery}"</div>
+            <div
+              className="search-result-note"
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "10px",
+                margin: "10px 0",
+              }}
+            >
+              <span>搜索结果: "{searchQuery}"</span>
+              <button
+                onClick={() => handleSearch("")}
+                style={{
+                  background: "#667eea",
+                  border: "1px solid #5a67d8",
+                  borderRadius: "4px",
+                  cursor: "pointer",
+                  padding: "4px 10px",
+                  fontSize: "11px",
+                  color: "white",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  fontWeight: "500",
+                  boxShadow: "0 1px 2px rgba(102, 126, 234, 0.3)",
+                  transition: "all 0.2s ease-in-out",
+                  height: "24px",
+                  lineHeight: "1",
+                  minWidth: "80px",
+                  whiteSpace: "nowrap",
+                  letterSpacing: "-0.3px",
+                }}
+              >
+                <svg
+                  width="12"
+                  height="12"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  style={{ marginRight: "4px" }}
+                >
+                  <path d="M19 12H5M12 19l-7-7 7-7" />
+                </svg>
+                返回全部
+              </button>
+            </div>
           )}
           <IssueGrid issues={currentItems} loading={loading} error={error} />
           {totalPages > 1 && (
