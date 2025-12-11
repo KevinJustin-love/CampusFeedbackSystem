@@ -4,13 +4,19 @@
 
 **Our slogan:** "`Unite, Share, Trust, Connect` —— `Dovelink` 让心声相聚"
 
-## Technology Stack and Features
+## Technology Stack
 
 - 🐍 Django for the Python backend、🗄️ sqlite3 for the Python SQL database
 
--  ⚛️ React + ⚡ Vite for the frontend
+- ⚛️ React + ⚡ Vite for the frontend
 
 - 🔐 JWT (JSON Web Token) authentication.
+
+- 🤖 ChatGPT API integration for enhanced user interaction.
+
+## Project Features
+
+We built this project using a **dual-system** approach, featuring both a concise issue feedback interface and an animated island-style page, providing users with rich exploration experiences.
 
 ### Register Page
 
@@ -20,25 +26,43 @@
 
 ![LoginPage](./img/login.jpg)
 
-### Home Page
+### Default Mode
 
-![Home](./img/home.jpg)
+---
 
-### Topic-tree
+#### StudentDashboard
 
-![Topic-tree](./img/topic-tree.jpg)
+![Dashboard](./img/dashboard.png)
 
-### StudentDashboard
+#### IssueDetail
 
-![Dashboard](./img/dashboard.jpg)
+![IssueDetail](./img/issueDetail.png)
 
-### IssueDetail
+#### IssueSubmit
 
-![IssueDetail](./img/issueDetail.jpg)
+![IssueSubmit](./img/issueSubmit.png)
 
-### IssueSubmit
+### Island Mode
 
-![IssueSubmit](./img/issueSubmit.jpg)
+---
+
+#### Home Page
+
+![Home](./img/home.png)
+
+#### Topic-tree
+
+![Topic-tree](./img/topic-tree.png)
+
+#### IssueDetail
+
+![IssueDetail](./img/issueDetail-island.png)
+
+#### IssueSubmit
+
+![IssueSubmit](./img/issueSubmit.png)
+
+> Note: The two modes share the same IssueSubmit page.
 
 ### AdminDashboard
 
@@ -55,11 +79,3 @@ Frontend docs: [frontend/README.md](https://github.com/KevinJustin-love/CampusFe
 ## Backend Development
 
 Backend docs: [backend/README.md](https://github.com/KevinJustin-love/CampusFeedbackSystem/blob/main/backend/README.md)
-
-## Cooperation Guidelines
-
-Plz strictly obey the following content for our collaboration.
-
-https://www.xiaohongshu.com/discovery/item/685c6bde0000000017034db9?source=webshare&xhsshare=pc_web&xsec_token=AB5dxMlZK-w-R0bJZu0Mzmi1h2O4BMq83E40MoNGwEGXo=&xsec_source=pc_share。
-
-⚠ When the teammate makes a new `feature`, it is supposed to merge the code locally through `develop` branch, and fix the consequent code conflicts.
