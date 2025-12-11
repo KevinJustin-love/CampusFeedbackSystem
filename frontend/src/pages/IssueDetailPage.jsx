@@ -1,6 +1,7 @@
 import React,{ useState, useEffect } from "react"; 
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import Hero from "../components/Hero";
+import HeroGreen from "../components/HeroGreen";
 import IssueDetail from "../components/IssueDetail";
 import CommentSection from "../components/IssueCommentSection/CommentSection";
 import HandlingReply from "../components/IssueReply";
@@ -76,7 +77,11 @@ function IssueDetailPage({ user }) {
 
   return (
     <div className={`issue-detail-page ${isFromTopicTree ? 'tree-theme' : ''}`}>
-      <Hero user={user} onSearch={() => {}} />
+      {isFromTopicTree ? (
+        <HeroGreen user={user} onSearch={() => {}} />
+      ) : (
+        <Hero user={user} onSearch={() => {}} />
+      )}
       <button className="back-button" onClick={() => navigate(-1)}>
         ← 返回上一页
       </button>
