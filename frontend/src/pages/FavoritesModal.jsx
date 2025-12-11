@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { favoriteAPI } from '../api';
 import '../styles/FavoritesModal.css';
 
-const FavoritesModal = ({ isOpen, onClose }) => {
+const FavoritesModal = ({ isOpen, onClose, isFromGreenNav = false }) => {
   const navigate = useNavigate();
   const [favorites, setFavorites] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -43,7 +43,9 @@ const FavoritesModal = ({ isOpen, onClose }) => {
 
   const handleItemClick = (issueId) => {
     // 跳转到问题详情页
-    navigate(`/detail/${issueId}`, { state: { from: 'homepage-favorites' } });
+    // 根据来源设置不同的状态标识
+    const fromValue = isFromGreenNav ? 'green-favorites' : 'homepage-favorites';
+    navigate(`/detail/${issueId}`, { state: { from: fromValue } });
   };
 
   if (!isOpen) return null;

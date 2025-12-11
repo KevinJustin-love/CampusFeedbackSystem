@@ -3,7 +3,7 @@ import { useViewHistory } from '../hooks/useViewHistory';
 import { useNavigate } from 'react-router-dom';
 import '../styles/HistoryModal.css';
 
-const HistoryModal = ({ isOpen, onClose }) => {
+const HistoryModal = ({ isOpen, onClose, isFromGreenNav = false }) => {
   const navigate = useNavigate();
   const {
     history,
@@ -27,7 +27,9 @@ const HistoryModal = ({ isOpen, onClose }) => {
 
   const handleItemClick = (issueId) => {
     onClose();
-    navigate(`/detail/${issueId}`, { state: { from: 'homepage-history' } });
+    // 根据来源设置不同的状态标识
+    const fromValue = isFromGreenNav ? 'green-history' : 'homepage-history';
+    navigate(`/detail/${issueId}`, { state: { from: fromValue } });
   };
 
   const handleClearHistory = async () => {

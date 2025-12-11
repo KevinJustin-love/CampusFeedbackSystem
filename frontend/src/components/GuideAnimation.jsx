@@ -23,9 +23,19 @@ const GuideAnimation = ({ guides, onComplete }) => {
     // 计算所有目标元素的位置
     const calculatedPositions = validElements.map((element, index) => {
       const rect = element.getBoundingClientRect();
+      
+      // 如果设置了center属性，则居中显示
+      if (guides[index].center) {
+        return {
+          top: rect.top + rect.height / 2 - 50, // 垂直居中并向上偏移50px
+          left: window.innerWidth / 2 - 150 // 水平居中，考虑引导框宽度约300px
+        };
+      }
+      
+      // 默认定位
       return {
         top: rect.top + (guides[index].offsetTop || 10),
-        left: rect.left + rect.width / 2
+        left: rect.left + (guides[index].offsetLeft || rect.width / 2)
       };
     });
     setPositions(calculatedPositions);

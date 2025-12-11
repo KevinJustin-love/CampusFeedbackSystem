@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useNotifications } from '../hooks/useNotifications';
 import '../styles/NotificationModal.css';
 
-const NotificationModal = ({ isOpen, onClose, adminFilter = false }) => {
+const NotificationModal = ({ isOpen, onClose, adminFilter = false, isFromGreenNav = false }) => {
   const navigate = useNavigate();
   const {
     notifications,
@@ -28,13 +28,15 @@ const NotificationModal = ({ isOpen, onClose, adminFilter = false }) => {
     if (!notification.is_read) {
       await markAsRead([notification.id]);
     }
-    
+
     // 关闭通知弹窗
     onClose();
     
     // 如果通知关联了问题，跳转到问题详情页
     if (notification.issue) {
-      navigate(`/detail/${notification.issue}`, { state: { from: 'homepage-notification' } });
+      // 根据来源设置不同的状态标识
+      const fromValue = isFromGreenNav ? 'green-notification' : 'homepage-notification';
+      navigate(`/detail/${notification.issue}`, { state: { from: fromValue } });
     }
   };
 

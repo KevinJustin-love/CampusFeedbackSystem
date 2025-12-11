@@ -98,7 +98,7 @@ const App = () => {
           path="/"
           element={
             <ProtectedRoute>
-              {user ? <HomePage user={user} /> : <div>加载用户信息中...</div>}
+              {user ? <HomePage user={user} adminUnreadCount={0} /> : <div>加载用户信息中...</div>}
             </ProtectedRoute>
           }
         />
@@ -130,7 +130,7 @@ const App = () => {
           element={
             <ProtectedRoute>
               {user ? (
-                <TopicTreePage user={user} onSearch={() => {}} />
+                <TopicTreePage user={user} onSearch={() => {}} adminUnreadCount={0} />
               ) : (
                 <div>加载用户信息中...</div>
               )}
