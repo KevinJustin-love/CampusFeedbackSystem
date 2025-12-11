@@ -44,7 +44,7 @@ export default function HomePage({ user, onSearch, adminUnreadCount }) {
       offsetTop: 10
     },
     {
-      targetSelector: ".submit-question-container",
+      targetSelector: ".navbar-green-submit-btn",
       text: "点击这里发布问题",
       offsetTop: 120
     },
@@ -224,22 +224,6 @@ export default function HomePage({ user, onSearch, adminUnreadCount }) {
             }}
           />
         </a>
-      </div>
-
-      {/* 发布问题按钮和鸽子图标组合 - 固定在导航栏 */}
-      <div 
-        className="submit-question-container"
-        onClick={() => navigate("/submit", { state: { from: "/" } })}
-        title="发布新问题"
-      >
-        <div className="pigeon-icon-fixed">
-          🕊️
-        </div>
-        <button
-          className="submit-question-btn"
-        >
-          发布问题
-        </button>
       </div>
 
       {/* 引导动画 - 多步骤引导 */}

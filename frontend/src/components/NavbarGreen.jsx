@@ -354,6 +354,16 @@ export default function NavbarGreen({
 
       {/* 右侧区域：功能图标 + 头像 */}
       <div className="navbar-green-right">
+        {/* 发布问题按钮 */}
+        <div 
+          className="navbar-green-submit-btn"
+          onClick={() => navigate("/submit", { state: { from: "/" } })}
+          title="发布新问题"
+        >
+          <span className="navbar-green-pigeon-icon">🕊️</span>
+          <span className="navbar-green-submit-label">发布问题</span>
+        </div>
+
         {/* 历史记录 */}
         <div
           className="navbar-green-icon-btn"

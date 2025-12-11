@@ -103,6 +103,80 @@
   gap: 8px;
 }
 
+/* 发布问题按钮样式 - 与原来样式完全一致 */
+.navbar-green-submit-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px; /* 图标和文字的间距 */
+  cursor: pointer;
+  transition: all 0.3s ease;
+  pointer-events: auto; /* 确保可点击 */
+  white-space: nowrap;
+}
+
+/* 悬停效果 - 向上移动 */
+.navbar-green-submit-btn:hover {
+  transform: translateY(-2px);
+}
+
+/* 发布问题按钮样式 - 暖信纸色背景 */
+.navbar-green-submit-btn .navbar-green-pigeon-icon {
+  font-size: 28px;
+  cursor: pointer;
+  transition: transform 0.3s ease, filter 0.3s ease;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+  pointer-events: none; /* 让事件穿透到容器 */
+}
+
+/* 悬停时鸽子图标放大 */
+.navbar-green-submit-btn:hover .navbar-green-pigeon-icon {
+  transform: scale(1.15);
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+}
+
+/* 发布问题按钮样式 - 暖信纸色按钮 */
+.navbar-green-submit-btn .navbar-green-submit-label {
+  background-color: #fbeab6; /* 暖信纸色 */
+  color: #60a094; /* 墨绿文字 */
+  border: 1px solid #EBDCB2; /* 纸张边缘 */
+  border-radius: 24px; /* 胶囊形状 */
+  padding: 8px 20px; /* 舒适的内边距 */
+  font-size: 14px;
+  font-weight: 600; /* 字体稍粗，像手写体 */
+  font-family: 'Microsoft YaHei', 'PingFang SC', sans-serif;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08); /* 轻微的投影，营造悬浮感 */
+  text-shadow: none;
+  white-space: nowrap;
+  pointer-events: none; /* 让事件穿透到容器 */
+}
+
+/* 悬停时按钮样式变化 */
+.navbar-green-submit-btn:hover .navbar-green-submit-label {
+  background-color: #FFFFFF; /* 变亮一点 */
+  border-color: #E0D0B0; /* 悬停时边框颜色变化 */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* 点击效果 - 容器 */
+.navbar-green-submit-btn:active {
+  transform: translateY(0);
+}
+
+/* 点击效果 - 鸽子图标 */
+.navbar-green-submit-btn:active .navbar-green-pigeon-icon {
+  transform: scale(1.05);
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+}
+
+/* 点击效果 - 按钮 */
+.navbar-green-submit-btn:active .navbar-green-submit-label {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  background-color: #F5F0E0; /* 点击时纸张颜色变化 */
+  border-color: #D8C8A0; /* 点击时边框颜色变深 */
+}
+
 .navbar-green-icon-btn {
   display: flex;
   align-items: center;
@@ -503,10 +577,29 @@
     height: 32px;
     padding: 0 12px;
   }
+
+  /* 发布问题按钮响应式样式 */
+  .navbar-green-submit-btn .navbar-green-submit-label {
+    padding: 6px 16px;
+    font-size: 13px;
+  }
+  
+  .navbar-green-submit-btn .navbar-green-pigeon-icon {
+    font-size: 24px;
+  }
 }
 
 @media (max-width: 480px) {
   .navbar-green-center {
     display: none;
+  }
+  
+  /* 超小屏幕隐藏文字，只保留图标 */
+  .navbar-green-submit-btn .navbar-green-submit-label {
+    display: none;
+  }
+  
+  .navbar-green-submit-btn .navbar-green-pigeon-icon {
+    font-size: 20px;
   }
 }
