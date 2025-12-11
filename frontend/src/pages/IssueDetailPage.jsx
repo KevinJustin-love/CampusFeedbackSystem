@@ -21,12 +21,13 @@ function IssueDetailPage({ user }) {
   useEffect(() => {
     // 检测来源页面
     const fromPage = location.state?.from;
-    // 从homepage相关页面（问题树、历史记录、收藏、通知）进入时使用绿色主题，其他情况（包括dashboard）使用棕色主题
-    const isFromHomepage = fromPage === '/topic-tree' || 
-                          fromPage === 'homepage-history' || 
-                          fromPage === 'homepage-favorites' || 
-                          fromPage === 'homepage-notification';
-    setIsFromTopicTree(isFromHomepage);
+    // 判断是否应该使用绿色主题
+    // 从TopicTree页面或从NavbarGreen的相关功能进入时使用绿色主题
+    const shouldUseGreenTheme = fromPage === '/topic-tree' || 
+                                fromPage === 'green-history' || 
+                                fromPage === 'green-favorites' || 
+                                fromPage === 'green-notification';
+    setIsFromTopicTree(shouldUseGreenTheme);
     
     if (id === 'undefined' || id === undefined) {
       setError("Invalid issue ID");

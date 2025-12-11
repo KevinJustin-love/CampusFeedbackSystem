@@ -498,15 +498,18 @@ export default function NavbarGreen({
       <HistoryModal
         isOpen={isHistoryModalOpen}
         onClose={handleCloseHistoryModal}
+        isFromGreenNav={true}
       />
       <FavoritesModal
         isOpen={isFavoritesModalOpen}
         onClose={handleCloseFavoritesModal}
+        isFromGreenNav={true}
       />
       <NotificationModal
         isOpen={isNotificationModalOpen}
         onClose={handleCloseNotificationModal}
         adminFilter={adminFilter}
+        isFromGreenNav={true}
       />
       {isProfileModalOpen && (
         <UserProfile
