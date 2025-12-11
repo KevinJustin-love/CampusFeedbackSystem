@@ -38,53 +38,6 @@
   pointer-events: auto; /* 允许内容接收点击 */
 }
 
-/* ------------------------------------------- */
-/* **HOME PAGE 专属导航栏样式覆盖 (高优先级)** */
-/* ------------------------------------------- */
-
-/* 导航栏背景：浅绿色不透明 */
-.homeContainer .dashboard-title {
-  /* 使用 rgba(143, 188, 143, 0.9) 来设置一个更不透明的浅绿色 */
-  background-color: rgba(143, 188, 143, 0.9);
-  /* 确保定位是 fixed，且优先级设置得当 */
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 1001;
-
-  /* 移除磨砂效果，保持原有尺寸 */
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
-  height: 65px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 20px;
-}
-
-/* 导航栏文字：白色高亮 */
-.homeContainer .dashboard-title {
-  /* 导航栏顶层文字（例如 Navbar 中的图标）使用白色 */
-  color: #ffffff;
-}
-
-/* 导航栏左侧内容文字：白色高亮 */
-.homeContainer .dashboard-title-content {
-  color: #ffffff;
-}
-
-/* 主页头像小尺寸圆形显示 */
-.homeContainer .userimg {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  object-fit: cover;
-  object-position: center;
-  border: 1px solid rgba(255, 255, 255, 0.6);
-  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
-}
-
 /* 岛屿热点区域容器 */
 .islandHotspots {
   position: absolute;
@@ -288,64 +241,6 @@
   transition: transform 0.3s ease, filter 0.3s ease;
   filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
   pointer-events: none; /* 让事件穿透到容器 */
-}
-
-/* 移除鸽子的单独悬停效果，改由容器控制 */
-/* .pigeon-icon-fixed:hover {...} 已移除 */
-
-/* 邮箱图标和切换模式按钮组合容器 */
-.mailbox-container {
-  position: absolute;
-  left: 15%;
-  bottom: 8%;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  z-index: 10;
-}
-
-/* 容器悬停效果 */
-.mailbox-container:hover {
-  transform: scale(1.05);
-}
-
-/* 邮箱图标容器 */
-.mailbox-icon {
-  transition: all 0.3s ease;
-}
-
-/* 邮箱图标 */
-.mailbox-icon img {
-  width: 110px;
-  height: auto;
-  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
-  transition: filter 0.3s ease;
-}
-
-/* 容器悬停时邮箱图标效果 */
-.mailbox-container:hover .mailbox-icon img {
-  filter: brightness(1.1) drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
-}
-
-/* 切换模式按钮样式 */
-.mode-toggle-btn {
-  background-color: #ef8e6b; /* 珊瑚红色 */
-  color: black;
-  border: none;
-  border-radius: 18px;
-  padding: 10px 20px;
-  font-size: 12px;
-  font-weight: 600;
-  font-family: 'Microsoft YaHei', 'PingFang SC', sans-serif;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 6px rgba(255, 127, 80, 0.3);
-  text-shadow: none;
-  pointer-events: none; /* 让事件穿透到容器 */
-  margin-top: 70px; /* 向下移动20px */
-  margin-left: -20px; /* 向左移动20px */
 }
 
 /* 针对右侧和底部大图的特殊定位修正，避免超出页面或偏移 */
