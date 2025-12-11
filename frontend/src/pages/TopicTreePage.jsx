@@ -5,7 +5,7 @@ import SingleIssueTree from "../components/SingleIssueTree";
 import GuideAnimation from "../components/GuideAnimation";
 import { fetchIssues } from "../components/functions/FetchIssues"; 
 import { motion, AnimatePresence } from "framer-motion";
-import Hero from "../components/Hero";
+import HeroGreen from "../components/HeroGreen";
 import "../styles/TopicTreePage.css";
 
 // 引入一个漂亮的动漫风格风景图 (使用指定图片源)
@@ -13,7 +13,7 @@ const ANIME_BG_URL =
   "/assets/forest-bg.png"; // 动漫风格森林背景
 // 备选: 蓝天草地风格
 
-const TopicTreePage = ({ user, onSearch }) => {
+const TopicTreePage = ({ user, onSearch, adminUnreadCount }) => {
   const { topic } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
@@ -94,9 +94,19 @@ const TopicTreePage = ({ user, onSearch }) => {
     }
   ];
 
+  const handleUserUpdate = (updatedUserData) => {
+    // 这里可以添加用户更新后的处理逻辑
+    console.log("用户信息已更新:", updatedUserData);
+  };
+
   return (
     <div className="topic-tree-page-root">
-      <Hero user={user} onSearch={onSearch} />
+      <HeroGreen 
+        user={user} 
+        onSearch={onSearch} 
+        adminUnreadCount={adminUnreadCount}
+        onUserUpdate={handleUserUpdate}
+      />
       <div
         className="anime-page-wrapper"
       style={{
