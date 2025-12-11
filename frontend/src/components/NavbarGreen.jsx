@@ -198,7 +198,7 @@ export default function NavbarGreen({
 
     return (
       <div
-        className="search-container"
+        className="search-green-container"
         style={{ display: "flex", alignItems: "center" }}
       >
         <div
@@ -212,7 +212,7 @@ export default function NavbarGreen({
           <input
             type="text"
             placeholder="在小岛中搜索..."
-            className="search-input"
+            className="search-green-input"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             onKeyPress={handleKeyPress}
@@ -221,7 +221,7 @@ export default function NavbarGreen({
 
           {searchQuery && (
             <button
-              className="clear-button"
+              className="clear-green-button"
               onClick={handleClearSearch}
               style={{
                 background: "none",
@@ -250,9 +250,9 @@ export default function NavbarGreen({
             </button>
           )}
 
-          <button className="search-button" onClick={handleSearch}>
+          <button className="search-green-button" onClick={handleSearch}>
             <svg
-              className="search-icon"
+              className="search-green-icon"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"

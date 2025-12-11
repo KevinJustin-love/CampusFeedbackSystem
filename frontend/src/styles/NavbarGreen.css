@@ -330,7 +330,7 @@
 }
 
 /* 搜索栏样式 - 浅绿色主题 */
-.search-container {
+.search-green-container {
   display: flex;
   align-items: center;
   width: 100%;
@@ -343,18 +343,18 @@
   backdrop-filter: blur(8px);
 }
 
-.search-container:hover {
+.search-green-container:hover {
   background-color: rgba(232, 245, 233, 0.8);
   border-color: rgba(129, 199, 132, 0.8);
 }
 
-.search-container:focus-within {
+.search-green-container:focus-within {
   border-color: rgba(102, 187, 106, 0.9);
   background-color: rgba(232, 245, 233, 0.9);
   box-shadow: 0 0 0 2px rgba(102, 187, 106, 0.2);
 }
 
-.search-input {
+.search-green-input {
   flex: 1;
   border: none;
   outline: none;
@@ -363,11 +363,11 @@
   color: #1b5e20;
 }
 
-.search-input::placeholder {
+.search-green-input::placeholder {
   color: rgba(46, 125, 50, 0.7);
 }
 
-.search-button {
+.search-green-button {
   background: none;
   border: none;
   cursor: pointer;
@@ -378,18 +378,18 @@
   align-items: center;
 }
 
-.search-button:hover {
+.search-green-button:hover {
   color: #2e7d32;
   transform: scale(1.1);
 }
 
-.search-icon {
+.search-green-icon {
   width: 18px;
   height: 18px;
   stroke-width: 2;
 }
 
-.clear-button {
+.clear-green-button {
   background: none;
   border: none;
   cursor: pointer;
@@ -400,11 +400,11 @@
   justify-content: center;
 }
 
-.clear-button svg {
+.clear-green-button svg {
   color: rgba(46, 125, 50, 0.5);
 }
 
-.clear-button:hover svg {
+.clear-green-button:hover svg {
   color: #2e7d32;
 }
 
@@ -573,7 +573,7 @@
     height: 32px;
   }
 
-  .search-container {
+  .search-green-container {
     height: 32px;
     padding: 0 12px;
   }
