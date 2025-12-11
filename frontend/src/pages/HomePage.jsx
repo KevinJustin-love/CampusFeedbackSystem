@@ -22,10 +22,11 @@ export default function HomePage({ user, onSearch }) {
     setShowGuide(false);
   };
 
-  // 检测来源页面，只从登录页面、dashboard页面进入时显示引导
+  // 检测来源页面，从登录页面、dashboard页面或通过navbar小岛按钮进入时显示引导
   useEffect(() => {
     const fromPage = location.state?.from;
-    const shouldShowGuide = fromPage === '/login' || fromPage === '/dashboard';
+    // 如果来源是登录页面、dashboard页面，或者来源是navbar（通过导航栏小岛按钮进入），则显示引导
+    const shouldShowGuide = fromPage === '/login' || fromPage === '/dashboard' || fromPage === 'navbar';
     
     setShowGuide(shouldShowGuide);
   }, [location.state?.from]);

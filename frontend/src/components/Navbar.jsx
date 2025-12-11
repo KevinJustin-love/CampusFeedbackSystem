@@ -305,7 +305,7 @@ export default function Navbar({
   };
 
   const handleIslandIconClick = () => {
-    navigate("/"); // 跳转到homepage页面
+    navigate("/", { state: { from: 'navbar' } }); // 跳转到homepage页面，标识来源为navbar
   };
 
   return (
