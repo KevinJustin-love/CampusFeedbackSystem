@@ -83,14 +83,15 @@ const TopicTreePage = ({ user, onSearch, adminUnreadCount }) => {
   // 定义引导步骤
   const guideSteps = [
     {
-      targetSelector: ".island-icon-container",
+      targetSelector: ".navbar-green-island-btn",
       text: "点击这里回到小岛",
-      offsetTop: 150
+      offsetTop: 140
     },
     {
       targetSelector: ".topic-tree-slider",
       text: "点击叶子可以查看问题详情",
-      offsetTop: 150
+      offsetLeft: 0,
+      center: true // 添加居中标识
     }
   ];
 
