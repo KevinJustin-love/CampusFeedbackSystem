@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import Hero from "../components/Hero";
+import HeroGreen from "../components/HeroGreen";
 import GuideAnimation from "../components/GuideAnimation";
 import "../styles/HomePage.css";
 
-export default function HomePage({ user, onSearch }) {
+export default function HomePage({ user, onSearch, adminUnreadCount }) {
   const navigate = useNavigate();
   const location = useLocation();
   const [hoveredTopic, setHoveredTopic] = useState(null);
@@ -31,6 +31,11 @@ export default function HomePage({ user, onSearch }) {
     setShowGuide(shouldShowGuide);
   }, [location.state?.from]);
 
+  const handleUserUpdate = (updatedUserData) => {
+    // 这里可以添加用户更新后的处理逻辑
+    console.log("用户信息已更新:", updatedUserData);
+  };
+
   // 定义引导步骤
   const guideSteps = [
     {
@@ -49,7 +54,12 @@ export default function HomePage({ user, onSearch }) {
     <div className="homeContainer">
       <div className="overlay" />
       <div className="heroContent">
-        <Hero user={user} onSearch={onSearch} />
+        <HeroGreen 
+          user={user} 
+          onSearch={onSearch} 
+          adminUnreadCount={adminUnreadCount}
+          onUserUpdate={handleUserUpdate}
+        />
       </div>
       <div className="islandHotspots">
         <a
