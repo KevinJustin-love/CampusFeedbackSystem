@@ -42,11 +42,6 @@ export default function HomePage({ user, onSearch }) {
       text: "点击这里发布问题",
       offsetTop: 120
     },
-    {
-      targetSelector: ".mailbox-container",
-      text: "点击这里切换简洁模式",
-      offsetTop: 120
-    }
   ];
 
   return (
@@ -218,23 +213,6 @@ export default function HomePage({ user, onSearch }) {
             }}
           />
         </a>
-      </div>
-
-      {/* 邮箱图标和切换模式按钮组合 - 链接到 Dashboard */}
-      <div 
-        className="mailbox-container"
-        onClick={() => window.location.href = "/dashboard"}
-        title="进入邮箱"
-      >
-        <div className="mailbox-icon">
-          <img
-            src="../../public/assets/mailRed.png"
-            alt="Mailbox"
-          />
-        </div>
-        <button className="mode-toggle-btn">
-          切换模式
-        </button>
       </div>
 
       {/* 发布问题按钮和鸽子图标组合 - 固定在导航栏 */}
