@@ -9,6 +9,8 @@ export default function HomePage({ user, onSearch }) {
   const location = useLocation();
   const [hoveredTopic, setHoveredTopic] = useState(null);
   const [showGuide, setShowGuide] = useState(true);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [isSearching, setIsSearching] = useState(false);
 
   const handleHotspotEnter = (topic) => {
     setHoveredTopic(topic);
@@ -21,6 +23,22 @@ export default function HomePage({ user, onSearch }) {
   const handleGuideComplete = () => {
     setShowGuide(false);
   };
+
+  // 处理搜索功能
+  const handleSearch = (query) => {
+    setSearchQuery(query);
+    setIsSearching(!!query.trim());
+    
+    if (query.trim()) {
+      // 有搜索词时，跳转到问题树页面并传递搜索参数
+      navigate(`/topic-tree/all`, { 
+        state: { searchQuery: query.trim() }
+      });
+    }
+  };
+
+  // 如果父组件传递了onSearch，使用父组件的处理函数
+  const finalOnSearch = onSearch || handleSearch;
 
   // 检测来源页面，只从登录页面、dashboard页面进入时显示引导
   useEffect(() => {
@@ -53,7 +71,7 @@ export default function HomePage({ user, onSearch }) {
     <div className="homeContainer">
       <div className="overlay" />
       <div className="heroContent">
-        <Hero user={user} onSearch={onSearch} />
+        <Hero user={user} onSearch={finalOnSearch} isSearching={isSearching} />
       </div>
       <div className="islandHotspots">
         <a
