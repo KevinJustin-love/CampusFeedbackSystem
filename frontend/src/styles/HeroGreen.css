@@ -1,0 +1,80 @@
+/* HeroGreen.css - HomePage专用的绿色主题导航栏样式 */
+.hero-green-container {
+  width: 100%;
+  position: relative;
+}
+
+.hero-green-navbar {
+  font-size: 17px;
+  font-weight: bold;
+  
+  /* 绿色主题：使用自然绿色系 */
+  color: #FFFFFF;
+  background: linear-gradient(
+    90deg,
+    rgba(115, 185, 121, 0.85) 0%,
+    rgba(117, 190, 140, 0.85) 50%,
+    rgba(201, 234, 202, 0.85) 100%
+  );
+  
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.15);
+  height: 60px;
+  
+  /* 固定定位 */
+  position: fixed;
+  top: 0px;
+  left: 0;
+  right: 0;
+  z-index: 999;
+  pointer-events: none;
+  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 20px;
+}
+
+.hero-green-navbar > * {
+  pointer-events: auto;
+}
+
+/* 添加环境光效果 */
+.hero-green-navbar::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.1) 0%,
+    transparent 50%,
+    rgba(0, 0, 0, 0.1) 100%
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* 确保导航栏内容在环境光效果上方 */
+.hero-green-navbar > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+  .hero-green-navbar {
+    height: 55px;
+    padding: 0 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-green-navbar {
+    height: 50px;
+    padding: 0 10px;
+  }
+}

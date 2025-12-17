@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import Hero from "../components/Hero";
+import HeroGreen from "../components/HeroGreen";
 import GuideAnimation from "../components/GuideAnimation";
 import "../styles/HomePage.css";
 
-export default function HomePage({ user, onSearch }) {
+export default function HomePage({ user, onSearch, adminUnreadCount }) {
   const navigate = useNavigate();
   const location = useLocation();
   const [hoveredTopic, setHoveredTopic] = useState(null);
@@ -43,10 +43,16 @@ export default function HomePage({ user, onSearch }) {
   // 检测来源页面，只从登录页面、dashboard页面进入时显示引导
   useEffect(() => {
     const fromPage = location.state?.from;
-    const shouldShowGuide = fromPage === '/login' || fromPage === '/dashboard';
+    // 如果来源是登录页面、dashboard页面，或者来源是navbar（通过导航栏小岛按钮进入），则显示引导
+    const shouldShowGuide = fromPage === '/login' || fromPage === '/dashboard' || fromPage === 'navbar';
     
     setShowGuide(shouldShowGuide);
   }, [location.state?.from]);
+
+  const handleUserUpdate = (updatedUserData) => {
+    // 这里可以添加用户更新后的处理逻辑
+    console.log("用户信息已更新:", updatedUserData);
+  };
 
   // 定义引导步骤
   const guideSteps = [
@@ -56,22 +62,23 @@ export default function HomePage({ user, onSearch }) {
       offsetTop: 10
     },
     {
-      targetSelector: ".submit-question-container",
+      targetSelector: ".navbar-green-submit-btn",
       text: "点击这里发布问题",
       offsetTop: 120
     },
-    {
-      targetSelector: ".mailbox-container",
-      text: "点击这里切换简洁模式",
-      offsetTop: 120
-    }
   ];
 
   return (
     <div className="homeContainer">
       <div className="overlay" />
       <div className="heroContent">
-        <Hero user={user} onSearch={finalOnSearch} isSearching={isSearching} />
+        <HeroGreen 
+          user={user} 
+          onSearch={finalOnSearch}
+          isSearching={isSearching}
+          adminUnreadCount={adminUnreadCount}
+          onUserUpdate={handleUserUpdate}
+        />
       </div>
       <div className="islandHotspots">
         <a
@@ -236,39 +243,6 @@ export default function HomePage({ user, onSearch }) {
             }}
           />
         </a>
-      </div>
-
-      {/* 邮箱图标和切换模式按钮组合 - 链接到 Dashboard */}
-      <div 
-        className="mailbox-container"
-        onClick={() => window.location.href = "/dashboard"}
-        title="进入邮箱"
-      >
-        <div className="mailbox-icon">
-          <img
-            src="../../public/assets/mailRed.png"
-            alt="Mailbox"
-          />
-        </div>
-        <button className="mode-toggle-btn">
-          切换模式
-        </button>
-      </div>
-
-      {/* 发布问题按钮和鸽子图标组合 - 固定在导航栏 */}
-      <div 
-        className="submit-question-container"
-        onClick={() => navigate("/submit", { state: { from: "/" } })}
-        title="发布新问题"
-      >
-        <div className="pigeon-icon-fixed">
-          🕊️
-        </div>
-        <button
-          className="submit-question-btn"
-        >
-          发布问题
-        </button>
       </div>
 
       {/* 引导动画 - 多步骤引导 */}
