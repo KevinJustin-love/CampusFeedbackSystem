@@ -18,12 +18,74 @@ const TopicTreePage = ({ user, onSearch, adminUnreadCount }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const [issues, setIssues] = useState([]);
+  const [filteredIssues, setFilteredIssues] = useState([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(0);
   const [direction, setDirection] = useState(0); // 用于动画方向
   const [showGuide, setShowGuide] = useState(false); // 初始为 false，数据加载后改为 true
+  const [searchQuery, setSearchQuery] = useState("");
+  const [isSearching, setIsSearching] = useState(false);
 
   const issuesPerPage = 5;
+
+  // 处理搜索功能
+  const handleSearch = (query) => {
+    setSearchQuery(query);
+    setIsSearching(!!query.trim());
+  };
+
+  // 检查是否有来自小岛页面的搜索参数
+  useEffect(() => {
+    if (location.state?.searchQuery) {
+      setSearchQuery(location.state.searchQuery);
+      setIsSearching(true);
+    }
+  }, [location.state]);
+
+  // 过滤问题列表
+  useEffect(() => {
+    if (!searchQuery.trim()) {
+      setFilteredIssues(issues);
+    } else {
+      const searchText = searchQuery.toLowerCase().trim();
+      const filtered = issues.filter(issue => {
+        const title = issue.title?.toLowerCase() || '';
+        const description = issue.description?.toLowerCase() || '';
+        
+        // 完全匹配
+        if (title.includes(searchText) || description.includes(searchText)) {
+          return true;
+        }
+
+        // 中文分词模糊匹配
+        if (searchText.length >= 2) {
+          const titleWords = title.split(/\s+/);
+          const descWords = description.split(/\s+/);
+
+          const titleContainsSearch = titleWords.some(word => word.includes(searchText));
+          const descContainsSearch = descWords.some(word => word.includes(searchText));
+
+          if (titleContainsSearch || descContainsSearch) {
+            return true;
+          }
+
+          // 检查标题或描述是否包含搜索词的某个部分
+          for (let i = 0; i < searchText.length - 1; i++) {
+            for (let j = i + 2; j <= searchText.length; j++) {
+              const part = searchText.substring(i, j);
+              if (part.length >= 2 && (title.includes(part) || description.includes(part))) {
+                return true;
+              }
+            }
+          }
+        }
+
+        return false;
+      });
+      setFilteredIssues(filtered);
+    }
+    setCurrentPage(0); // 重置到第一页
+  }, [issues, searchQuery]);
 
   useEffect(() => {
     // 模拟数据获取，请替换回你的 fetchIssues 逻辑
@@ -52,8 +114,8 @@ const TopicTreePage = ({ user, onSearch, adminUnreadCount }) => {
     }
   }, [loading, issues.length]);
 
-  const totalPages = Math.ceil(issues.length / issuesPerPage);
-  const currentIssueSlice = issues.slice(
+  const totalPages = Math.ceil(filteredIssues.length / issuesPerPage);
+  const currentIssueSlice = filteredIssues.slice(
     currentPage * issuesPerPage,
     (currentPage + 1) * issuesPerPage
   );
@@ -104,7 +166,8 @@ const TopicTreePage = ({ user, onSearch, adminUnreadCount }) => {
     <div className="topic-tree-page-root">
       <HeroGreen 
         user={user} 
-        onSearch={onSearch} 
+        onSearch={handleSearch} 
+        isSearching={isSearching}
         adminUnreadCount={adminUnreadCount}
         onUserUpdate={handleUserUpdate}
       />
@@ -174,7 +237,8 @@ const TopicTreePage = ({ user, onSearch, adminUnreadCount }) => {
             {theme.icon} {theme.title}
           </h1>
           <span style={{ fontSize: "18px", color: "#666", marginTop: "5px" }}>
-            共 {issues.length} 个问题
+            共 {isSearching ? filteredIssues.length : issues.length} 个问题
+            {isSearching && ` (搜索: "${searchQuery}")`}
           </span>
         </div>
       </header>

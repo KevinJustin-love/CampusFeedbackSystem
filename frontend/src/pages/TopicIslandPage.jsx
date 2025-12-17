@@ -6,7 +6,7 @@ import "../styles/TopicIslandPage.css";
 import ForestOnIsland from "../components/ForestOnIsland";
 import { feedbackAPI } from "../api";
 
-const TopicIslandPage = ({ user }) => {
+const TopicIslandPage = ({ user, onSearch }) => {
   const { topic } = useParams(); // 从路由获取主题
   const navigate = useNavigate();
   // 主题名称映射
@@ -21,6 +21,8 @@ const TopicIslandPage = ({ user }) => {
   const [issueCount, setIssueCount] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [isSearching, setIsSearching] = useState(false);
 
   useEffect(() => {
     let isMounted = true;
@@ -59,13 +61,27 @@ const TopicIslandPage = ({ user }) => {
   // 开发测试用mode切换
   const [devMode, setDevMode] = useState(null); // null=自动, 0-3=手动
 
+  // 处理搜索功能
+  const handleSearch = (query) => {
+    if (query.trim()) {
+      // 有搜索词时，跳转到问题树页面并传递搜索参数
+      navigate(`/topic-tree/${topic}`, { 
+        state: { searchQuery: query.trim() }
+      });
+    } else {
+      // 清空搜索时，只更新当前页面状态
+      setSearchQuery("");
+      setIsSearching(false);
+    }
+  };
+
   const handleBackToHome = () => {
     navigate("/");
   };
 
   return (
     <div className="container topic-island">
-      <Hero user={user} onSearch={() => {}} />
+      <Hero user={user} onSearch={handleSearch} isSearching={isSearching} />
 
       <div className="island-header">
         <h1 className="island-title">
@@ -77,6 +93,11 @@ const TopicIslandPage = ({ user }) => {
           ) : (
             <span style={{ fontSize: 18, color: "#388e3c", marginLeft: 16 }}>
               共 {issueCount} 个问题
+              {isSearching && (
+                <span style={{ fontSize: 14, color: "#1976d2", marginLeft: 8 }}>
+                  (点击小岛查看搜索结果)
+                </span>
+              )}
             </span>
           )}
         </h1>
