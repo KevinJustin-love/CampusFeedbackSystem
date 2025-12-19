@@ -14,6 +14,10 @@
 
 - 🤖 ChatGPT API integration for enhanced user interaction.
 
+## Flowchart
+
+![Flowchart](./img/yuQing.drawio.png)
+
 ## Project Features
 
 We built this project using a **dual-system** approach, featuring both a concise issue feedback interface and an animated island-style page, providing users with rich exploration experiences.
