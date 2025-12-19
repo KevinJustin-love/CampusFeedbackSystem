@@ -2,7 +2,8 @@
 .detail-container {
   display: flex;
   flex-direction: column;
-  background: #fffdf5 url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm11 0c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-11 11c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7z' fill='%23f5f5f0' fill-opacity='0.1' fill-rule='evenodd'/%3E%3C/svg%3E");
+  background: #fffdf5
+    url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm11 0c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-11 11c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7z' fill='%23f5f5f0' fill-opacity='0.1' fill-rule='evenodd'/%3E%3C/svg%3E");
   border-radius: 8px;
   border: 2px solid #d6c6a5;
   box-shadow: 0 8px 32px rgba(139, 69, 19, 0.15);
@@ -14,25 +15,25 @@
   margin-right: auto;
   position: relative;
   overflow: hidden;
-  font-family: 'Georgia', 'Times New Roman', '楷体', serif;
+  font-family: "Georgia", "Times New Roman", "楷体", serif;
   color: #5a4a3a;
   line-height: 1.6;
 }
 
 .detail-container::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   height: 6px;
-  background: linear-gradient(90deg, #8B4513, #D2691E, #CD853F);
+  background: linear-gradient(90deg, #8b4513, #d2691e, #cd853f);
 }
 
 .detail-title {
   font-size: 32px;
   font-weight: 700;
-  color: #8B4513;
+  color: #8b4513;
   margin-bottom: 28px;
   display: flex;
   align-items: center;
@@ -43,7 +44,7 @@
 }
 
 .detail-title::before {
-  content: '✉️';
+  content: "✉️";
   font-size: 28px;
 }
 
@@ -70,7 +71,7 @@
 }
 
 .detail-info span {
-  color: #8B4513;
+  color: #8b4513;
   font-weight: 600;
   font-style: normal;
 }
@@ -86,7 +87,7 @@
 }
 
 .label {
-  color: #8B4513;
+  color: #8b4513;
   font-weight: 600;
   font-size: 18px;
 }
@@ -104,7 +105,7 @@
   border-radius: 6px;
   padding: 12px 20px;
   font-size: 15px;
-  color: #8B4513;
+  color: #8b4513;
   cursor: pointer;
   transition: all 0.3s ease;
   display: flex;
@@ -114,21 +115,21 @@
   font-weight: 600;
 }
 
-.favorite-btn:hover { 
+.favorite-btn:hover {
   transform: translateY(-2px);
   box-shadow: 0 6px 12px rgba(139, 69, 19, 0.25);
   background: linear-gradient(135deg, #f1ebe0 0%, #d8cdb8 100%);
 }
 
-.favorite-btn:disabled { 
-  opacity: 0.6; 
+.favorite-btn:disabled {
+  opacity: 0.6;
   cursor: not-allowed;
 }
 
 .favorite-btn.favorited {
   background-color: #fef3c7;
   border-color: #d2691e;
-  color: #8B4513;
+  color: #8b4513;
   box-shadow: 0 4px 12px rgba(210, 105, 30, 0.3);
 }
 
@@ -196,7 +197,7 @@
 }
 
 .detail-file h3::before {
-  content: '📎';
+  content: "📎";
   font-size: 18px;
 }
 
@@ -215,7 +216,7 @@
 }
 
 .detail-file a::after {
-  content: '⬇️';
+  content: "⬇️";
   font-size: 14px;
 }
 
@@ -232,17 +233,17 @@
     padding: 16px;
     margin-top: 20px;
   }
-  
+
   .detail-title {
     font-size: 24px;
     margin-bottom: 16px;
   }
-  
+
   .detail-meta {
     flex-direction: column;
     gap: 12px;
   }
-  
+
   .detail-actions {
     margin-left: 0;
     justify-content: flex-start;
@@ -262,5 +263,293 @@
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+/* 确认结案区域样式 */
+.confirm-resolved-section {
+  margin-top: 24px;
+  padding: 20px;
+  background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+  border-radius: 12px;
+  border: 2px solid #4caf50;
+}
+
+.confirm-prompt {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  text-align: center;
+}
+
+.confirm-prompt p {
+  margin: 0;
+  font-size: 16px;
+  color: #2e7d32;
+  font-weight: 500;
+}
+
+.btn-confirm-resolved {
+  background: linear-gradient(135deg, #4caf50 0%, #43a047 100%);
+  color: white;
+  border: none;
+  padding: 12px 30px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+}
+
+.btn-confirm-resolved:hover {
+  background: linear-gradient(135deg, #43a047 0%, #388e3c 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4);
+}
+
+/* 确认对话框样式 */
+.confirm-dialog-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.confirm-dialog {
+  background: white;
+  border-radius: 16px;
+  padding: 30px;
+  max-width: 450px;
+  width: 90%;
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+  animation: dialogSlideIn 0.3s ease;
+}
+
+@keyframes dialogSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-50px) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.confirm-dialog h3 {
+  margin: 0 0 10px 0;
+  color: #333;
+  font-size: 22px;
+  text-align: center;
+}
+
+.confirm-dialog > p {
+  color: #666;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+/* 星级评分样式 */
+.rating-section {
+  margin-bottom: 20px;
+}
+
+.rating-section label {
+  display: block;
+  margin-bottom: 10px;
+  font-weight: 500;
+  color: #333;
+}
+
+.star-rating {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.star-rating .star {
+  font-size: 32px;
+  color: #ddd;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.star-rating .star:hover,
+.star-rating .star.active {
+  color: #ffc107;
+  transform: scale(1.1);
+}
+
+.rating-text {
+  display: block;
+  text-align: center;
+  font-size: 14px;
+  color: #666;
+  margin-top: 5px;
+}
+
+/* 反馈文本区域样式 */
+.feedback-section {
+  margin-bottom: 25px;
+}
+
+.feedback-section label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: #333;
+}
+
+.feedback-section textarea {
+  width: 100%;
+  min-height: 100px;
+  padding: 12px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 14px;
+  resize: vertical;
+  transition: border-color 0.3s ease;
+  box-sizing: border-box;
+  font-family: inherit;
+}
+
+.feedback-section textarea:focus {
+  outline: none;
+  border-color: #4caf50;
+}
+
+.feedback-section textarea::placeholder {
+  color: #aaa;
+}
+
+/* 对话框按钮样式 */
+.confirm-dialog-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
+.confirm-dialog-buttons .btn-cancel {
+  background: #f5f5f5;
+  color: #666;
+  border: 1px solid #ddd;
+  padding: 12px 25px;
+  border-radius: 8px;
+  font-size: 15px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.confirm-dialog-buttons .btn-cancel:hover:not(:disabled) {
+  background: #e0e0e0;
+}
+
+.confirm-dialog-buttons .btn-submit {
+  background: linear-gradient(135deg, #4caf50 0%, #43a047 100%);
+  color: white;
+  border: none;
+  padding: 12px 25px;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.confirm-dialog-buttons .btn-submit:hover:not(:disabled) {
+  background: linear-gradient(135deg, #43a047 0%, #388e3c 100%);
+  transform: translateY(-1px);
+}
+
+.confirm-dialog-buttons .btn-cancel:disabled,
+.confirm-dialog-buttons .btn-submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* 确认按钮组样式 */
+.confirm-buttons-group {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* 未解决按钮样式 */
+.btn-mark-unresolved {
+  background: linear-gradient(135deg, #ef5350 0%, #e53935 100%);
+  color: white;
+  border: none;
+  padding: 12px 30px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(239, 83, 80, 0.3);
+}
+
+.btn-mark-unresolved:hover {
+  background: linear-gradient(135deg, #e53935 0%, #c62828 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(239, 83, 80, 0.4);
+}
+
+/* 未解决对话框样式 */
+.unresolved-dialog h3 {
+  color: #c62828;
+}
+
+.confirm-dialog-buttons .btn-unresolved-submit {
+  background: linear-gradient(135deg, #ef5350 0%, #e53935 100%);
+  color: white;
+  border: none;
+  padding: 12px 25px;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.confirm-dialog-buttons .btn-unresolved-submit:hover:not(:disabled) {
+  background: linear-gradient(135deg, #e53935 0%, #c62828 100%);
+  transform: translateY(-1px);
+}
+
+.confirm-dialog-buttons .btn-unresolved-submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* 响应式设计 - 确认按钮组 */
+@media (max-width: 480px) {
+  .confirm-buttons-group {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .btn-confirm-resolved,
+  .btn-mark-unresolved {
+    width: 100%;
   }
 }

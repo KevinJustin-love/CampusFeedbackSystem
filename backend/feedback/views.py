@@ -494,3 +494,151 @@ def classify_issue_view(request):
             {'error': f'分类服务错误: {str(e)}', 'category': '其他'},
             status=status.HTTP_500_INTERNAL_SERVER_ERROR
         )
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def confirm_issue_resolved(request, issue_id):
+    """
+    用户确认问题已解决（结案）
+    只有问题的提交者可以在状态为"已处理"时确认结案
+    """
+    try:
+        issue = get_object_or_404(Issue, pk=issue_id)
+        
+        # 检查是否是问题的提交者
+        if issue.host != request.user:
+            return Response(
+                {'error': '只有问题提交者可以确认结案'},
+                status=status.HTTP_403_FORBIDDEN
+            )
+        
+        # 检查当前状态是否为"已处理"
+        if issue.status != '已处理':
+            return Response(
+                {'error': '只有状态为"已处理"的问题才能确认结案'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        # 获取评价信息
+        rating = request.data.get('rating', None)  # 1-5星评价
+        feedback = request.data.get('feedback', '')  # 用户反馈
+        
+        # 更新问题状态为"已解决"
+        issue.status = '已解决'
+        issue.save()
+        
+        # 创建一条系统通知给处理该问题的管理员
+        # 获取最新的回复管理员
+        latest_reply = Reply.objects.filter(issue=issue).order_by('-created').first()
+        if latest_reply and latest_reply.administrator:
+            rating_text = f"评分: {rating}星" if rating else "未评分"
+            feedback_text = f"反馈: {feedback}" if feedback else "无反馈"
+            
+            Notification.objects.create(
+                recipient=latest_reply.administrator,
+                sender=request.user,
+                notification_type='status_update',
+                title='问题已确认解决',
+                message=f'用户 {request.user.username} 已确认问题《{issue.title}》已解决。{rating_text}。{feedback_text}',
+                issue=issue
+            )
+        
+        return Response({
+            'message': '已确认问题解决',
+            'status': issue.status,
+            'rating': rating,
+            'feedback': feedback
+        })
+        
+    except Exception as e:
+        return Response(
+            {'error': str(e)},
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR
+        )
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def check_confirm_permission(request, issue_id):
+    """
+    检查用户是否可以确认结案
+    """
+    try:
+        issue = get_object_or_404(Issue, pk=issue_id)
+        
+        can_confirm = (
+            issue.host == request.user and 
+            issue.status == '已处理'
+        )
+        
+        return Response({
+            'can_confirm': can_confirm,
+            'is_owner': issue.host == request.user,
+            'status': issue.status
+        })
+        
+    except Exception as e:
+        return Response(
+            {'error': str(e)},
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR
+        )
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def mark_issue_unresolved(request, issue_id):
+    """
+    用户标记问题未解决，状态重新设为"已提交，等待审核"
+    只有问题的提交者可以在状态为"已处理"时标记未解决
+    """
+    try:
+        issue = get_object_or_404(Issue, pk=issue_id)
+        
+        # 检查是否是问题的提交者
+        if issue.host != request.user:
+            return Response(
+                {'error': '只有问题提交者可以标记未解决'},
+                status=status.HTTP_403_FORBIDDEN
+            )
+        
+        # 检查当前状态是否为"已处理"
+        if issue.status != '已处理':
+            return Response(
+                {'error': '只有状态为"已处理"的问题才能标记未解决'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        # 获取用户反馈原因
+        reason = request.data.get('reason', '')  # 未解决原因
+        
+        # 更新问题状态为"已提交，等待审核"
+        issue.status = '已提交，等待审核'
+        issue.save()
+        
+        # 创建一条系统通知给处理该问题的管理员
+        # 获取最新的回复管理员
+        latest_reply = Reply.objects.filter(issue=issue).order_by('-created').first()
+        if latest_reply and latest_reply.administrator:
+            reason_text = f"原因: {reason}" if reason else "用户未填写原因"
+            
+            Notification.objects.create(
+                recipient=latest_reply.administrator,
+                sender=request.user,
+                notification_type='status_update',
+                title='问题未解决，需要重新处理',
+                message=f'用户 {request.user.username} 表示问题《{issue.title}》未解决，需要您重新处理。{reason_text}',
+                issue=issue
+            )
+        
+        return Response({
+            'message': '已标记问题未解决，管理员将重新处理',
+            'status': issue.status,
+            'reason': reason
+        })
+        
+    except Exception as e:
+        return Response(
+            {'error': str(e)},
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR
+        )

@@ -69,6 +69,8 @@ function AdminIssueCard({ issue, onReplySuccess }) {
         return "#28a745";
       case "处理中":
         return "#ffc107";
+      case "已解决":
+        return "#17a2b8";
       default:
         return "#6c757d";
     }
@@ -139,7 +141,10 @@ function AdminIssueCard({ issue, onReplySuccess }) {
       </div>
 
       <div className="admin-issue-actions">
-        <button className="btn-detail" onClick={() => navigate(`/detail/${issue.id}`)}>
+        <button
+          className="btn-detail"
+          onClick={() => navigate(`/detail/${issue.id}`)}
+        >
           查看详情
         </button>
         {issue.status !== "已处理" && (
@@ -198,8 +203,6 @@ function AdminIssueCard({ issue, onReplySuccess }) {
           </form>
         </div>
       )}
-
-
     </div>
   );
 }

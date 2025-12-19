@@ -36,4 +36,9 @@ urlpatterns = [
     
     # 智能分类路由
     path('classify/', views.classify_issue_view, name='classify-issue'),
+    
+    # 用户确认结案相关路由
+    path('issues/<int:issue_id>/confirm-resolved/', views.confirm_issue_resolved, name='confirm-issue-resolved'),
+    path('issues/<int:issue_id>/confirm-permission/', views.check_confirm_permission, name='check-confirm-permission'),
+    path('issues/<int:issue_id>/mark-unresolved/', views.mark_issue_unresolved, name='mark-issue-unresolved'),
 ]

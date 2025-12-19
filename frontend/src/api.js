@@ -57,6 +57,14 @@ export const feedbackAPI = {
   deleteIssueById: (issueId) =>
     api.delete(`/feedback/issues/${issueId}/delete/`),
 
+  // 确认结案相关API
+  confirmResolved: (issueId, data) =>
+    api.post(`/feedback/issues/${issueId}/confirm-resolved/`, data),
+  checkConfirmPermission: (issueId) =>
+    api.get(`/feedback/issues/${issueId}/confirm-permission/`),
+  markUnresolved: (issueId, data) =>
+    api.post(`/feedback/issues/${issueId}/mark-unresolved/`, data),
+
   // 管理员相关API
   getAdminIssues: () => api.get("/api/admin/issues/"),
   adminReplyIssue: (issueId, data) =>
