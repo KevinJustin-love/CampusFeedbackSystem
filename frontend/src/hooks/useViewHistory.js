@@ -1,5 +1,5 @@
-import { useState, useEffect, useCallback } from 'react';
-import { historyAPI } from '../api';
+import { useState, useEffect, useCallback } from "react";
+import { historyAPI } from "../api";
 
 export const useViewHistory = () => {
   const [history, setHistory] = useState([]);
@@ -14,24 +14,27 @@ export const useViewHistory = () => {
       const response = await historyAPI.getViewHistory();
       setHistory(response.data);
     } catch (err) {
-      console.error('获取浏览历史失败:', err);
-      setError('获取浏览历史失败');
+      console.error("获取浏览历史失败:", err);
+      setError("获取浏览历史失败");
     } finally {
       setLoading(false);
     }
   }, []);
 
   // 记录浏览
-  const recordView = useCallback(async (issueId) => {
-    try {
-      await historyAPI.recordView(issueId);
-      // 记录成功后重新获取历史列表
-      await fetchHistory();
-    } catch (err) {
-      console.error('记录浏览失败:', err);
-      setError('记录浏览失败');
-    }
-  }, [fetchHistory]);
+  const recordView = useCallback(
+    async (issueId) => {
+      try {
+        await historyAPI.recordView(issueId);
+        // 记录成功后重新获取历史列表
+        await fetchHistory();
+      } catch (err) {
+        console.error("记录浏览失败:", err);
+        setError("记录浏览失败");
+      }
+    },
+    [fetchHistory]
+  );
 
   // 清空历史
   const clearHistory = useCallback(async () => {
@@ -39,8 +42,8 @@ export const useViewHistory = () => {
       await historyAPI.clearHistory();
       setHistory([]);
     } catch (err) {
-      console.error('清空历史失败:', err);
-      setError('清空历史失败');
+      console.error("清空历史失败:", err);
+      setError("清空历史失败");
     }
   }, []);
 
@@ -49,7 +52,7 @@ export const useViewHistory = () => {
     const date = new Date(dateString);
     const now = new Date();
     const diffInHours = Math.floor((now - date) / (1000 * 60 * 60));
-    
+
     if (diffInHours < 1) {
       const diffInMinutes = Math.floor((now - date) / (1000 * 60));
       return `${diffInMinutes}分钟前`;
@@ -64,10 +67,11 @@ export const useViewHistory = () => {
   // 获取状态显示文本
   const getStatusText = useCallback((status) => {
     const statusMap = {
-      '已提交，等待审核': '待审核',
-      '处理中': '处理中',
-      '已解决': '已解决',
-      '已关闭': '已关闭'
+      "已提交，等待审核": "待审核",
+      处理中: "处理中",
+      已处理: "已处理",
+      已解决: "已解决",
+      已关闭: "已关闭",
     };
     return statusMap[status] || status;
   }, []);
@@ -75,12 +79,13 @@ export const useViewHistory = () => {
   // 获取状态样式类名
   const getStatusClass = useCallback((status) => {
     const statusClassMap = {
-      '已提交，等待审核': 'status-pending',
-      '处理中': 'status-processing',
-      '已解决': 'status-resolved',
-      '已关闭': 'status-closed'
+      "已提交，等待审核": "status-pending",
+      处理中: "status-processing",
+      已处理: "status-processed",
+      已解决: "status-resolved",
+      已关闭: "status-closed",
     };
-    return statusClassMap[status] || 'status-default';
+    return statusClassMap[status] || "status-default";
   }, []);
 
   return {
@@ -92,6 +97,6 @@ export const useViewHistory = () => {
     clearHistory,
     formatTime,
     getStatusText,
-    getStatusClass
+    getStatusClass,
   };
 };
